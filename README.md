@@ -1,0 +1,2 @@
+# szs
+System zarządzania szpitalem
