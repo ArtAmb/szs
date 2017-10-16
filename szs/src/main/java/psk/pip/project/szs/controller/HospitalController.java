@@ -1,4 +1,4 @@
-package psk.pip.project.szs.controlers;
+package psk.pip.project.szs.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
