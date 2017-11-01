@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 						System.out.println("Logout success");
 					}
-				}).and().csrf().disable();
+				}).and().headers().frameOptions().disable().and().csrf().disable();
 	}
 
 	@Autowired
