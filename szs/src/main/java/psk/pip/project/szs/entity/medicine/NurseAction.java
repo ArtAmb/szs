@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
-import psk.pip.project.szs.entity.administration.Nurse;
+import psk.pip.project.szs.entity.employee.Nurse;
 
 @Entity
 @Data

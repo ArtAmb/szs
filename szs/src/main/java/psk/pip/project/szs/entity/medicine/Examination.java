@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import psk.pip.project.szs.entity.administration.Doctor;
+import psk.pip.project.szs.entity.employee.Doctor;
 
 @Entity
 public class Examination {

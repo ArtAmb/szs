@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import psk.pip.project.szs.entity.employee.Nurse;
 
 @Entity 
 @Data
@@ -25,5 +26,5 @@ public class NurseTeam{
 	protected Nurse leader;
 	@OneToMany
 	@JoinColumn(name = "nurse_team")
-	protected Collection<Nurse> memberIds;
+	protected Collection<Nurse> members;
 }

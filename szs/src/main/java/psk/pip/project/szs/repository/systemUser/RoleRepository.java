@@ -1,4 +1,4 @@
-package psk.pip.project.szs.repository;
+package psk.pip.project.szs.repository.systemUser;
 
 import org.springframework.data.repository.CrudRepository;
 

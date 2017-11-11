@@ -9,11 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import psk.pip.project.szs.entity.employee.Doctor;
+import psk.pip.project.szs.entity.employee.Nurse;
 import psk.pip.project.szs.entity.registration.Role;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
-import psk.pip.project.szs.repository.RoleRepository;
-import psk.pip.project.szs.repository.UserRepository;
+import psk.pip.project.szs.repository.employee.DoctorRepository;
+import psk.pip.project.szs.repository.employee.NurseRepository;
+import psk.pip.project.szs.repository.systemUser.RoleRepository;
+import psk.pip.project.szs.repository.systemUser.UserRepository;
 
 @Component
 public class Initializer {
@@ -24,10 +28,36 @@ public class Initializer {
 	@Autowired
 	RoleRepository roleRepo;
 
+	@Autowired
+	DoctorRepository doctorRepo;
+
+	@Autowired
+	NurseRepository nurseRepo;
+
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@PostConstruct
 	void init() {
+		addSystemUsers();
+	}
+
+	void addDoctors() {
+		doctorRepo.save(new Doctor());
+		doctorRepo.save(new Doctor());
+		doctorRepo.save(new Doctor());
+		doctorRepo.save(new Doctor());
+		doctorRepo.save(new Doctor());
+	}
+
+	void addNurses() {
+		nurseRepo.save(new Nurse());
+		nurseRepo.save(new Nurse());
+		nurseRepo.save(new Nurse());
+		nurseRepo.save(new Nurse());
+		nurseRepo.save(new Nurse());
+	}
+
+	void addSystemUsers() {
 		for (Role role : Roles.toRoleValues()) {
 			roleRepo.save(role);
 		}
@@ -46,7 +76,5 @@ public class Initializer {
 		col = new LinkedList<>();
 		col.add(Roles.ROLE_NURSE.toRole());
 		userRepo.save(new User(3l, "user3", encoder.encode("test"), col, true));
-
 	}
-
 }
