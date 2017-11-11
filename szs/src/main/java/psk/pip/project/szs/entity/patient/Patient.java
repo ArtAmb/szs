@@ -15,7 +15,7 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String Imie;
-	private String Nazwisko;	
+	private String imie;
+	private String nazwisko;	
 }
 

@@ -16,7 +16,7 @@ public class PatientService {
 
 	public void addPatient(PatientDTO dto) {
 		Patient patient = new Patient();
-		System.out.println(dto.getImie() + ", " + dto.getNazwisko());
+		System.out.println(dto.getImie()+ ", " + dto.getNazwisko());
 		patient.setImie(dto.getImie());
 		patient.setNazwisko(dto.getNazwisko());
 		

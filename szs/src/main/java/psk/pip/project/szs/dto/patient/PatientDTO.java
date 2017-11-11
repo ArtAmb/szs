@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class PatientDTO {
-	private String Imie;
-	private String Nazwisko;
+	private String imie;
+	private String nazwisko;
 }
