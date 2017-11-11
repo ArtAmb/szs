@@ -29,4 +29,8 @@ public class AkcjaMedycznaSerwis {
 		podanieLekuRepo.save(podajLek);
 	}
 
+	public PodajLekPrzyklad getPodajLek(Long id) {
+		return podanieLekuRepo.findOne(id);
+	}
+
 }

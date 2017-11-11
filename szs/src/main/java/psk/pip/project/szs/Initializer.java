@@ -39,6 +39,8 @@ public class Initializer {
 	@PostConstruct
 	void init() {
 		addSystemUsers();
+		addDoctors();
+		addNurses();
 	}
 
 	void addDoctors() {

@@ -1,6 +1,7 @@
 package psk.pip.project.szs.services.administration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import psk.pip.project.szs.dto.administration.WardDTO;
 import psk.pip.project.szs.entity.administration.DoctorTeam;
@@ -11,6 +12,7 @@ import psk.pip.project.szs.repository.administration.NurseTeamRepository;
 import psk.pip.project.szs.repository.administration.WardRepository;
 import psk.pip.project.szs.services.administration.exception.CannotCreateWardException;
 
+@Service
 public class WardService {
 
 	@Autowired
