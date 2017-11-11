@@ -16,10 +16,13 @@ public class PatientService {
 
 	public void addPatient(PatientDTO dto) {
 		Patient patient = new Patient();
-		System.out.println(dto.getImie()+ ", " + dto.getNazwisko());
 		patient.setImie(dto.getImie());
 		patient.setNazwisko(dto.getNazwisko());
-		
 		patientRepo.save(patient);
+	}
+	
+	public Patient getPatient(Long id) {
+		Patient patient = patientRepo.findOne(id);
+		return patient;
 	}
 }
