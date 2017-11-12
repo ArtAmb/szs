@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
 
 import psk.pip.project.szs.entity.employee.Doctor;
 import psk.pip.project.szs.entity.employee.Nurse;
+import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.registration.Role;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
 import psk.pip.project.szs.repository.employee.NurseRepository;
+import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.systemUser.RoleRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 
@@ -33,6 +35,9 @@ public class Initializer {
 
 	@Autowired
 	NurseRepository nurseRepo;
+	
+	@Autowired
+	PatientCardRepository patientCardRepo;
 
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -59,6 +64,14 @@ public class Initializer {
 		nurseRepo.save(new Nurse());
 	}
 
+	void addPatientCard() {
+		patientCardRepo.save(new PatientCard());
+		patientCardRepo.save(new PatientCard());
+		patientCardRepo.save(new PatientCard());
+		patientCardRepo.save(new PatientCard());
+		patientCardRepo.save(new PatientCard());
+	}
+	
 	void addSystemUsers() {
 		for (Role role : Roles.toRoleValues()) {
 			roleRepo.save(role);

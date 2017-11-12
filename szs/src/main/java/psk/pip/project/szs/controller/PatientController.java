@@ -7,23 +7,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import psk.pip.project.szs.dto.patient.PatientDTO;
-import psk.pip.project.szs.entity.patient.Patient;
+import psk.pip.project.szs.dto.patient.PersonalDataDTO;
+import psk.pip.project.szs.dto.patient.VisitDTO;
+import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.services.patient.PatientService;
 
 @RestController
 public class PatientController {
 	
 	@Autowired
-	private PatientService PatientService;
+	private PatientService patientService;
 	
-	@PostMapping(value = "/patient/addPatient")
-	public void addPatient(@RequestBody PatientDTO dto) {
-		PatientService.addPatient(dto);
+	@PostMapping(value = "/patient/addPatientCard")
+	public void addPatientCard(@RequestBody PersonalDataDTO dto) {
+		patientService.addPatientCard(dto);
 	}
 	
 	@GetMapping(value = "/patient/{id}")
-	public Patient getPatient(@PathVariable Long id) {
-		return PatientService.getPatient(id);
+	public PatientCard getPatientCard(@PathVariable Long id) {
+		return patientService.getPatientCard(id);
+	}
+	
+	@PostMapping(value = "/patient/addVisit")
+	public void addVisit(@RequestBody VisitDTO dto) {
+		patientService.addVisit(dto);
 	}
 }
