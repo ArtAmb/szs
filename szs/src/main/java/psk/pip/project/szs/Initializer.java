@@ -46,6 +46,7 @@ public class Initializer {
 		addSystemUsers();
 		addDoctors();
 		addNurses();
+		addPatientCard();
 	}
 
 	void addDoctors() {
