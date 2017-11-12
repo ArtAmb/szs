@@ -1,6 +1,7 @@
 package psk.pip.project.szs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,7 @@ public class PatientController {
 		patientService.addPatientCard(dto);
 	}
 	
-	@GetMapping(value = "/patient/{id}")
+	@GetMapping(value = "/patient/cardPatient/{id}")
 	public PatientCard getPatientCard(@PathVariable Long id) {
 		return patientService.getPatientCard(id);
 	}
@@ -31,5 +32,10 @@ public class PatientController {
 	@PostMapping(value = "/patient/addVisit")
 	public void addVisit(@RequestBody VisitDTO dto) {
 		patientService.addVisit(dto);
+	}
+	
+	@DeleteMapping(value = "/patient/visit/{id}")
+	public void deleteVisit(@PathVariable Long id){
+		patientService.deleteVisit(id);
 	}
 }
