@@ -16,6 +16,7 @@ public class PatientService {
 	
 	@Autowired
 	private PatientCardRepository patientCardRepo;
+	@Autowired
 	private VisitRepository visitRepo;
 
 	public void addPatientCard(PersonalDataDTO patient) {
