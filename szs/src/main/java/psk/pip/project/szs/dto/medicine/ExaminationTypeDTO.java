@@ -2,7 +2,7 @@ package psk.pip.project.szs.dto.medicine;
 import lombok.Data;
 
 @Data
-public class TypeOfExaminationDTO {
+public class ExaminationTypeDTO {
 	
-	private String typeOfExamination;
+	private String examinationType;
 }
