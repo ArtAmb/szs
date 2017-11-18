@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import psk.pip.project.szs.dto.patient.PersonalDataDTO;
+import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
 import psk.pip.project.szs.entity.employee.Doctor;
 import psk.pip.project.szs.entity.patient.PatientCard;
+import psk.pip.project.szs.entity.patient.ReferralType;
 import psk.pip.project.szs.entity.patient.Visit;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
+import psk.pip.project.szs.repository.patient.ReferralTypeRepository;
 import psk.pip.project.szs.repository.patient.VisitRepository;
 import psk.pip.project.szs.services.patient.exception.CannotAddVisit;
 import psk.pip.project.szs.services.patient.exception.CannotDeleteVisit;
@@ -27,6 +30,9 @@ public class PatientService {
 	
 	@Autowired
 	private DoctorRepository doctorRepo;
+	
+	@Autowired
+	private ReferralTypeRepository referralTypeRepo;
 
 	public void addPatientCard(PersonalDataDTO patient) {
 		PatientCard patientCard = new PatientCard();
@@ -67,6 +73,12 @@ public class PatientService {
 			throw new CannotDeleteVisit("Nie znaleziono wizyty o ID = " + id);
 		
 		visitRepo.delete(visit);
+	}
+	
+	public void addReferralType(ReferralTypeDTO dto) {
+		ReferralType referralType = new ReferralType();
+		referralType.setName(referralType.getName());
+		referralTypeRepo.save(referralType);
 	}
 	
 }

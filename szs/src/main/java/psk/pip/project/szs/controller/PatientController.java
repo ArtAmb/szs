@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import psk.pip.project.szs.dto.patient.PersonalDataDTO;
+import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.services.patient.PatientService;
@@ -37,5 +38,10 @@ public class PatientController {
 	@DeleteMapping(value = "/patient/visit/{id}")
 	public void deleteVisit(@PathVariable Long id){
 		patientService.deleteVisit(id);
+	}
+	
+	@PostMapping(value = "/patient/addTypeReferral")
+	public void addReferralType(@RequestBody ReferralTypeDTO dto) {
+		patientService.addReferralType(dto);
 	}
 }
