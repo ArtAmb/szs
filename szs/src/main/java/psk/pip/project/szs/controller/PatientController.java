@@ -40,7 +40,7 @@ public class PatientController {
 		patientService.deleteVisit(id);
 	}
 	
-	@PostMapping(value = "/patient/addTypeReferral")
+	@PostMapping(value = "/patient/addReferralType")
 	public void addReferralType(@RequestBody ReferralTypeDTO dto) {
 		patientService.addReferralType(dto);
 	}
