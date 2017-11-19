@@ -12,12 +12,14 @@ import org.springframework.stereotype.Component;
 import psk.pip.project.szs.entity.employee.Doctor;
 import psk.pip.project.szs.entity.employee.Nurse;
 import psk.pip.project.szs.entity.patient.PatientCard;
+import psk.pip.project.szs.entity.patient.ReferralType;
 import psk.pip.project.szs.entity.registration.Role;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
 import psk.pip.project.szs.repository.employee.NurseRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
+import psk.pip.project.szs.repository.patient.ReferralTypeRepository;
 import psk.pip.project.szs.repository.systemUser.RoleRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 
@@ -38,6 +40,9 @@ public class Initializer {
 	
 	@Autowired
 	PatientCardRepository patientCardRepo;
+	
+	@Autowired
+	ReferralTypeRepository referralTypeRepo;
 
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -71,6 +76,14 @@ public class Initializer {
 		patientCardRepo.save(new PatientCard());
 		patientCardRepo.save(new PatientCard());
 		patientCardRepo.save(new PatientCard());
+	}
+	
+	void addReferralType() {
+		referralTypeRepo.save(new ReferralType());
+		referralTypeRepo.save(new ReferralType());
+		referralTypeRepo.save(new ReferralType());
+		referralTypeRepo.save(new ReferralType());
+		referralTypeRepo.save(new ReferralType());
 	}
 	
 	void addSystemUsers() {
