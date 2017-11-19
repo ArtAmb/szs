@@ -52,6 +52,7 @@ public class Initializer {
 		addDoctors();
 		addNurses();
 		addPatientCard();
+		addReferralType();
 	}
 
 	void addDoctors() {
