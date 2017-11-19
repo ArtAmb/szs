@@ -17,5 +17,5 @@ public class Referral {
 	private Long id;
 	private Long idDoctor;
 	private Long idReferralType;
-	private String decription;
+	private String description;
 }

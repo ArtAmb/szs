@@ -91,17 +91,19 @@ public class PatientService {
 	public void registerReferral(ReferralDTO dto) {
 		Referral referral = new Referral();
 		
-		Doctor doctor = doctorRepo.findOne(dto.getIdDoctor());
-		if (doctor == null)
-			throw new CannotRegisterReferral("Nie znaleziono doktora o ID = " + dto.getIdDoctor());
-
+		if(dto.getIdDoctor() != null) {
+			Doctor doctor = doctorRepo.findOne(dto.getIdDoctor());
+			if (doctor == null)
+				throw new CannotRegisterReferral("Nie znaleziono doktora o ID = " + dto.getIdDoctor());
+		}
+		
 		ReferralType referralType = referralTypeRepo.findOne(dto.getIdReferralType());
 		if (referralType == null)
 			throw new CannotRegisterReferral("Nie znaleziono typu skierowania o ID = " + dto.getIdReferralType());
 
 		referral.setIdDoctor(dto.getIdDoctor());
 		referral.setIdReferralType(dto.getIdReferralType());
-		referral.setDecription(dto.getDecription());
+		referral.setDescription(dto.getDescription());
 		referralRepo.save(referral);
 	}
 
