@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class PersonalDataDTO {
-	private String imie;
-	private String nazwisko;
+	private String name;
+	private String surname;
 }

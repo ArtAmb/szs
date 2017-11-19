@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import psk.pip.project.szs.dto.patient.PersonalDataDTO;
+import psk.pip.project.szs.dto.patient.ReferralDTO;
 import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
 import psk.pip.project.szs.entity.patient.PatientCard;
@@ -43,5 +44,10 @@ public class PatientController {
 	@PostMapping(value = "/patient/addReferralType")
 	public void addReferralType(@RequestBody ReferralTypeDTO dto) {
 		patientService.addReferralType(dto);
+	}
+	
+	@PostMapping(value = "/patient/registerReferral")
+	public void registerReferral(@RequestBody ReferralDTO dto) {
+		patientService.registerReferral(dto);
 	}
 }

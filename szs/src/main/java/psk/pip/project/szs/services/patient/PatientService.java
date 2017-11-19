@@ -4,19 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import psk.pip.project.szs.dto.patient.PersonalDataDTO;
+import psk.pip.project.szs.dto.patient.ReferralDTO;
 import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
 import psk.pip.project.szs.entity.employee.Doctor;
 import psk.pip.project.szs.entity.patient.PatientCard;
+import psk.pip.project.szs.entity.patient.Referral;
 import psk.pip.project.szs.entity.patient.ReferralType;
 import psk.pip.project.szs.entity.patient.Visit;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
+import psk.pip.project.szs.repository.patient.ReferralRepository;
 import psk.pip.project.szs.repository.patient.ReferralTypeRepository;
 import psk.pip.project.szs.repository.patient.VisitRepository;
 import psk.pip.project.szs.services.patient.exception.CannotAddVisit;
 import psk.pip.project.szs.services.patient.exception.CannotDeleteVisit;
 import psk.pip.project.szs.services.patient.exception.CannotGetPatientCard;
+import psk.pip.project.szs.services.patient.exception.CannotRegisterReferral;
 
 @Service
 
@@ -33,11 +37,14 @@ public class PatientService {
 
 	@Autowired
 	private ReferralTypeRepository referralTypeRepo;
+	
+	@Autowired
+	private ReferralRepository referralRepo;
 
 	public void addPatientCard(PersonalDataDTO patient) {
 		PatientCard patientCard = new PatientCard();
-		patientCard.setImie(patient.getImie());
-		patientCard.setNazwisko(patient.getNazwisko());
+		patientCard.setName(patient.getName());
+		patientCard.setSurname(patient.getSurname());
 		patientCardRepo.save(patientCard);
 	}
 
@@ -77,8 +84,25 @@ public class PatientService {
 
 	public void addReferralType(ReferralTypeDTO dto) {
 		ReferralType referralType = new ReferralType();
-		referralType.setName(dto.getName());
+		referralType.setType(dto.getType());
 		referralTypeRepo.save(referralType);
+	}
+	
+	public void registerReferral(ReferralDTO dto) {
+		Referral referral = new Referral();
+		
+		Doctor doctor = doctorRepo.findOne(dto.getIdDoctor());
+		if (doctor == null)
+			throw new CannotRegisterReferral("Nie znaleziono doktora o ID = " + dto.getIdDoctor());
+
+		ReferralType referralType = referralTypeRepo.findOne(dto.getIdReferralType());
+		if (referralType == null)
+			throw new CannotRegisterReferral("Nie znaleziono typu skierowania o ID = " + dto.getIdReferralType());
+
+		referral.setIdDoctor(dto.getIdDoctor());
+		referral.setIdReferralType(dto.getIdReferralType());
+		referral.setDecription(dto.getDecription());
+		referralRepo.save(referral);
 	}
 
 }

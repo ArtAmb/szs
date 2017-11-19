@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ReferralTypeDTO {
-	private String name;
+	private String type;
 }

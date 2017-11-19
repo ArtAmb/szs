@@ -10,12 +10,12 @@ import lombok.Data;
 @Data
 @Entity
 
-public class PatientCard {
-	
+public class Referral {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String name;
-	private String surname;	
+	private Long idDoctor;
+	private Long idReferralType;
+	private String decription;
 }
-
