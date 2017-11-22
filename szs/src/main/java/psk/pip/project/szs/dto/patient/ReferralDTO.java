@@ -6,5 +6,5 @@ import lombok.Data;
 public class ReferralDTO {
 	private Long idDoctor;
 	private Long idReferralType;
-	private String decription;
+	private String description;
 }
