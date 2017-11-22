@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import psk.pip.project.szs.dto.registration.LoginDTO;
 import psk.pip.project.szs.dto.registration.ModifyUserDTO;
 import psk.pip.project.szs.dto.registration.RolesDTO;
 import psk.pip.project.szs.dto.registration.UserDTO;
@@ -57,4 +58,10 @@ public class RegistrationController {
 	void modifyRoles(@PathVariable Long id, @RequestBody RolesDTO roles) {
 		service.changeRoles(id, roles);
 	}
+
+	@PostMapping("/login")
+	void login(@RequestBody LoginDTO loginDTO) {
+		service.login(loginDTO);
+	}
+
 }

@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import psk.pip.project.szs.dto.registration.LoginDTO;
 import psk.pip.project.szs.dto.registration.ModifyUserDTO;
 import psk.pip.project.szs.dto.registration.RolesDTO;
 import psk.pip.project.szs.entity.registration.Role;
@@ -82,6 +84,16 @@ public class RegistrationService {
 
 		user.setRoles(roleList);
 		userRepository.save(user);
+	}
+
+	public void login(LoginDTO dto) {
+		RestTemplate restTemplate = new RestTemplate();
+		StringBuffer url = new StringBuffer("http://localhost:8080/login?login=");
+		url.append(dto.getLogin());
+		url.append("&password=");
+		url.append(dto.getPassword());
+
+		restTemplate.postForEntity(url.toString(), null, null);
 	}
 
 }
