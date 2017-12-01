@@ -1,5 +1,7 @@
 package psk.pip.project.szs.services.patient;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,7 @@ public class PatientService {
 
 	@Autowired
 	private ReferralTypeRepository referralTypeRepo;
-	
+
 	@Autowired
 	private ReferralRepository referralRepo;
 
@@ -54,6 +56,10 @@ public class PatientService {
 			throw new CannotGetPatientCard("Nie znaleziono karty pacjenta o ID = " + id);
 
 		return patientCard;
+	}
+
+	public Collection<PatientCard> getPatientCards() {
+		return patientCardRepo.findAll();
 	}
 
 	public void addVisit(VisitDTO dto) {
@@ -87,16 +93,16 @@ public class PatientService {
 		referralType.setType(dto.getType());
 		referralTypeRepo.save(referralType);
 	}
-	
+
 	public void registerReferral(ReferralDTO dto) {
 		Referral referral = new Referral();
-		
-		if(dto.getIdDoctor() != null) {
+
+		if (dto.getIdDoctor() != null) {
 			Doctor doctor = doctorRepo.findOne(dto.getIdDoctor());
 			if (doctor == null)
 				throw new CannotRegisterReferral("Nie znaleziono doktora o ID = " + dto.getIdDoctor());
 		}
-		
+
 		ReferralType referralType = referralTypeRepo.findOne(dto.getIdReferralType());
 		if (referralType == null)
 			throw new CannotRegisterReferral("Nie znaleziono typu skierowania o ID = " + dto.getIdReferralType());

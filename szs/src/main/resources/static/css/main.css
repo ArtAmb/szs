@@ -5,3 +5,64 @@ h1{
 h2{
 	color:#FF0000;
 }
+
+.main-menu {
+position: relative;
+margin: auto;
+
+}
+
+.simplebutton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.simplebutton:hover {
+    background-color: #3e8e41;
+}
+
+.clickable{
+cursor: pointer;
+}
+
+
+.edit_button{
+cursor: pointer;
+}
+
+
+.medical_action_button{
+cursor: pointer;
+}
+
+
+.delete_button{
+cursor: pointer;
+}
+
+.table{
+    position: absolute;
+	text-align: left;
+    line-height: 40px;
+    border-collapse: separate;
+    border-spacing: 10px;
+    border: 2px solid #ed1c40;
+    width: 500px;
+    margin: 50px auto;
+    border-radius: .25rem;
+}
+
+tr{
+border: 1px solid black;
+} 
+
+th, td{
+
+} 

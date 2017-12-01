@@ -37,10 +37,10 @@ public class Initializer {
 
 	@Autowired
 	NurseRepository nurseRepo;
-	
+
 	@Autowired
 	PatientCardRepository patientCardRepo;
-	
+
 	@Autowired
 	ReferralTypeRepository referralTypeRepo;
 
@@ -72,13 +72,13 @@ public class Initializer {
 	}
 
 	void addPatientCard() {
-		patientCardRepo.save(new PatientCard());
-		patientCardRepo.save(new PatientCard());
-		patientCardRepo.save(new PatientCard());
-		patientCardRepo.save(new PatientCard());
-		patientCardRepo.save(new PatientCard());
+		patientCardRepo.save(new PatientCard("Franek", "Francesco"));
+		patientCardRepo.save(new PatientCard("Truman", "Trauma"));
+		patientCardRepo.save(new PatientCard("Boleslaw", "Kedzierzawy"));
+		patientCardRepo.save(new PatientCard("Rumcajs", "Brodaty"));
+		patientCardRepo.save(new PatientCard("Rademenes", "Faraonski"));
 	}
-	
+
 	void addReferralType() {
 		referralTypeRepo.save(new ReferralType());
 		referralTypeRepo.save(new ReferralType());
@@ -86,7 +86,7 @@ public class Initializer {
 		referralTypeRepo.save(new ReferralType());
 		referralTypeRepo.save(new ReferralType());
 	}
-	
+
 	void addSystemUsers() {
 		for (Role role : Roles.toRoleValues()) {
 			roleRepo.save(role);

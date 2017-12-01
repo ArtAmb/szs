@@ -15,8 +15,9 @@ public class FrontController {
 	}
 
 	@GetMapping("/front/login/sign-in")
-	public String login(Map<String, Object> model) {
-		return "login/sign-in";
+	public String login(Model model) {
+		model.addAttribute("formName", "login-form");
+		return "mainMenu";
 	}
 
 	@GetMapping("/view/doctor")
@@ -37,6 +38,12 @@ public class FrontController {
 
 	@GetMapping("/view/config")
 	public String configView(Map<String, Object> model) {
+		return "mainMenu";
+	}
+
+	@GetMapping("/view/patient")
+	public String patientView(Model model) {
+		model.addAttribute("formName", "patient-form");
 		return "mainMenu";
 	}
 

@@ -1,28 +1,41 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>System zarzadania szpitalem</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 
-<link rel="stylesheet" th:href="@{/css/main.css}"
-	href="../../css/main.css" />
-	
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"/>
-<script th:src="@{/js/chooseProperForm.js}" src="/js/chooseProperForm.js"></script>
-	
+<head>
+	<title>System zarzadania szpitalem</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+	<link rel="stylesheet" th:href="@{/css/main.css}" href="../../css/main.css" />
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" />
+	<script th:src="@{/views/main/js/mainViewRouter.js}" src="/views/main/js/mainViewRouter.js"></script>
+	<!--patient -->
+	<script th:src="@{/views/patient/js/patientViewRouter.js}" src="../views/patient/js/patientViewRouter.js" />
+	<script th:src="@{/views/patient/js/patientView.js}" src="/views/patient/js/patientView.js"></script>
+	<script th:src="@{/views/patient/js/patientListView.js}" src="../views/patient/js/patientListView.js" />
+	<!--logowanie -->
+	<script th:src="@{/views/login/js/loginViewRouter.js}" src="../views/login/js/loginViewRouter.js" />
+	<script th:src="@{/views/login/js/loginView.js}" src="../views/login/js/loginView.js" />
+	<script th:src="@{/views/login/js/signinView.js}" src="../views/login/js/signinView.js" />
+	<!--doctor -->
+	<script th:src="@{/views/doctor/js/doctorViewRouter.js}" src="../views/doctor/js/doctorViewRouter.js" />
+	<script th:src="@{/views/doctor/js/doctorView.js}" src="/views/doctor/js/doctorView.js"></script>
+
 </head>
+
 <body>
-	
-	<nav class="navbar navbar-default">
+
+	<nav class="navbar navbar-default main-menu">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">SZS</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li><a href="#">Start</a></li>
+				<li><a href="/">Start</a></li>
 				<li><a href="/view/doctor">Lekarz</a></li>
 				<li><a href="#">Pielegniarka</a></li>
+				<li><a href="/view/patient">Pacjent</a></li>
 				<li><a href="#">Administracja</a></li>
 				<li><a href="#">Konfiguracja</a></li>
 				<li><a href="/front/login/sign-in">Logowanie</a></li>
@@ -40,8 +53,18 @@
 		</div>
 
 	</div>
-<script th:inline="javascript">
-chooseProperForm([[${formName}]]);
- </script>
+	<script th:inline="javascript">
+		var options = {
+			formType: [[${formName }]],
+			containerName: "container"
+		}
+		mainViewRouter.chooseProperView(options);
+	</script>
+
+	<div id="main_menu_footer">
+
+	</div>
+
 </body>
+
 </html>

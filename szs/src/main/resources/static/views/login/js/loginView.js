@@ -1,4 +1,4 @@
-var patientView = function () {
+var loginView = function () {
 	var view = {}
 	view._options = {
 		containerName: "",
@@ -10,10 +10,10 @@ var patientView = function () {
       view._options =options;
 	}
 	view.render = function(){
-		var htmlForm = $("<div></div>").load("../views/patient/patient-form.html");
+		var htmlForm = $("<div></div>").load("../../views/login/login-form.html");
 		$("#" + view._options.containerName).html(htmlForm);
 
-		patientViewRouter.chooseProperView(view._options);
+		loginViewRouter.chooseProperView(view._options);
 
 	}
 

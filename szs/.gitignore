@@ -1,6 +1,7 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
-
+scripts/
+jslibs/
 ### STS ###
 .apt_generated
 .classpath

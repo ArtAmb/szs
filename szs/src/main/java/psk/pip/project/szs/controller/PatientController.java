@@ -1,5 +1,7 @@
 package psk.pip.project.szs.controller;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,35 +19,40 @@ import psk.pip.project.szs.services.patient.PatientService;
 
 @RestController
 public class PatientController {
-	
+
 	@Autowired
 	private PatientService patientService;
-	
+
 	@PostMapping(value = "/patient/addPatientCard")
 	public void addPatientCard(@RequestBody PersonalDataDTO dto) {
 		patientService.addPatientCard(dto);
 	}
-	
-	@GetMapping(value = "/patient/cardPatient/{id}")
+
+	@GetMapping(value = "/patient/patientCard/{id}")
 	public PatientCard getPatientCard(@PathVariable Long id) {
 		return patientService.getPatientCard(id);
 	}
-	
+
+	@GetMapping(value = "/patient/patientCards")
+	public Collection<PatientCard> getPatientCards() {
+		return patientService.getPatientCards();
+	}
+
 	@PostMapping(value = "/patient/addVisit")
 	public void addVisit(@RequestBody VisitDTO dto) {
 		patientService.addVisit(dto);
 	}
-	
+
 	@DeleteMapping(value = "/patient/visit/{id}")
-	public void deleteVisit(@PathVariable Long id){
+	public void deleteVisit(@PathVariable Long id) {
 		patientService.deleteVisit(id);
 	}
-	
+
 	@PostMapping(value = "/patient/addReferralType")
 	public void addReferralType(@RequestBody ReferralTypeDTO dto) {
 		patientService.addReferralType(dto);
 	}
-	
+
 	@PostMapping(value = "/patient/registerReferral")
 	public void registerReferral(@RequestBody ReferralDTO dto) {
 		patientService.registerReferral(dto);

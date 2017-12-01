@@ -11,11 +11,20 @@ import lombok.Data;
 @Entity
 
 public class PatientCard {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private String surname;	
-}
+	private String surname;
 
+	public PatientCard() {
+
+	}
+
+	public PatientCard(String name, String surname) {
+		this.name = name;
+		this.surname = surname;
+
+	}
+}
