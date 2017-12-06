@@ -1,0 +1,48 @@
+<head th:replace="mainMenu :: head" />
+
+<body>
+    <div th:replace="mainMenu :: mainMenu" />
+
+    <div id="login-form-sign-up" class="content">
+
+        <div id="errorDiv"></div>
+
+        <label>Login: </label><input id="loginInput" name="login" type="text" />
+        <br/>
+        <label>Haslo: </label><input id="passwordInput" name="pasword" type="password" />
+        <br/>
+        <br/>
+
+        <button id="addUserButton">Zarejestruj</button>
+        <script>
+            $("#addUserButton").click(function () {
+                var login = $("#loginInput").val();
+                var pass = $("#passwordInput").val();
+                if (!(tools.isBlank(login) || tools.isBlank(pass))) {
+
+                    var url = "/user/new";
+
+                    tools.postForObject(
+                        url,
+                        {
+                            login: login,
+                            password: pass
+                        },
+                        function (data) {
+                            alert("Rejestracja zakonczona");
+                        }, function () {
+                            alert("Blad! Mozliwe ze uzytkownik instnieje");
+                        });
+                }
+                else {
+                    $("#errorDiv").html("Pola haslo i login sa wymagane");
+                }
+
+            });
+        </script>
+
+
+
+        <div th:replace="mainMenu :: footer"> </div>
+    </div>
+</body>

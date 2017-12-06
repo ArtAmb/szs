@@ -1,0 +1,45 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="login-form-sign-in" class="content">
+
+		<h2>Login with Username and Password</h2>
+		<div>
+				<label>Login: </label><input id="loginInput" type="text" name="login" />
+				<br/>
+				<label>Password: </label><input id="passInput" type="password" name="password" />
+				<br/>
+				<button id="loginButton">Login</button>
+		</div>
+
+		<script>
+			$("#loginButton").click(function () {
+
+				var login = $("#loginInput").val();
+				var pass = $("#passInput").val();
+
+				var url = "/login";
+				$.ajax({
+					url: url,
+					data: {login: login, password: pass},
+					type: 'POST',
+					success: function (data) {
+						alert("Gratuluje. Proces autoryzacji zakonczony sukcesem");
+					},
+					error: function () {
+						alert("Nieprawidlowy login lub haslo");
+					},
+				});
+			});
+		</script>
+
+		<br/>
+		<a href="/view/login/sign-up">Zarejestruj</a>
+
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>
