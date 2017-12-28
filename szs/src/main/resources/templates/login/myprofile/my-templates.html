@@ -1,0 +1,41 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="my-profile-templates" class="content">
+        <td>
+            <a class="simplebutton" th:href="@{/view/medical/action/template/add/to/myprofile}">Dodaj nowy</a>
+        </td>
+
+        <table class="table table-bordered table-striped">
+            <tr th:if="${templates.empty}">
+                <td colspan="4">Brak szablonow</td>
+            </tr>
+            <tr th:each="template : ${templates}">
+                <td th:text="${template.title}"></td>
+                <td>
+                    <button th:id="'delTemplateButton' + ${template.id}" th:attr="tempid=${template.id}" class="simplebutton medical_action_button">Usun</button>
+                </td>
+                <script th:inline='javascript'>
+                    $("#delTemplateButton" + [[${ template.id }]]).click(function () {
+                        if (!confirm("Czy napewno chesz usunac szablon: " + [[${ template.title }]] + " ?"))
+                            return;
+                        var url = "/medicalAction/measurement/template/" + [[${ template.id }]];
+                        tools.deleteObject(url, function () {
+                            location.reload();
+                        });
+                    });
+                </script>
+                <td>
+                    <a class="simplebutton edit_button" th:href="@{'/view/login/my-profile/template/'+ ${template.id} +'/edit'}">Edytuj</a>
+                </td>
+            </tr>
+
+        </table>
+
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

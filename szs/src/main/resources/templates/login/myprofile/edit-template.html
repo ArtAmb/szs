@@ -1,0 +1,46 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="measurement-template-edit-view" class="content">
+		<label>Tytul: </label>
+		<input id="measurement-title-name-input" type="text"></input>
+		<div id="measurement-template-tree-edit"></div>
+		<script th:inline="javascript">
+			$("#measurement-title-name-input").val([[${ template.title }]]);
+			compositeTools.showCompositeTemplate([[${ template.measurement }]], "Pomiar", "measurement-template-tree-edit");
+		</script>
+
+		<button id="update-button" class="simplebutton">Aktualizuj</button>
+		<script th:inline="javascript">
+			$("#" + 'update-button').click(function () {
+				var measurementTree = $('#' + 'measurement-template-tree-edit');
+				if (!measurementTree.html()) {
+					alert("Prosze dodac nowy szablon");
+					return;
+				}
+
+				measurementTree.find('.required').each(function () {
+					$(this).removeClass('required');
+				});
+				var result = compositeTools.compositeToObject($(measurementTree.children().toArray()[0]));
+				var value = $('#measurement-title-name-input').val();
+				var measurementRoot = {
+					id: [[${ template.id }]],
+					title: value,
+					user: [[${ template.user }]],
+					measurement: result
+				}
+
+
+				tools.postForObject("/medicalAction/measurement/template", measurementRoot, function () { alert("Zapisano szablon"); }, function () { alert("Nie udalo sie zapisac szablonu"); });
+
+			
+			});
+		</script>
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

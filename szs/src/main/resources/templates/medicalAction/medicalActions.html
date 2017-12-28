@@ -1,0 +1,18 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="medical-actions-form-id" class="content">
+        <tr>
+            <td> <a class="simplebutton medical_action_button" th:href="@{'/view/medical/action/patient/' + ${patient.id} + '/measurement'}">Pomiar</a></td>
+            <td> <a class="simplebutton medical_action_button" th:href="@{'/view/medical/action/patient/' + ${patient.id} + '/operation'}">Operacja</a></td>
+            <td> <a class="simplebutton medical_action_button" th:href="@{'/view/medical/action/patient/' + ${patient.id} + '/examination'}">Badanie</a></td>
+            <td> <a class="simplebutton medical_action_button" th:href="@{'/view/medical/action/patient/' + ${patient.id} + '/giveDrug'}">Podaj lek</a></td>
+        </tr>
+
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

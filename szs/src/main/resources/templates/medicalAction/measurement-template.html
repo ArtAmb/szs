@@ -1,0 +1,56 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="medical-action-measurement-form-id" class="content">
+
+        <label>Nowy szablon</label>
+        <br/>
+        <label>Nazwa</label>
+        <input id="measurement-template-name" type="text" />
+
+        <div id="measurement-template-container">
+
+            <ul id='measurement-template-composite-tree' class='tree'></ul>
+
+            <button id='measurement-save-button' class="simplebutton">Zapisz</button>
+
+            <script th:inline="javascript">
+                compositeTools.reset();
+                compositeTools.addGroup('Pomiar', 'measurement-template-composite-tree');
+
+                var saveButton = $('#' + 'measurement-save-button');
+                saveButton.click(function () {
+                    var measurementTree = $('#' + 'measurement-template-composite-tree');
+                    if (!measurementTree.html()) {
+                        alert("Prosze dodac nowy pomiar");
+                        return;
+                    }
+
+                    measurementTree.find('.required').each(function () {
+                        $(this).removeClass('required');
+                    });
+                    var result = compositeTools.compositeToObject($(measurementTree.children().toArray()[0]));
+                    var value = $('#measurement-template-name').val();
+                    var measurementRoot = {
+                        title: value,
+                        user: [[${ user }]],
+                        measurement: result
+                    }
+
+                    if(value == undefined || value.trim() == "")
+                        alert("Prosze ustawic nazwe szablonu");
+                    else
+                        tools.postForObject("/medicalAction/measurement/template", measurementRoot, function () { alert("Zapisano pomiar"); }, function () { alert("Nie udalo sie zapisac pomiaru pomiar"); });
+
+                });
+            </script>
+
+        </div>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

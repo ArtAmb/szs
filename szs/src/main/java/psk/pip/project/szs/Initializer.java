@@ -96,15 +96,18 @@ public class Initializer {
 		col.add(Roles.ROLE_ADMIN.toRole());
 		col.add(Roles.ROLE_DOCTOR.toRole());
 		col.add(Roles.ROLE_NURSE.toRole());
+		col.add(Roles.ROLE_MEDICAL_EMPLOYEE.toRole());
 		userRepo.save(new User(1l, "user1", encoder.encode("test"), col, true));
 
 		col = new LinkedList<>();
 		col.add(Roles.ROLE_DOCTOR.toRole());
 		col.add(Roles.ROLE_NURSE.toRole());
+		col.add(Roles.ROLE_MEDICAL_EMPLOYEE.toRole());
 		userRepo.save(new User(2l, "user2", encoder.encode("test"), col, true));
 
 		col = new LinkedList<>();
 		col.add(Roles.ROLE_NURSE.toRole());
+		col.add(Roles.ROLE_MEDICAL_EMPLOYEE.toRole());
 		userRepo.save(new User(3l, "user3", encoder.encode("test"), col, true));
 	}
 }

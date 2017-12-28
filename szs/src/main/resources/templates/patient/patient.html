@@ -13,13 +13,14 @@
 
 			<table class="table table-bordered table-striped">
 				<tr th:if="${patients.empty}">
-					<td colspan="4">No tasks</td>
+					<td colspan="4">Brak pacjentow</td>
 				</tr>
 				<tr th:each="patient : ${patients}">
 					<td th:text="${patient.name}"></td>
 					<td th:text="${patient.surname}"></td>
-					<td> <button class="simplebutton medical_action_button">Akcja</button></td>
-					<td> <button  class="simplebutton edit_button">Edytuj</button></td>
+					<td> <a class="simplebutton medical_action_button" th:href="@{'/view/medical/action/patient/' + ${patient.id}}">Akcja</a></td>
+					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
 				</tr>
 
 			</table>

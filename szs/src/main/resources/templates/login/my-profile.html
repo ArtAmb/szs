@@ -1,0 +1,28 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="my-profile-view" class="content">
+
+        <div>
+            <label th:text="${user.login}"></label>
+            <br/>
+            <label>Uprawnienia</label>
+            
+            <table>
+            <tr th:each="role : ${roles}">
+               <td th:text="${role}"></td>
+            </tr>
+            </table>
+        </div>
+            <button href="" class="simplebutton">Zmien haslo</button>
+            <a th:href="@{'/view/login/my-profile/templates'}" href="" class="simplebutton">Moje szablony</a>
+            <button href="" class="simplebutton">Moi pacjenci</button>
+            <a href="/logout" class="simplebutton">Wyloguj</a>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

@@ -1,7 +1,7 @@
 package psk.pip.project.szs.entity.registration;
 
+import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +34,7 @@ public class User {
 
 	@Enumerated(EnumType.STRING)
 	@ManyToMany
-	private List<Role> roles = new LinkedList<>();
+	private Collection<Role> roles = new LinkedList<>();
 
 	private boolean active = true;
 

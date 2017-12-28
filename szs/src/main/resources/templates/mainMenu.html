@@ -11,6 +11,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" />
 
 	<script th:src="@{/js/tools.js}" src="../js/tools.js" />
+	<script th:src="@{/js/composit.js}" src="../js/composit.js" />
 </head>
 
 <body>
@@ -24,10 +25,11 @@
 				<li><a href="/">Start</a></li>
 				<li><a href="/view/doctor">Lekarz</a></li>
 				<li><a href="/view/nurse">Pielegniarka</a></li>
-				<li><a href="/view/patient">Pacjent</a></li>
+				<li><a href="/view/patients">Pacjent</a></li>
 				<li><a href="/view/administration">Administracja</a></li>
 				<li><a href="/view/config">Konfiguracja</a></li>
-				<li><a href="/view/login/sign-in">Logowanie</a></li>
+				<li><a th:if="!${isPrincipal}" href="/view/login/sign-in">Logowanie</a></li>
+				<li><a th:if="${isPrincipal}" href="/view/login/my-profile">Moj profil</a></li>
 			</ul>
 		</div>
 	</nav>

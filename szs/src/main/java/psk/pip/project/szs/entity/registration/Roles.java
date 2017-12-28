@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 public enum Roles {
 
-	ROLE_ADMIN(Consts.ROLE_ADMIN), ROLE_NURSE(Consts.ROLE_NURSE), ROLE_DOCTOR(Consts.ROLE_DOCTOR);
+	ROLE_ADMIN(Consts.ROLE_ADMIN), ROLE_NURSE(Consts.ROLE_NURSE), ROLE_DOCTOR(
+			Consts.ROLE_DOCTOR), ROLE_MEDICAL_EMPLOYEE(Consts.ROLE_MEDICAL_EMPLOYEE);
 	public static final String ROLE_ADMIN2 = "ROLE_ADMIN";
 	private final String name;
 	private Role role;
@@ -34,6 +35,7 @@ public enum Roles {
 		public static final String ROLE_ADMIN = "ROLE_ADMIN";
 		public static final String ROLE_NURSE = "ROLE_NURSE";
 		public static final String ROLE_DOCTOR = "ROLE_DOCTOR";
+		public static final String ROLE_MEDICAL_EMPLOYEE = "ROLE_MEDICAL_EMPLOYEE";
 
 	}
 }

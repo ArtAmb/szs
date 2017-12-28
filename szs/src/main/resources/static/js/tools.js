@@ -7,6 +7,17 @@ var tools = function () {
         return data === undefined || data === null || data.trim() === "";
     }
 
+    tools.deleteObject = function (url, onSuccess, onFailed) {
+        $.ajax({
+            url: url,
+            contentType: "application/json",
+            type: 'DELETE',
+            success: onSuccess,
+            error: onFailed
+        })
+
+    }
+
     tools.postForObject = function (url, dto, onSuccess, onFailed) {
         var data = JSON.stringify(dto);
 
@@ -21,15 +32,14 @@ var tools = function () {
 
     }
 
-     tools.getForObject = function (url, dto, onSuccess, onFailed) {
-        var data = JSON.stringify(dto);
-
+     tools.getForObject = function (url, onSuccess, onFailed) {
         $.ajax({
             url: url,
-            data: data,
             contentType: "application/json",
             type: 'GET',
-            success: onSuccess,
+            success: function(response){
+                onSuccess(response);
+            },
             error: onFailed
         })
 

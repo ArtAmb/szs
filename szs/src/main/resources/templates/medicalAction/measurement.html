@@ -1,0 +1,96 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="medical-action-measurement-form-id" class="content">
+        <div id="measurement-buttons">
+            <select id='my-templates-select'>
+                <option th:each="template : ${templates}" th:value="${template.id}" th:text="${template.title}"> </option>
+            </select>
+            <button id="measurement-button-load">Wczytaj pomiar</button>
+            <button id="measurement-button-add" clicked='false'>Nowy pomiar</button>
+        </div>
+        <script>
+            var addButton = $('#' + 'measurement-button-add');
+            addButton.click(function () {
+                if (!$('#' + 'measurement-composite-tree').html()) {
+                    compositeTools.reset();
+                    compositeTools.addGroup('Pomiar', 'measurement-composite-tree');
+                } else {
+                    var response = confirm("Czy chcesz usunac obecny pomiar i zastapic nowym ?");
+                    if (response == true) {
+                        $('#' + 'measurement-composite-tree').html("");
+                        compositeTools.reset();
+                        compositeTools.addGroup('Pomiar', 'measurement-composite-tree');
+                    }
+                }
+
+
+            });
+            $('#' + 'measurement-button-load').click(function () {
+                var value = $("#my-templates-select").val();
+                if (value == undefined || value.trim() == "") {
+                    alert("Prosze wybrac szablon do odczytu");
+                    return;
+                }
+
+                var url = "/medicalAction/measurement/template/" + value;
+
+                tools.getForObject(url,
+                    function (response) {
+                        compositeTools.showCompositeTemplate(response, "Pomiar", "measurement-composite-tree");
+                    },
+                    function () {
+                        alert("Nie udalo sie pobrac szablonu");
+                    }
+                )
+
+            });            
+        </script>
+
+
+        <div id="measurement-container">
+
+            <div>
+                <label th:text="${patient.name}"></label>
+                <label th:text="${patient.surname}"></label>
+            </div>
+
+            <ul id='measurement-composite-tree' class='tree'></ul>
+
+            <button id='measurement-save-button' class="simplebutton">Zapisz</button>
+
+            <script th:inline="javascript">
+                var saveButton = $('#' + 'measurement-save-button');
+                saveButton.click(function () {
+                    var measurementTree = $('#' + 'measurement-composite-tree');
+                    if (!measurementTree.html()) {
+                        alert("Prosze dodac nowy pomiar");
+                        return;
+                    }
+
+                    measurementTree.find('.required').each(function () {
+                        $(this).removeClass('required');
+                    });
+                    var result = compositeTools.compositeToObject($(measurementTree.children().toArray()[0]));
+                    var measurementRoot = {
+                        patient: [[${ patient }]],
+                        measurement: result
+                    }
+
+                    var isOK = measurementTree.find('.required').toArray().length == 0;
+                    if (isOK) {
+                        tools.postForObject("/medicalAction/measurement", measurementRoot, function () { alert("Zapisano pomiar"); }, function () { alert("Nee udalo sie zapisac pomiaru pomiar"); });
+                    } else
+                        alert('Prosze uzupelnic wymagane pola');
+                });
+            </script>
+
+        </div>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

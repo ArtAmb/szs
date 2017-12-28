@@ -59,8 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					@Override
 					public void commence(HttpServletRequest arg0, HttpServletResponse arg1,
 							AuthenticationException arg2) throws IOException, ServletException {
-						arg1.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
+						arg1.sendRedirect("/view/login/sign-in");
+						// arg1.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 						System.out.println("Authentication Entry Point");
 
 					}
@@ -69,7 +69,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					@Override
 					public void onLogoutSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication arg2)
 							throws IOException, ServletException {
-
 						System.out.println("Logout success");
 					}
 				}).and().headers().frameOptions().disable().and().csrf().disable();
