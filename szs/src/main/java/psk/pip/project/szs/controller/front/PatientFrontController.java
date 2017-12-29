@@ -42,4 +42,15 @@ public class PatientFrontController {
 		model.addAttribute("patients", patientService.getPatientCards());
 		return getTemplateDir("add");
 	}
+
+	@GetMapping("/view/patient/{patientId}/detail")
+	public String getPatientDetailView(@PathVariable Long patientId, Model model) {
+		model.addAttribute("patient", patientService.getPatientCard(patientId));
+		return getTemplateDir("patient-detail");
+	}
+
+	@GetMapping("/view/patient/{patientId}/new/visit")
+	public String getPatientnewVisitView(@PathVariable Long patientId) {
+		return getTemplateDir("new-visit");
+	}
 }

@@ -32,12 +32,12 @@ var tools = function () {
 
     }
 
-     tools.getForObject = function (url, onSuccess, onFailed) {
+    tools.getForObject = function (url, onSuccess, onFailed) {
         $.ajax({
             url: url,
             contentType: "application/json",
             type: 'GET',
-            success: function(response){
+            success: function (response) {
                 onSuccess(response);
             },
             error: onFailed
@@ -45,7 +45,7 @@ var tools = function () {
 
     }
 
-     tools.putForObject = function (url, dto, onSuccess, onFailed) {
+    tools.putForObject = function (url, dto, onSuccess, onFailed) {
         var data = JSON.stringify(dto);
 
         $.ajax({
@@ -57,6 +57,37 @@ var tools = function () {
             error: onFailed
         })
 
+    }
+
+    tools.validation = function(tagId){
+        tools.cleanValidation(tagId);
+        tools.markRequiredTags(tagId);
+        return tools.isValidationOK(tagId);  
+    }
+
+    tools.markRequiredTags = function (tagId) {
+        var tag = $('#' + (tagId));
+        $(tag.find("[required='true']")).each(function () {
+            var val = $(this).val();
+            if (val == undefined || val.trim() == "" || tag.html().trim() == "") {
+                $(this).addClass("required");
+            }
+        });
+    }
+
+    tools.isValidationOK = function (tagId) {
+        var tag = $('#' + (tagId));
+        if (tag.find(".required").toArray().length != 0)
+            return false;
+
+        return true;
+    }
+
+    tools.cleanValidation = function (tagId) {
+        var tag = $('#' + (tagId));
+        tag.find(".required").each(function () {
+            $(this).removeClass("required");
+        });
     }
 
     return tools;

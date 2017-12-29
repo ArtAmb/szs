@@ -102,3 +102,9 @@ ul.tree, ul.tree ul {
    ul.tree li:last-child:before {
       border-left:1px solid rgb(100,100,100);   
    }
+
+   .required{
+       border-width: 2px;
+       border-style: solid;
+       border-color: #FF0000; 
+   }

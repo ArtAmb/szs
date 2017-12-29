@@ -1,0 +1,15 @@
+<head th:replace="mainMenu :: head"> </head>
+<body>
+	<div th:replace="mainMenu :: mainMenu"> </div>
+	<div id="patient-view" class="content">
+		<a th:href="@{'/view/patient/'+ ${patient.id} +'/new/visit'}" id="arrangeVisitButton" class="simplebutton">Umow wizyte</a>
+		
+		<div id="patient-view-container">
+
+
+		</div>
+
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

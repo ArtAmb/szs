@@ -10,7 +10,7 @@
 		<div id="measurement-template-tree-edit"></div>
 		<script th:inline="javascript">
 			$("#measurement-title-name-input").val([[${ template.title }]]);
-			compositeTools.showCompositeTemplate([[${ template.measurement }]], "Pomiar", "measurement-template-tree-edit");
+			compositeTools.showCompositeTemplate([[${ template.measurement }]], "Pomiar", "measurement-template-tree-edit", true);
 		</script>
 
 		<button id="update-button" class="simplebutton">Aktualizuj</button>

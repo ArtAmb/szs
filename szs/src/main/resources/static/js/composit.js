@@ -4,7 +4,9 @@ var compositeTools = function () {
     compositeTools.reset = function () {
         compositeTools.size = 0;
     },
-        compositeTools.addGroup = function (groupName, parentDivId) {
+        compositeTools.addGroup = function (groupName, parentDivId, isTemplate) {
+            if (isTemplate == undefined) isTemplate = false;
+
             groupName = groupName + compositeTools.size;
             compositeTools.size = compositeTools.size + 1;
 
@@ -23,52 +25,51 @@ var compositeTools = function () {
             var addValueB = $("<button>");
             addValueB.attr('id', groupName + '-button-group-add-value');
             addValueB.click(function () {
-                compositeTools.addValue(groupName + "-leaf", groupContainerID);
+                compositeTools.addValue(groupName + "-leaf", groupContainerID, isTemplate);
             });
             addValueB.html("Dodaj wartosc");
 
-            var delGroupB = $("<button>");
-            delGroupB.attr('id', groupName + '-button-group-del');
-            delGroupB.html("Usun grupe");
+            var delGroupB = $("<button>")
+                .attr('id', groupName + '-button-group-del')
+                .html("Usun grupe");
 
-            var hideGroupB = $("<button>");
-            hideGroupB.attr('id', groupName + '-button-group-hide');
-            hideGroupB.attr('ishide', false);
-            hideGroupB.html("-");
-            hideGroupB.click(function () {
-                if (hideGroupB.attr('ishide') == false || hideGroupB.attr('ishide') == "false") {
-                    hideGroupB.attr('ishide', true);
-                    hideGroupB.html("+");
-                    $('#' + groupContainerID).css("display", 'none');
-                }
-                else {
-                    hideGroupB.attr('ishide', false);
-                    hideGroupB.html("-");
-                    $('#' + groupContainerID).css("display", 'block');
-                }
+            var hideGroupB = $("<button>")
+                .attr('id', groupName + '-button-group-hide')
+                .attr('ishide', false)
+                .html("-")
+                .click(function () {
+                    if (hideGroupB.attr('ishide') == false || hideGroupB.attr('ishide') == "false") {
+                        hideGroupB.attr('ishide', true);
+                        hideGroupB.html("+");
+                        $('#' + groupContainerID).css("display", 'none');
+                    }
+                    else {
+                        hideGroupB.attr('ishide', false);
+                        hideGroupB.html("-");
+                        $('#' + groupContainerID).css("display", 'block');
+                    }
 
-            });
+                });
 
-            var groupContainer = $('<ul>');
-            groupContainer.attr('id', groupContainerID);
-            groupContainer.addClass('tree-element-container');
+            var groupContainer = $('<ul>')
+                .attr('id', groupContainerID)
+                .addClass('tree-element-container');
 
             buttonDiv.append(addGroupB);
             buttonDiv.append(addValueB);
             buttonDiv.append(delGroupB);
             buttonDiv.append(hideGroupB);
 
-            var group = $('<li>');
-            group.attr('id', groupName + 'ID');
-            group.attr('treepart', 'node');
+            var group = $('<li>')
+                .attr('id', groupName + 'ID')
+                .attr('treepart', 'node');
 
-            var inputName = $('<input>');
-            inputName.attr('id', groupName + '-name');
-            inputName.attr('type', 'text');
+            var inputName = $('<input>')
+                .attr('id', groupName + '-name')
+                .attr('type', 'text');
 
 
-            var header = $('<span>');
-            header.attr('id', groupName + '-header');
+            var header = $('<span>').attr('id', groupName + '-header');
 
             header.append(inputName)
             header.append(buttonDiv);
@@ -86,7 +87,8 @@ var compositeTools = function () {
             return groupName;
         }
 
-    compositeTools.addValue = function (valueName, parentDivId) {
+    compositeTools.addValue = function (valueName, parentDivId, isTemplate) {
+        if (isTemplate == undefined) isTemplate = false;
         var parentGroup = $('#' + parentDivId);
         var buttonDiv = $('<span>');
         buttonDiv.attr('id', valueName + '-buttons');
@@ -99,17 +101,18 @@ var compositeTools = function () {
         var inputDiv = $("<span>");
         inputDiv.attr('id', valueName + '-value');
 
-        var inputValue = $("<input>");
-        inputValue.attr('id', valueName + '-value-input');
-        inputValue.attr('type', "text");
+        var inputValue = $("<input>")
+            .attr('id', valueName + '-value-input')
+            .attr('type', "text")
+            .prop('disabled', isTemplate);
 
-        var inputName = $("<input>");
-        inputName.attr('id', valueName + '-name-input');
-        inputName.attr('type', "text");
+        var inputName = $("<input>")
+            .attr('id', valueName + '-name-input')
+            .attr('type', "text");
 
-        var inputUnit = $("<input>");
-        inputUnit.attr('id', valueName + '-unit-input');
-        inputUnit.attr('type', "text");
+        var inputUnit = $("<input>")
+            .attr('id', valueName + '-unit-input')
+            .attr('type', "text");
 
         inputDiv.append(inputName);
         inputDiv.append(inputValue);
@@ -177,13 +180,13 @@ var compositeTools = function () {
         },
 
 
-        compositeTools.showCompositeTemplate = function (element, groupName, parentDivId) {
+        compositeTools.showCompositeTemplate = function (element, groupName, parentDivId, readOnlyValue) {
             var isLeaf = (element.elements == undefined || element.elements == null || element.elements.length == 0);
 
             if (isLeaf) {
                 var valueName = $('#' + parentDivId).parent().attr('id') + "-detail-leaf";
                 var leaf = compositeTools.addValue(valueName, parentDivId);
-                leaf.find('#' + valueName + '-value-input').prop('disabled', true).val(element.value);
+                leaf.find('#' + valueName + '-value-input').prop('disabled', readOnlyValue).val(element.value);
                 leaf.find('#' + valueName + '-name-input').val(element.name);
                 leaf.find('#' + valueName + '-unit-input').val(element.unit);
                 return;
@@ -194,13 +197,9 @@ var compositeTools = function () {
                     var groupContainerID = newGroupName + '-group-container';
                     var inputNameId = newGroupName + '-name';
                     $('#' + inputNameId).val(element.name);
-                    compositeTools.showCompositeTemplate(this, groupName, groupContainerID);
+                    compositeTools.showCompositeTemplate(this, groupName, groupContainerID, readOnlyValue);
                 });
             }
-
-
-
-
         };
 
     return compositeTools;

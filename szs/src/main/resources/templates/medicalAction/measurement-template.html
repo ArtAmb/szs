@@ -19,7 +19,7 @@
 
             <script th:inline="javascript">
                 compositeTools.reset();
-                compositeTools.addGroup('Pomiar', 'measurement-template-composite-tree');
+                compositeTools.addGroup('Pomiar', 'measurement-template-composite-tree', true);
 
                 var saveButton = $('#' + 'measurement-save-button');
                 saveButton.click(function () {

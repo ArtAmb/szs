@@ -7,6 +7,7 @@
     <div id="medical-action-measurement-form-id" class="content">
         <div id="measurement-buttons">
             <select id='my-templates-select'>
+                <option value=" " text=" "> </option>
                 <option th:each="template : ${templates}" th:value="${template.id}" th:text="${template.title}"> </option>
             </select>
             <button id="measurement-button-load">Wczytaj pomiar</button>
@@ -40,7 +41,7 @@
 
                 tools.getForObject(url,
                     function (response) {
-                        compositeTools.showCompositeTemplate(response, "Pomiar", "measurement-composite-tree");
+                        compositeTools.showCompositeTemplate(response, "Pomiar", "measurement-composite-tree", false);
                     },
                     function () {
                         alert("Nie udalo sie pobrac szablonu");
