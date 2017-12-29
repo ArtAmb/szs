@@ -64,26 +64,22 @@
             <button id='measurement-save-button' class="simplebutton">Zapisz</button>
 
             <script th:inline="javascript">
+                var treeId = 'measurement-composite-tree';
                 var saveButton = $('#' + 'measurement-save-button');
                 saveButton.click(function () {
-                    var measurementTree = $('#' + 'measurement-composite-tree');
+                    var measurementTree = $('#' + treeId);
                     if (!measurementTree.html()) {
                         alert("Prosze dodac nowy pomiar");
                         return;
                     }
-
-                    measurementTree.find('.required').each(function () {
-                        $(this).removeClass('required');
-                    });
-                    var result = compositeTools.compositeToObject($(measurementTree.children().toArray()[0]));
-                    var measurementRoot = {
-                        patient: [[${ patient }]],
-                        measurement: result
-                    }
-
-                    var isOK = measurementTree.find('.required').toArray().length == 0;
-                    if (isOK) {
-                        tools.postForObject("/medicalAction/measurement", measurementRoot, function () { alert("Zapisano pomiar"); }, function () { alert("Nee udalo sie zapisac pomiaru pomiar"); });
+                       
+                    if (tools.validation(treeId)) {
+                        var result = compositeTools.compositeToObject($(measurementTree.children().toArray()[0]));
+                        var measurementRoot = {
+                            patient: [[${ patient }]],
+                            measurement: result
+                        }
+                        tools.postForObject("/medicalAction/measurement", measurementRoot, function () { alert("Zapisano pomiar"); }, function () { alert("Nie udalo sie zapisac pomiaru pomiar"); });
                     } else
                         alert('Prosze uzupelnic wymagane pola');
                 });

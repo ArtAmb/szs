@@ -67,9 +67,15 @@ var tools = function () {
 
     tools.markRequiredTags = function (tagId) {
         var tag = $('#' + (tagId));
-        $(tag.find("[required='true']")).each(function () {
+        $(tag.find("["+consts.REQUIRED_ATTR+"='true']")).each(function () {
             var val = $(this).val();
-            if (val == undefined || val.trim() == "" || tag.html().trim() == "") {
+            if (val == undefined || val.trim() == "" || !tag.html() || tag.html().trim() == "") {
+                $(this).addClass("required");
+            }
+        });
+        $(tag.find("["+consts.REQUIRED_ATTR+"='"+consts.REQUIRED_ATTR+"']")).each(function () {
+            var val = $(this).val();
+            if (val == undefined || val.trim() == "" || !tag.html() || tag.html().trim() == "") {
                 $(this).addClass("required");
             }
         });

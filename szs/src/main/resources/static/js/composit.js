@@ -12,22 +12,22 @@ var compositeTools = function () {
 
             var groupContainerID = groupName + '-group-container';
             var parentGroup = $('#' + parentDivId);
-            var buttonDiv = $('<span>');
-            buttonDiv.attr('id', groupName + '-buttons');
+            var buttonDiv = $('<span>')
+                .attr('id', groupName + '-buttons');
 
-            var addGroupB = $("<button>");
-            addGroupB.attr('id', groupName + '-button-group-add');
-            addGroupB.click(function () {
-                compositeTools.addGroup("pomiar", groupContainerID);
-            });
-            addGroupB.html("Dodaj grupe");
+            var addGroupB = $("<button>")
+                .attr('id', groupName + '-button-group-add')
+                .click(function () {
+                    compositeTools.addGroup("pomiar", groupContainerID, isTemplate);
+                })
+                .html("Dodaj grupe");
 
-            var addValueB = $("<button>");
-            addValueB.attr('id', groupName + '-button-group-add-value');
-            addValueB.click(function () {
-                compositeTools.addValue(groupName + "-leaf", groupContainerID, isTemplate);
-            });
-            addValueB.html("Dodaj wartosc");
+            var addValueB = $("<button>")
+                .attr('id', groupName + '-button-group-add-value')
+                .click(function () {
+                    compositeTools.addValue(groupName + "-leaf", groupContainerID, isTemplate);
+                })
+                .html("Dodaj wartosc");
 
             var delGroupB = $("<button>")
                 .attr('id', groupName + '-button-group-del')
@@ -53,7 +53,8 @@ var compositeTools = function () {
 
             var groupContainer = $('<ul>')
                 .attr('id', groupContainerID)
-                .addClass('tree-element-container');
+                .addClass('tree-element-container')
+                .attr(consts.REQUIRED_ATTR, true);
 
             buttonDiv.append(addGroupB);
             buttonDiv.append(addValueB);
@@ -66,7 +67,8 @@ var compositeTools = function () {
 
             var inputName = $('<input>')
                 .attr('id', groupName + '-name')
-                .attr('type', 'text');
+                .attr('type', 'text')
+                .attr(consts.REQUIRED_ATTR, true);
 
 
             var header = $('<span>').attr('id', groupName + '-header');
@@ -104,15 +106,18 @@ var compositeTools = function () {
         var inputValue = $("<input>")
             .attr('id', valueName + '-value-input')
             .attr('type', "text")
-            .prop('disabled', isTemplate);
+            .prop('disabled', isTemplate)
+            .attr(consts.REQUIRED_ATTR, !isTemplate);
 
         var inputName = $("<input>")
             .attr('id', valueName + '-name-input')
-            .attr('type', "text");
+            .attr('type', "text")
+            .attr(consts.REQUIRED_ATTR, true);
 
         var inputUnit = $("<input>")
             .attr('id', valueName + '-unit-input')
-            .attr('type', "text");
+            .attr('type', "text")
+            .attr(consts.REQUIRED_ATTR, true);
 
         inputDiv.append(inputName);
         inputDiv.append(inputValue);
@@ -142,11 +147,6 @@ var compositeTools = function () {
             switch (treePart) {
                 case 'leaf':
                     var inputs = element.find('input');
-                    inputs.each(function () {
-                        if ($(this).val() == undefined || $(this).val().trim() == "") {
-                            $(this).addClass("required");
-                        }
-                    });
                     inputs = inputs.toArray();
                     var measurement = {};
                     measurement.name = $(inputs[0]).val();
@@ -157,15 +157,9 @@ var compositeTools = function () {
                 case 'node':
                     var measurement = {};
                     var inputName = element.children().find('input');
-                    if (inputName.val() == undefined || inputName.val().trim() == "") {
-                        inputName.addClass("required");
-                    }
                     measurement.name = inputName.val();
                     measurement.elements = [];
                     var children = element.children('.tree-element-container').children();
-                    if (children.toArray().length == 0) {
-                        element.children('.tree-element-container').addClass('required');
-                    }
                     children.each(function () {
                         var treeEl = $(this).attr('treepart');
                         var id = $(this).attr('id');

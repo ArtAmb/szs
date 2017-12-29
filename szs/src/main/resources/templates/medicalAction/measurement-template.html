@@ -29,9 +29,7 @@
                         return;
                     }
 
-                    measurementTree.find('.required').each(function () {
-                        $(this).removeClass('required');
-                    });
+                                
                     var result = compositeTools.compositeToObject($(measurementTree.children().toArray()[0]));
                     var value = $('#measurement-template-name').val();
                     var measurementRoot = {
