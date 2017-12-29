@@ -59,25 +59,33 @@ var tools = function () {
 
     }
 
-    tools.validation = function(tagId){
+    tools.validation = function (tagId) {
         tools.cleanValidation(tagId);
         tools.markRequiredTags(tagId);
-        return tools.isValidationOK(tagId);  
+        return tools.isValidationOK(tagId);
     }
 
     tools.markRequiredTags = function (tagId) {
         var tag = $('#' + (tagId));
-        $(tag.find("["+consts.REQUIRED_ATTR+"='true']")).each(function () {
-            var val = $(this).val();
-            if (val == undefined || val.trim() == "" || !tag.html() || tag.html().trim() == "") {
-                $(this).addClass("required");
+        var func = function (self) {
+            var val = self.val();
+            var isContainer = (self.children().toArray().length != 0);
+            if (isContainer) {
+                if (!self.html() || self.html().trim() == "") {
+                    self.addClass("required");
+                }
+            } else {
+                if (val == undefined || val.trim() == "") {
+                    self.addClass("required");
+                }
             }
+        }
+
+        $(tag.find("[" + consts.REQUIRED_ATTR + "='true']")).each(function () {
+            func($(this));
         });
-        $(tag.find("["+consts.REQUIRED_ATTR+"='"+consts.REQUIRED_ATTR+"']")).each(function () {
-            var val = $(this).val();
-            if (val == undefined || val.trim() == "" || !tag.html() || tag.html().trim() == "") {
-                $(this).addClass("required");
-            }
+        $(tag.find("[" + consts.REQUIRED_ATTR + "='" + consts.REQUIRED_ATTR + "']")).each(function () { // w js jesli ustawiasz attr na true to przyjmuje wartosci swojej nazwy
+            func($(this));
         });
     }
 
