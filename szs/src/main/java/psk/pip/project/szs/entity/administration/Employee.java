@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.Builder;
 import lombok.Data;
@@ -20,12 +21,15 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@ManyToOne
 	private User user;
 	private String name;
 	private String surname;
 	private String type;
+	@ManyToOne
 	private EmployeeRank rank;
 	private BigDecimal salary;
+	@ManyToOne
 	private DoctorSpecialization specialization;
 
 }
