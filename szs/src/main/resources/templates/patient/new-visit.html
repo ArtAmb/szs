@@ -4,19 +4,32 @@
     <div th:replace="mainMenu :: mainMenu"> </div>
     <div id="new-visit" class="content">
         <div id="new-visit-view-container">
-            <label>DoctorId</label> <input id="doctor-id-input" required='true'/> <br/>
-            <label>Czy dlugoterminowa?</label> <input id="visit-type-input" required='true' type="checkbox"/> <br/>
-            <label>Data</label> <input type="date" id="start-date-input" required='true'/><br/>
-            <label>Czas</label> <input type="time" id="start-time-input" required='true'/><br/>
-            <label>Data - planowany koniec (opcjonalna)</label> <input type="date" id="end-date-input" /><br/>
-            <label>Czas - planowany koniec (opcjonalna)</label> <input type="time" id="end-time-input"/><br/>
+            <div id="doctor-searcher-div"><label>Doktor </label> </div>
+            <label>Czy dlugoterminowa?</label> <input id="visit-type-input" name='isLongTermVisit' required='true' dtovalue='true' type="checkbox"/> <br/>
+            <label>Data</label> <input type="date" id="start-date-input" name='startDate' dtovalue='true' required='true'/><br/>
+            <label>Czas</label> <input type="time" id="start-time-input" name='startTime' dtovalue='true' required='true'/><br/>
+            <label>Data - planowany koniec (opcjonalna)</label> <input type="date" name='endDate' dtovalue='true' id="end-date-input" /><br/>
+            <label>Czas - planowany koniec (opcjonalna)</label> <input type="time"  name='endTime' dtovalue='true' id="end-time-input"/><br/>
             <br/><br/>
             <button id="arrangeVisitButton" class="simplebutton">Umow wizyte</button>
-            <script>
+            <script th:inline='javascript'>
+                var options = {
+                    isRequired: true,
+                    isDTOValue: true,
+                    name: 'doctorId',
+                    buildOptionDataFunc: function (optionTag, dto) { }
+                };
+                searcher.buildSearcher($("#doctor-searcher-div"), "doctor-searcher", "/searcher/doctor/query", options);
                 $("#arrangeVisitButton").click(function () {
-                    if(tools.validation("new-visit-view-container"))
-                        alert("Dzialam... TODO");
-                    else{
+                    var dto = tools.tagInputsToDTO("new-visit-view-container");
+                    dto.patientCardId = [[${patient.id}]]
+                    if (tools.validation("new-visit-view-container"))
+                        tools.postForObject('/patient/addVisit', dto, function () {
+                            alert("Dodano wizyte");
+                        }, function () {
+                            alert("Blad dodania wizyty");
+                        });
+                    else {
                         alert("Prosze uzupelnic wymagane pola");
                     }
                 });

@@ -11,7 +11,7 @@ import psk.pip.project.szs.entity.registration.Role;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
 
-public class DoctorCreator extends EmployeeCreator {
+public class RecepcionistCreator extends EmployeeCreator {
 
 	@Override
 	public Employee createEmployee(EmployeeDTO dto) {

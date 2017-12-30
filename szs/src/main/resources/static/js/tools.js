@@ -65,12 +65,20 @@ var tools = function () {
         return tools.isValidationOK(tagId);
     }
 
+    tools.isTagSelect = function (tag) {
+        var tagName = tag.prop('tagName');
+        return tagName == 'SELECT' || tagName == 'select' || tagName == 'Select';
+    }
+
     tools.markRequiredTags = function (tagId) {
         var tag = $('#' + (tagId));
         var func = function (self) {
             var val = self.val();
             var isContainer = (self.children().toArray().length != 0);
             if (isContainer) {
+                if (tools.isTagSelect(self) && val.trim() == "") {
+                    self.addClass("required");
+                }
                 if (!self.html() || self.html().trim() == "") {
                     self.addClass("required");
                 }
@@ -105,6 +113,33 @@ var tools = function () {
     }
     tools.jsonToArray = function (obj) {
         return $.map(obj, function (el) { return el });
+    }
+    tools.inputToJSON = function (inputId) {
+        return $("#" + inputId).val().trim() == "" ? null : $("#" + inputId).val().trim();
+    }
+
+    tools.tagInputsToDTO = function (tagName) {
+        var tag = $('#' + tagName);
+        var dto = {};
+
+        var func = function (el) {
+            var self = $(el);
+            if(self.attr('type') == 'checkbox'){
+                dto[self.attr('name')] = self.prop('checked');
+                return;
+            }
+
+            dto[self.attr('name')] = self.val();
+        }
+
+        tag.find("[" + consts.DTO_VALUE_ATTR + "='true']").each(function () {
+            func(this);
+        });
+        tag.find("[" + consts.DTO_VALUE_ATTR + "='" + consts.DTO_VALUE_ATTR + "']").each(function () {
+            func(this);
+        });
+
+        return dto;
     }
     return tools;
 }();

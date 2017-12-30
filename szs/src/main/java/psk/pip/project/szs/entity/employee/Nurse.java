@@ -9,9 +9,10 @@ import lombok.Data;
 
 @Entity
 @Data
+@Deprecated
 public class Nurse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 }

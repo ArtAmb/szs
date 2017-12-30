@@ -9,23 +9,27 @@ import psk.pip.project.szs.dto.patient.PersonalDataDTO;
 import psk.pip.project.szs.dto.patient.ReferralDTO;
 import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
+import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.employee.Doctor;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.patient.Referral;
 import psk.pip.project.szs.entity.patient.ReferralType;
 import psk.pip.project.szs.entity.patient.Visit;
+import psk.pip.project.szs.repository.administration.EmployeeRepository;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
+import psk.pip.project.szs.repository.patient.LongTermVisitRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.patient.ReferralRepository;
 import psk.pip.project.szs.repository.patient.ReferralTypeRepository;
 import psk.pip.project.szs.repository.patient.VisitRepository;
-import psk.pip.project.szs.services.patient.exception.CannotAddVisit;
+import psk.pip.project.szs.services.patient.exception.CannotAddVisitException;
 import psk.pip.project.szs.services.patient.exception.CannotDeleteVisit;
 import psk.pip.project.szs.services.patient.exception.CannotGetPatientCard;
 import psk.pip.project.szs.services.patient.exception.CannotRegisterReferral;
+import psk.pip.project.szs.services.patient.mapper.LongTermVisitMapper;
+import psk.pip.project.szs.services.patient.mapper.VisitMapper;
 
 @Service
-
 public class PatientService {
 
 	@Autowired
@@ -35,7 +39,13 @@ public class PatientService {
 	private VisitRepository visitRepo;
 
 	@Autowired
+	private LongTermVisitRepository longTermVisitRepo;
+
+	@Autowired
 	private DoctorRepository doctorRepo;
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
 
 	@Autowired
 	private ReferralTypeRepository referralTypeRepo;
@@ -63,20 +73,25 @@ public class PatientService {
 	}
 
 	public void addVisit(VisitDTO dto) {
-		Visit visit = new Visit();
-
-		Doctor doctor = doctorRepo.findOne(dto.getIdDoctor());
+		Employee doctor = employeeRepository.findDoctorById(dto.getDoctorId());
 		if (doctor == null)
-			throw new CannotAddVisit("Nie znaleziono doktora o ID = " + dto.getIdDoctor());
+			throw new CannotAddVisitException("Nie znaleziono doktora o ID = " + dto.getDoctorId());
+		dto.setDoctor(doctor);
 
-		PatientCard patientcard = patientCardRepo.findOne(dto.getIdPatientCard());
-		if (patientcard == null)
-			throw new CannotAddVisit("Nie znaleziono karty pacjenta o ID = " + dto.getIdPatientCard());
+		PatientCard patientCard = patientCardRepo.findOne(dto.getPatientCardId());
+		if (patientCard == null)
+			throw new CannotAddVisitException("Nie znaleziono karty pacjenta o ID = " + dto.getPatientCardId());
 
-		visit.setDate(dto.getDate());
-		visit.setIdDoctor(dto.getIdDoctor());
-		visit.setIdPatientCard(dto.getIdPatientCard());
-		visitRepo.save(visit);
+		if (dto.getIsLongTermVisit()) {
+			patientCard.getLongTermVisits().add(LongTermVisitMapper.map(dto));
+			patientCardRepo.save(patientCard);
+		}
+		patientCard.getVisits().add(VisitMapper.map(dto));
+		patientCardRepo.save(patientCard);
+	}
+
+	public void addLongTermVisit(VisitDTO dto) {
+
 	}
 
 	public void deleteVisit(Long id) {
@@ -111,6 +126,10 @@ public class PatientService {
 		referral.setIdReferralType(dto.getIdReferralType());
 		referral.setDescription(dto.getDescription());
 		referralRepo.save(referral);
+	}
+
+	public Patient findPatientByCardId(Long id) {
+		return patientCardRepo.findPatientById(id);
 	}
 
 }

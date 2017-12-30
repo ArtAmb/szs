@@ -4,19 +4,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class CannotAddVisit extends RuntimeException{
+public class CannotAddVisitException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 
-	public CannotAddVisit (){
+	public CannotAddVisitException (){
 		super();
 	}
 
-	public CannotAddVisit(String msg) {
+	public CannotAddVisitException(String msg) {
 		super(msg);
 	}
 
-	public CannotAddVisit(String msg, Throwable cause) {
+	public CannotAddVisitException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 }

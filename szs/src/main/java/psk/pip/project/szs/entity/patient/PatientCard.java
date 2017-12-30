@@ -2,6 +2,7 @@ package psk.pip.project.szs.entity.patient;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,13 +27,13 @@ public class PatientCard {
 	@ManyToOne
 	private LongTermVisit curentVisit;
 
-	@OneToMany
-	@JoinColumn(name = "patient_card")
-	private Collection<LongTermVisit> longTermVisitHistory;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "patient_card_id")
+	private Collection<LongTermVisit> longTermVisits;
 
-	@OneToMany
-	@JoinColumn(name = "patient_card")
-	private Collection<Visit> visitHistory;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "patient_card_id")
+	private Collection<Visit> visits;
 
 	public PatientCard() {
 
