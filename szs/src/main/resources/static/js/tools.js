@@ -103,6 +103,8 @@ var tools = function () {
             $(this).removeClass("required");
         });
     }
-
+    tools.jsonToArray = function (obj) {
+        return $.map(obj, function (el) { return el });
+    }
     return tools;
 }();

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import psk.pip.project.szs.dto.administration.EmployeeDTO;
 import psk.pip.project.szs.dto.administration.TeamDTO;
 import psk.pip.project.szs.dto.administration.WardDTO;
 import psk.pip.project.szs.entity.administration.DoctorTeam;
@@ -14,6 +15,7 @@ import psk.pip.project.szs.entity.administration.NurseTeam;
 import psk.pip.project.szs.entity.administration.Ward;
 import psk.pip.project.szs.services.administration.TeamService;
 import psk.pip.project.szs.services.administration.WardService;
+import psk.pip.project.szs.services.administration.employee.EmployeeService;
 
 @RestController
 public class AdministrationController {
@@ -23,6 +25,9 @@ public class AdministrationController {
 
 	@Autowired
 	private WardService wardService;
+
+	@Autowired
+	private EmployeeService employeeService;
 
 	@PostMapping(value = "/administration/team/doctor")
 	public void createDoctorTeam(@RequestBody TeamDTO dto) {
@@ -52,6 +57,11 @@ public class AdministrationController {
 	@GetMapping(value = "/administration/ward/{id}")
 	public Ward getWard(@PathVariable Long id) {
 		return wardService.getWard(id);
+	}
+
+	@PostMapping("/administration/new/employee")
+	public void createEmployee(@RequestBody EmployeeDTO dto) throws InstantiationException, IllegalAccessException {
+		employeeService.saveEmpolyee(dto);
 	}
 
 }
