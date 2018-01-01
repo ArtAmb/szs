@@ -10,12 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.Data;
 import psk.pip.project.szs.entity.medicine.LongTermVisit;
 
 @Data
 @Entity
+@Table(name = "patient_card")
 public class PatientCard {
 
 	@Id
@@ -25,7 +27,7 @@ public class PatientCard {
 	private String surname;
 
 	@ManyToOne
-	private LongTermVisit curentVisit;
+	private LongTermVisit currentVisit;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "patient_card_id")

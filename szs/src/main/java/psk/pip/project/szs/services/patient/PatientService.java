@@ -1,6 +1,7 @@
 package psk.pip.project.szs.services.patient;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Service;
 import psk.pip.project.szs.dto.patient.PersonalDataDTO;
 import psk.pip.project.szs.dto.patient.ReferralDTO;
 import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
+import psk.pip.project.szs.dto.patient.SignInOutDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
 import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.employee.Doctor;
+import psk.pip.project.szs.entity.medicine.LongTermVisit;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.patient.Referral;
 import psk.pip.project.szs.entity.patient.ReferralType;
@@ -26,6 +29,7 @@ import psk.pip.project.szs.services.patient.exception.CannotAddVisitException;
 import psk.pip.project.szs.services.patient.exception.CannotDeleteVisit;
 import psk.pip.project.szs.services.patient.exception.CannotGetPatientCard;
 import psk.pip.project.szs.services.patient.exception.CannotRegisterReferral;
+import psk.pip.project.szs.services.patient.exception.SignInOutException;
 import psk.pip.project.szs.services.patient.mapper.LongTermVisitMapper;
 import psk.pip.project.szs.services.patient.mapper.VisitMapper;
 
@@ -72,26 +76,84 @@ public class PatientService {
 		return patientCardRepo.findAll();
 	}
 
+	public Collection<LongTermVisit> getLongTermVisits(Long id) {
+		return patientCardRepo.findOne(id).getLongTermVisits().stream().collect(Collectors.toList());
+	}
+
+	public Collection<LongTermVisit> getLongTermVisits(Long id, Boolean isVisitEnd) {
+		return patientCardRepo.findOne(id).getLongTermVisits().stream().filter(ltv -> ltv.getIsEnd().equals(isVisitEnd))
+				.collect(Collectors.toList());
+	}
+
+	public Collection<Visit> getVisits(Long id) {
+		return patientCardRepo.findOne(id).getVisits().stream().collect(Collectors.toList());
+	}
+
+	public Collection<Visit> getVisits(Long id, Boolean isVisitEnd) {
+		return patientCardRepo.findOne(id).getVisits().stream().filter(v -> v.getIsEnd().equals(isVisitEnd))
+				.collect(Collectors.toList());
+	}
+
 	public void addVisit(VisitDTO dto) {
 		Employee doctor = employeeRepository.findDoctorById(dto.getDoctorId());
+		PatientCard patientCard = patientCardRepo.findOne(dto.getPatientCardId());
+
 		if (doctor == null)
 			throw new CannotAddVisitException("Nie znaleziono doktora o ID = " + dto.getDoctorId());
-		dto.setDoctor(doctor);
-
-		PatientCard patientCard = patientCardRepo.findOne(dto.getPatientCardId());
 		if (patientCard == null)
 			throw new CannotAddVisitException("Nie znaleziono karty pacjenta o ID = " + dto.getPatientCardId());
 
-		if (dto.getIsLongTermVisit()) {
-			patientCard.getLongTermVisits().add(LongTermVisitMapper.map(dto));
-			patientCardRepo.save(patientCard);
-		}
+		dto.setDoctor(doctor);
+
 		patientCard.getVisits().add(VisitMapper.map(dto));
+
 		patientCardRepo.save(patientCard);
 	}
 
 	public void addLongTermVisit(VisitDTO dto) {
+		PatientCard patientCard = patientCardRepo.findOne(dto.getPatientCardId());
 
+		if (patientCard == null)
+			throw new CannotAddVisitException("Nie znaleziono karty pacjenta o ID = " + dto.getPatientCardId());
+
+		LongTermVisit currentVisit = LongTermVisitMapper.map(dto);
+		patientCard.getLongTermVisits().add(currentVisit);
+
+		patientCardRepo.save(patientCard);
+	}
+
+	public void signInToHospital(SignInOutDTO dto) {
+		LongTermVisit longTermVisit = longTermVisitRepo.findOne(dto.getLongTermVisitId());
+		PatientCard card = patientCardRepo.findOne(dto.getPatientCardId());
+
+		if (card.getCurrentVisit() != null) {
+			throw new SignInOutException("Prosze zakonczyc obecny pobyt");
+		}
+
+		if (longTermVisit.getIsEnd() == true) {
+			throw new SignInOutException("Ta wizyta zostala juz zakonczona");
+		}
+
+		card.setCurrentVisit(longTermVisit);
+		patientCardRepo.save(card);
+	}
+
+	public void signOutFromHospital(SignInOutDTO dto) {
+		LongTermVisit longTermVisit = longTermVisitRepo.findOne(dto.getLongTermVisitId());
+		PatientCard card = patientCardRepo.findOne(dto.getPatientCardId());
+
+		if (card.getCurrentVisit() == null) {
+			throw new SignInOutException("Pacject obecnie nie przebywa w szpitalu");
+		}
+
+		if (longTermVisit.getIsEnd() == true) {
+			throw new SignInOutException("Ta wizyta zostala juz zakonczona");
+		}
+
+		card.setCurrentVisit(null);
+		longTermVisit.setIsEnd(true);
+		longTermVisitRepo.save(longTermVisit);
+		patientCardRepo.save(card);
 	}
 
 	public void deleteVisit(Long id) {

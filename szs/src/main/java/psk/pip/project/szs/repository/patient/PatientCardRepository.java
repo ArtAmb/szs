@@ -1,5 +1,6 @@
 package psk.pip.project.szs.repository.patient;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ public interface PatientCardRepository extends JpaRepository<PatientCard, Long> 
 
 	@Query("select new psk.pip.project.szs.services.patient.Patient(pc.id, pc.name, pc.surname) from PatientCard pc where pc.id = ?1")
 	Patient findPatientById(Long id);
+
+	Collection<PatientCard> findLongTermVisitsByIdAndLongTermVisits_isEndTrue(Long id);
 }

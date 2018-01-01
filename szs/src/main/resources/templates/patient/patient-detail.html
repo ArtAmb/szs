@@ -3,9 +3,46 @@
 	<div th:replace="mainMenu :: mainMenu"> </div>
 	<div id="patient-view" class="content">
 		<a th:href="@{'/view/patient/'+ ${patient.id} +'/new/visit'}" id="arrangeVisitButton" class="simplebutton">Umow wizyte</a>
-		
-		<div id="patient-view-container">
+		<div>
+		<h3>Obecny pobyt</h3>
+		<label th:if='${patient.currentVisit == null}'>Pacjent obecnie nie jest w szpitalu</label>
+			<table th:if='${patient.currentVisit != null}' class="table table-bordered table-striped">
+				<tr>
+					<td th:text="${patient.currentVisit.id}"></td>
+                    <td> <label th:text="${patient.currentVisit.startDate}" /> <label th:text="${patient.currentVisit.startTime}" /> </td>
+                    <td> <label th:if="${patient.currentVisit.endDate != null}" th:text="${patient.currentVisit.endDate}" /> <label th:if="${patient.currentVisit.endTime != null}" th:text="${patient.currentVisit.endTime}" /> </td>
+                    <td  th:if="${patient.currentVisit.isEnd != null}" th:text="${patient.currentVisit.isEnd}"></td>
+					<td> <button class="simplebutton medical_action_button" id='sign-out-button'>Zakoncz pobyt</button></td>
+					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
+				</tr>
+			</table>
+		</div>
+		<script th:if='${patient.currentVisit != null}' th:inline='javascript'>
+			$('#sign-out-button').click(function(){
+				var dto = {
+					patientCardId: [[${patient.id}]],
+					longTermVisitId: [[${patient.currentVisit.id}]]
+				}
+				tools.postForObject("/patient/sign-out", dto, function(){ alert('Wypisano za szpitala')}, function() {alert("Blad wypisu")});
+				location.reload();
+			});
+		</script>
 
+
+		<div>
+			<h3>Wizyty</h3>
+			<h4>Jednorazowe</h4>
+			<a th:href="@{'/view/patient/'+ ${patient.id} +'/visits'}" class="simplebutton">Wszystkie</a>
+			<a th:href="@{'/view/patient/'+ ${patient.id} +'/visits/filter/false'}" class="simplebutton">Nadchodzace</a>
+			<a th:href="@{'/view/patient/'+ ${patient.id} +'/visits/filter/true'}"  class="simplebutton">Zakonczone</a>
+			<h4>Dlugoterminowe</h4> 
+			<a th:href="@{'/view/patient/'+ ${patient.id} +'/long-term-visits'}" class="simplebutton">Wszystkie</a>
+			<a th:href="@{'/view/patient/'+ ${patient.id} +'/long-term-visits/filter/false'}" class="simplebutton">Nadchodzace</a>
+			<a th:href="@{'/view/patient/'+ ${patient.id} +'/long-term-visits/filter/true'}" class="simplebutton">Zakonczone</a>
+
+		<div id="patient-view-container">
+		</div>
 
 		</div>
 

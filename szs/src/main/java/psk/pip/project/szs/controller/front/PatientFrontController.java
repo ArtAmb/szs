@@ -50,8 +50,36 @@ public class PatientFrontController {
 	}
 
 	@GetMapping("/view/patient/{patientId}/new/visit")
-	public String getPatientnewVisitView(@PathVariable Long patientId, Model model) {
+	public String getPatientNewVisitView(@PathVariable Long patientId, Model model) {
 		model.addAttribute("patient", patientService.findPatientByCardId(patientId));
 		return getTemplateDir("new-visit");
+	}
+
+	@GetMapping("/view/patient/{patientId}/long-term-visits")
+	public String getPatientLongTermVisitsView(@PathVariable Long patientId, Model model) {
+		model.addAttribute("patient", patientService.getPatientCard(patientId));
+		model.addAttribute("visits", patientService.getLongTermVisits(patientId));
+		return getTemplateDir("long-term-visits");
+	}
+
+	@GetMapping("/view/patient/{patientId}/long-term-visits/filter/{isEnd}")
+	public String getPatientLongTermVisitsView(@PathVariable Long patientId, @PathVariable Boolean isEnd, Model model) {
+		model.addAttribute("patient", patientService.getPatientCard(patientId));
+		model.addAttribute("visits", patientService.getLongTermVisits(patientId, isEnd));
+		return getTemplateDir("long-term-visits");
+	}
+
+	@GetMapping("/view/patient/{patientId}/visits")
+	public String getPatientVisitsView(@PathVariable Long patientId, Model model) {
+		model.addAttribute("patient", patientService.getPatientCard(patientId));
+		model.addAttribute("visits", patientService.getVisits(patientId));
+		return getTemplateDir("visits");
+	}
+
+	@GetMapping("/view/patient/{patientId}/visits/filter/{isEnd}")
+	public String getPatientVisitsView(@PathVariable Long patientId, @PathVariable Boolean isEnd, Model model) {
+		model.addAttribute("patient", patientService.getPatientCard(patientId));
+		model.addAttribute("visits", patientService.getVisits(patientId, isEnd));
+		return getTemplateDir("visits");
 	}
 }

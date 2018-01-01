@@ -33,8 +33,11 @@ public class LongTermVisit {
 	private Time startTime;
 	private Date endDate;
 	private Time endTime;
+	@Builder.Default
+	private Boolean isEnd = false;
 
 	@OneToMany
 	@JoinColumn(name = "long_term_visit")
 	private Collection<NurseAction> actions;
+
 }

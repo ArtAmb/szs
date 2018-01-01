@@ -27,4 +27,5 @@ public class Visit {
 
 	private Date startDate;
 	private Time startTime;
+	private Boolean isEnd = false;
 }

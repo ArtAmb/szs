@@ -12,8 +12,12 @@ var tools = function () {
             url: url,
             contentType: "application/json",
             type: 'DELETE',
-            success: onSuccess,
-            error: onFailed
+            success: function(response){
+                onSuccess(response)
+            },
+            error:  function(e){
+                onFailed(e);
+            }
         })
 
     }
@@ -26,8 +30,12 @@ var tools = function () {
             data: data,
             contentType: "application/json",
             type: 'POST',
-            success: onSuccess,
-            error: onFailed
+            success: function(response){
+                onSuccess(response)
+            },
+            error: function(e){
+                onFailed(e);
+            }
         })
 
     }
@@ -40,7 +48,9 @@ var tools = function () {
             success: function (response) {
                 onSuccess(response);
             },
-            error: onFailed
+            error: function(e){
+                onFailed(e);
+            }
         })
 
     }
@@ -53,8 +63,12 @@ var tools = function () {
             data: data,
             contentType: "application/json",
             type: 'PUT',
-            success: onSuccess,
-            error: onFailed
+            success: function (response) {
+                onSuccess(response);
+            },
+            error: function(e){
+                onFailed(e);
+            }
         })
 
     }

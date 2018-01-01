@@ -1,0 +1,50 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="patient-visits-view" class="content">
+		<div id="patient-visits-view-container">
+               <div th:text="${patient.name}"></div>
+               <div th:text="${patient.surname}"></div>
+
+			<table class="table table-bordered table-striped">
+				<tr th:if="${visits.empty}">
+					<td colspan="4">Brak visit</td>
+				</tr>
+				<tr th:each="visit : ${visits}">
+					<td th:text="${visit.id}"></td>
+                    <td> <label th:text="${visit.startDate}" /> <label th:text="${visit.startTime}" /> </td>
+                    <td> <label th:if="${visit.endDate != null}" th:text="${visit.endDate}" /> <label th:if="${visit.endTime}" th:text="${visit.endTime}" /> </td>
+                    <td  th:if="${visit.isEnd != null}" th:text="${visit.isEnd}"></td>
+					<td> <a th:attr='visitId=${visit.id}' class="simplebutton medical_action_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}" th:id="'sign-in-button'+${visit.id}">Ustaw jako obecna</a></td>
+					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
+					
+					<script th:inline='javascript'>
+							var signInButton = $('#sign-in-button' +  [[${ visit.id }]]);
+							if ([[${ patient.currentVisit }]] != null)
+								signInButton.addClass('deactivate');
+	
+							signInButton.click(function () {
+								var dto = {
+									patientCardId: [[${ patient.id }]],
+									longTermVisitId: Number(signInButton.attr('visitId'))
+								}
+								tools.postForObject("/patient/sign-in", dto, function () { alert('Zapisano do szpitala'); }, function (e) { alert("Blad zapisu. " + e); });
+							});
+					</script>
+				</tr>
+
+			</table>
+
+
+
+
+		</div>
+
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>
