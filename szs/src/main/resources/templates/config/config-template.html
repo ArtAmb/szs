@@ -1,0 +1,36 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="config-view-template" class="content">
+
+		<h3 th:text="${title}" > </h3>
+		<div>
+			<button class="simplebutton detail_button" id="add-new-button">Dodaj</button>
+		</div>
+
+		<table class="table table-bordered table-striped">
+
+			<tr th:if="${values.empty}">
+				<td colspan="4">Brak wartosci</td>
+			</tr>
+			<tr th:each="value : ${values}">
+				<td th:text="${value.id}"></td>
+				<td th:text="${value.name}"></td>
+				<td>
+					<a class="simplebutton medical_action_button" th:href="@{${url.delete}  + '/id'}">Usun</a>
+				</td>
+				<td>
+					<a class="simplebutton edit_button" th:href="@{${url.edit} + '/id'}">Edytuj</a>
+				</td>
+			</tr>
+
+		</table>
+		<script th:inline='javascript'>
+		</script>
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

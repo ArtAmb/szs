@@ -45,7 +45,7 @@ public class MedicalActionService {
 	public void addExaminationType(ExaminationTypeDTO dto) {
 
 		ExaminationType examinationType = new ExaminationType();
-		examinationType.setExaminationType(dto.getExaminationType());
+		examinationType.setName(dto.getExaminationType());
 
 		examinationTypeRepo.save(examinationType);
 

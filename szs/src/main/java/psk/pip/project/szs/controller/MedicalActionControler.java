@@ -25,16 +25,19 @@ public class MedicalActionControler {
 	private MedicalActionService medicalActionService;
 
 	@PostMapping(value = "/medicalAction/addExaminationType")
+	@Deprecated
 	public void addExaminationType(@RequestBody ExaminationTypeDTO dto) {
 		medicalActionService.addExaminationType(dto);
 	}
 
 	@PostMapping(value = "/medicalAction/addMeasurementType")
+	@Deprecated
 	public void addMeasurementType(@RequestBody MeasurementTypeDTO dto) {
 		medicalActionService.addMeasurementType(dto);
 	}
 
 	@GetMapping(value = "/medicalAction/measurementType/{id}")
+	@Deprecated
 	public MeasurementType getMeasurementType(@PathVariable Long id) {
 		return medicalActionService.getMeasurementType(id);
 	}

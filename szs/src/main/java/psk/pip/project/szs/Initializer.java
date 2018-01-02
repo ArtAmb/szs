@@ -11,19 +11,28 @@ import org.springframework.stereotype.Component;
 
 import psk.pip.project.szs.dto.administration.EmployeeDTO;
 import psk.pip.project.szs.entity.employee.Nurse;
+import psk.pip.project.szs.entity.medicine.Drug;
+import psk.pip.project.szs.entity.medicine.DrugName;
+import psk.pip.project.szs.entity.medicine.Unit;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.patient.ReferralType;
 import psk.pip.project.szs.entity.registration.Role;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
+import psk.pip.project.szs.entity.storage.HospitalRoom;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
 import psk.pip.project.szs.repository.employee.NurseRepository;
+import psk.pip.project.szs.repository.medicine.DrugNameRepository;
+import psk.pip.project.szs.repository.medicine.DrugRepository;
+import psk.pip.project.szs.repository.medicine.DrugUnitRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.patient.ReferralTypeRepository;
+import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.repository.systemUser.RoleRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.administration.employee.EmployeeService;
 import psk.pip.project.szs.services.administration.employee.EmployeeType;
+import psk.pip.project.szs.services.rooms.StorageService;
 
 @Component
 public class Initializer {
@@ -44,7 +53,22 @@ public class Initializer {
 	PatientCardRepository patientCardRepo;
 
 	@Autowired
+	DrugNameRepository drugNameRepo;
+
+	@Autowired
+	DrugUnitRepository drugUnitRepo;
+
+	@Autowired
+	DrugRepository drugRepo;
+
+	@Autowired
+	RoomRepository roomRepo;
+
+	@Autowired
 	ReferralTypeRepository referralTypeRepo;
+
+	@Autowired
+	StorageService storageService;
 
 	@Autowired
 	EmployeeService employeeService;
@@ -58,6 +82,33 @@ public class Initializer {
 		addNurses();
 		addPatientCard();
 		addReferralType();
+		addStorage();
+		addDrugs();
+	}
+
+	void addStorage() {
+		roomRepo.save(HospitalRoom.builder().roomName("MAGAZYN").build());
+
+		roomRepo.save(HospitalRoom.builder().roomName("Sala 1").build());
+		roomRepo.save(HospitalRoom.builder().roomName("Sala 11a / 3").build());
+	}
+
+	void addDrugs() {
+		Unit ml = drugUnitRepo.save(Unit.builder().name("ml").build());
+		Unit mgr = drugUnitRepo.save(Unit.builder().name("mgr").build());
+		Unit sztuk = drugUnitRepo.save(Unit.builder().name("sztuk").build());
+
+		DrugName holinex = drugNameRepo.save(DrugName.builder().name("Holinex").build());
+		DrugName morfina = drugNameRepo.save(DrugName.builder().name("Morfina").build());
+		DrugName mucosolvan = drugNameRepo.save(DrugName.builder().name("Mucosolvan").build());
+
+		Drug drug1 = drugRepo.save(Drug.builder().dosage(10).name(holinex).unit(mgr).amount(100).build());
+		Drug drug2 = drugRepo.save(Drug.builder().dosage(20).name(morfina).unit(sztuk).amount(85).build());
+		Drug drug3 = drugRepo.save(Drug.builder().dosage(30).name(mucosolvan).unit(ml).amount(75).build());
+
+		storageService.addDrug(drug1);
+		storageService.addDrug(drug2);
+		storageService.addDrug(drug3);
 	}
 
 	void addDoctors() {
