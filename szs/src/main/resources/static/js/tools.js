@@ -12,10 +12,10 @@ var tools = function () {
             url: url,
             contentType: "application/json",
             type: 'DELETE',
-            success: function(response){
+            success: function (response) {
                 onSuccess(response)
             },
-            error:  function(e){
+            error: function (e) {
                 onFailed(e);
             }
         })
@@ -30,10 +30,10 @@ var tools = function () {
             data: data,
             contentType: "application/json",
             type: 'POST',
-            success: function(response){
+            success: function (response) {
                 onSuccess(response)
             },
-            error: function(e){
+            error: function (e) {
                 onFailed(e);
             }
         })
@@ -48,7 +48,7 @@ var tools = function () {
             success: function (response) {
                 onSuccess(response);
             },
-            error: function(e){
+            error: function (e) {
                 onFailed(e);
             }
         })
@@ -66,7 +66,7 @@ var tools = function () {
             success: function (response) {
                 onSuccess(response);
             },
-            error: function(e){
+            error: function (e) {
                 onFailed(e);
             }
         })
@@ -138,7 +138,7 @@ var tools = function () {
 
         var func = function (el) {
             var self = $(el);
-            if(self.attr('type') == 'checkbox'){
+            if (self.attr('type') == 'checkbox') {
                 dto[self.attr('name')] = self.prop('checked');
                 return;
             }
@@ -155,5 +155,40 @@ var tools = function () {
 
         return dto;
     }
+
+    tools.openDialog = function () {
+        $('<div>').attr('id', 'add-or-update-dialog').dialog({
+            autoOpen: false,
+            resizable: false,
+            title: "",
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: [{
+                id: 'save-dialog-button',
+                text: "Zapisz",
+                click: function () {
+                    $(this).dialog("close");
+                },
+            },
+            {
+                text: "Anuluj",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+            close: function () {
+                $(this).html("");
+            },
+            open: function () {
+                var content = jsBuilder.createElement('div');
+                jsBuilder.createElement('label').text('Nazwa:').appendTo(content);
+                content.append('  ');
+                jsBuilder.createInput('text', 'dialog-input').attr('required', true).appendTo(content);
+                $(this).html(content);
+            }
+        });
+    }
+
     return tools;
 }();

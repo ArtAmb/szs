@@ -4,11 +4,13 @@
 <head th:fragment="head">
 	<title>System zarzadania szpitalem</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-
+	
+	<link rel="stylesheet" th:href="@{/scripts/jquery-ui-1.12.1/jquery-ui.min.css}" href="../scripts/jquery-ui-1.12.1/jquery-ui.min.css" />
+	<link rel="stylesheet" th:href="@{/scripts/node_modules/bootstrap/dist/css/bootstrap.min.css}" href="../scripts/node_modules/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" th:href="@{/css/main.css}" href="../../css/main.css" />
-
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" />
+	
+	<script th:src="@{/scripts/node_modules/jquery/dist/jquery.min.js}" src="../scripts/node_modules/jquery/dist/jquery.min.js" />
+	<script th:src="@{/scripts/jquery-ui-1.12.1/jquery-ui.min.js}" src="../scripts/jquery-ui-1.12.1/jquery-ui.min.js" />
 
 	<script th:src="@{/js/tools.js}" src="../js/tools.js" />
 	<script th:src="@{/js/composit.js}" src="../js/composit.js" />

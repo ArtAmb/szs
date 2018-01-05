@@ -15,6 +15,6 @@ public class MeasurementType {
 	@GeneratedValue(strategy = GenerationType.AUTO) 
 	
 	private Long id;
-	private String measurementType;
+	private String name;
 
 }

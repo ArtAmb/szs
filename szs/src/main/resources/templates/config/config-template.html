@@ -6,7 +6,7 @@
 
 	<div id="config-view-template" class="content">
 
-		<h3 th:text="${title}" > </h3>
+		<h3 th:text="${title}"> </h3>
 		<div>
 			<button class="simplebutton detail_button" id="add-new-button">Dodaj</button>
 		</div>
@@ -20,15 +20,45 @@
 				<td th:text="${value.id}"></td>
 				<td th:text="${value.name}"></td>
 				<td>
-					<a class="simplebutton medical_action_button" th:href="@{${url.delete}  + '/id'}">Usun</a>
+					<a class="simplebutton medical_action_button deactivate" th:href="@{${url.delete}  + '/' + ${value.id}}">Usun</a>
 				</td>
 				<td>
-					<a class="simplebutton edit_button" th:href="@{${url.edit} + '/id'}">Edytuj</a>
+					<button class="simplebutton edit_button" id="edit-button">Edytuj</button>
 				</td>
+
+				<script th:inline='javascript'>
+					$('#edit-button').click(function () {
+						$('#save-dialog-button').unbind().click(function () {
+							if (tools.validation('add-or-update-dialog')) {
+								var dto = {
+									id: [[${ value.id }]],
+									name: $('#dialog-input').val().trim()
+								}
+								tools.postForObject([[${ url.edit }]], dto, function () { alert('Edytowano'); location.reload(); }, function () { alert('Blad edycji'); });
+							}
+						});
+						$('#add-or-update-dialog').dialog('option', 'title', "Edycja typu konfigurowalnego");
+						$('#add-or-update-dialog').dialog('open');
+					});
+				</script>
 			</tr>
 
 		</table>
 		<script th:inline='javascript'>
+			tools.openDialog();
+
+			$('#add-new-button').click(function () {
+				$('#save-dialog-button').unbind().click(function () {
+					if (tools.validation('add-or-update-dialog')) {
+						var dto = {
+							name: tools.inputToJSON('dialog-input')
+						}
+						tools.postForObject([[${ url.add }]], dto, function () { alert('Dodano nowy typ'); location.reload(); }, function () { alert('Blad dodania nowego typu'); });
+					}
+				});
+				$('#add-or-update-dialog').dialog('option', 'title', "Dodanie nowego typu konfigurowalnego");
+				$('#add-or-update-dialog').dialog('open');
+			});
 		</script>
 	</div>
 

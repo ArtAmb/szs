@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
@@ -20,7 +21,9 @@ public class Measurement {
 	private Long id;
 	private String name;
 	private String value;
-	private String unit; // TODO <- osobna tabela do konfiguracji
+	@ManyToOne
+	@JoinColumn(name = "measurement_id")
+	private MeasurementType unit;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "measurement")

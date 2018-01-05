@@ -114,14 +114,14 @@ var compositeTools = function () {
             .attr('type', "text")
             .attr(consts.REQUIRED_ATTR, true);
 
-        var inputUnit = $("<input>")
-            .attr('id', valueName + '-unit-input')
-            .attr('type', "text")
-            .attr(consts.REQUIRED_ATTR, true);
 
+
+        var unitSelect = jsBuilder.createSelect(valueName + '-unit-select', consts.URLS.getMeasurementUnits)
+        .attr(consts.REQUIRED_ATTR, true);
+        
         inputDiv.append(inputName);
         inputDiv.append(inputValue);
-        inputDiv.append(inputUnit);
+        inputDiv.append(unitSelect);
 
         buttonDiv.append(delValueB);
 
@@ -151,7 +151,8 @@ var compositeTools = function () {
                     var measurement = {};
                     measurement.name = $(inputs[0]).val();
                     measurement.value = $(inputs[1]).val();
-                    measurement.unit = $(inputs[2]).val();
+                    measurement.unit = element.find('select').val();
+ 
                     return measurement;
 
                 case 'node':
