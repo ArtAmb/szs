@@ -5,7 +5,7 @@
 	<div th:replace="mainMenu :: mainMenu"> </div>
 
 	<div id="login-form-sign-in" class="content">
-	<tr th:if="${nurses.empty}">
+				<tr th:if="${nurses.empty}">
 					<td colspan="4">Brak pielegniarek</td>
 				</tr>
 				<tr th:each="nurse : ${nurses}">
