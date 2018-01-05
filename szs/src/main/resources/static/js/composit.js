@@ -151,7 +151,10 @@ var compositeTools = function () {
                     var measurement = {};
                     measurement.name = $(inputs[0]).val();
                     measurement.value = $(inputs[1]).val();
-                    measurement.unit = element.find('select').val();
+                    measurement.unit = { 
+                    					 id: element.find('select').val(),
+                    					 name: element.find('select').text()
+                    					};
  
                     return measurement;
 

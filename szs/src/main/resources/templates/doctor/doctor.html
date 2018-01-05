@@ -6,7 +6,18 @@
 
 	<div id="doctor-view" class="content">
 
-		Strona dla doktora
+		<table class="table table-bordered table-striped">
+				<tr th:if="${doctors.empty}">
+					<td colspan="4">Brak lekarzy</td>
+				</tr>
+				<tr th:each="doctor : ${doctors}">
+					<td th:text="${doctor.name}"></td>
+					<td th:text="${doctor.surname}"></td>
+					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${doctor.id} +'/edit'}">Edytuj</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${doctor.id} +'/detail'}">Szczegoly</a></td>
+				</tr>
+
+			</table>
 
 
 	</div>

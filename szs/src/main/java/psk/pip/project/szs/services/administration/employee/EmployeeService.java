@@ -27,5 +27,14 @@ public class EmployeeService {
 				.collect(Collectors.toList());
 
 	}
+	
+	public Collection<Employee> findAllDoctors(){
+		return employeeRepository.findAllDoctors();
+	}
+	
+	public Collection<Employee> findAllNurses(){
+		return employeeRepository.findAllNurses();
+	}
+	
 
 }
