@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import psk.pip.project.szs.dto.patient.PersonalDataDTO;
 import psk.pip.project.szs.dto.patient.ReferralDTO;
 import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
+import psk.pip.project.szs.dto.patient.SignInOutDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
+import psk.pip.project.szs.entity.medicine.LongTermVisit;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.services.patient.PatientService;
 
@@ -38,9 +40,33 @@ public class PatientController {
 		return patientService.getPatientCards();
 	}
 
+	@GetMapping(value = "/patient/{patientId}/long-term-visits/filter/isEnd/{isEnd}")
+	public Collection<LongTermVisit> getPatientLongTermVisits(@PathVariable Long patientId,
+			@PathVariable Boolean isEnd) {
+		return patientService.getLongTermVisits(patientId, isEnd);
+	}
+
+	@GetMapping(value = "/patient/{patientId}/long-term-visits")
+	public Collection<LongTermVisit> getPatientLongTermVisits(@PathVariable Long patientId) {
+		return patientService.getLongTermVisits(patientId);
+	}
+
+	@PostMapping(value = "/patient/sign-in")
+	public void signInToHospital(@RequestBody SignInOutDTO dto) {
+		patientService.signInToHospital(dto);
+	}
+
+	@PostMapping(value = "/patient/sign-out")
+	public void signOutFromHospital(@RequestBody SignInOutDTO dto) {
+		patientService.signOutFromHospital(dto);
+	}
+
 	@PostMapping(value = "/patient/addVisit")
 	public void addVisit(@RequestBody VisitDTO dto) {
-		patientService.addVisit(dto);
+		if (dto.getIsLongTermVisit())
+			patientService.addLongTermVisit(dto);
+		else
+			patientService.addVisit(dto);
 	}
 
 	@DeleteMapping(value = "/patient/visit/{id}")

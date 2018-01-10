@@ -45,7 +45,7 @@ public class MedicalActionService {
 	public void addExaminationType(ExaminationTypeDTO dto) {
 
 		ExaminationType examinationType = new ExaminationType();
-		examinationType.setExaminationType(dto.getExaminationType());
+		examinationType.setName(dto.getExaminationType());
 
 		examinationTypeRepo.save(examinationType);
 
@@ -54,7 +54,7 @@ public class MedicalActionService {
 	public void addMeasurementType(MeasurementTypeDTO dto) {
 
 		MeasurementType measurementType = new MeasurementType();
-		measurementType.setMeasurementType(dto.getMeasurementType());
+		measurementType.setName(dto.getMeasurementType());
 
 		measurementTypeRepo.save(measurementType);
 

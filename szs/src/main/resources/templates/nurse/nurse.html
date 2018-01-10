@@ -5,8 +5,15 @@
 	<div th:replace="mainMenu :: mainMenu"> </div>
 
 	<div id="login-form-sign-in" class="content">
-Strona dla pielegniarki
-
+				<tr th:if="${nurses.empty}">
+					<td colspan="4">Brak pielegniarek</td>
+				</tr>
+				<tr th:each="nurse : ${nurses}">
+					<td th:text="${nurse.name}"></td>
+					<td th:text="${nurse.surname}"></td>
+					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${nurse.id} +'/edit'}">Edytuj</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${nurse.id} +'/detail'}">Szczegoly</a></td>
+				</tr>
 	</div>
 
 	<div th:replace="mainMenu :: footer"> </div>

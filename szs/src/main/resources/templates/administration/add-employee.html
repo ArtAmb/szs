@@ -1,0 +1,53 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="new-employee-view" class="content">
+        <table>
+            <tr><td><label>Imie</label></td> <td><input id="name-input" required='true' /></td></tr>
+            <tr><td><label>Nazwisko</label></td> <td><input id="surname-input" required='true' /></td></tr>
+            <tr><td><label>Login</label></td> <td><input id="login-input" required='true' /></td> </tr>
+            <tr><td><label>Password</label></td> <td><input id="password-input" required='true' type='password' /></td> </tr>
+            <tr><td><label>Typ</label></td>
+                <td><select id="type-select" required='true'>
+                <option id="doctor-option" value='DOCTOR' th:text="Doktor"/>
+                <option value='RECEPCIONIST' th:text="Recepcjonistka"/>
+                <option value='NURSE' th:text="Pielegniarka"/>
+                </select></td>
+            </tr>
+            <tr><td><label>Stanowisko</label></td> <td><input id="rank-input"/></td></tr>
+            <tr><td><label>Specjalizacja</label></td> <td><input id="specialization-input" /></td></tr>
+        </table>
+
+        <button id="save-button" class="simplebutton">Zapisz</button>
+        <script>
+            $("#save-button").click(function () {
+                if (tools.validation('new-employee-view')) {
+                    var dto = {
+                        name: tools.inputToJSON('name-input'),
+                        surname: tools.inputToJSON('surname-input'),
+                        login: tools.inputToJSON('login-input'),
+                        pass: tools.inputToJSON('password-input'),
+                        type: tools.inputToJSON('type-select'),
+                        rank: tools.inputToJSON('rank-input'),
+                        specialization: tools.inputToJSON('specialization-input')
+                    }
+                    tools.postForObject("/administration/new/employee", dto, function () {
+                        alert("Dodano pracownika");
+                    },
+                        function () {
+                            alert("Blad. Nie udalo sie dodac pracownika");
+                        });
+                } else {
+                    alert('Prosze uzupelnic wymagane pola');
+                }
+            });
+
+        </script>
+
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

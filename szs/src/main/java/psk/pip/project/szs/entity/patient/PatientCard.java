@@ -2,6 +2,7 @@ package psk.pip.project.szs.entity.patient;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,12 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.Data;
 import psk.pip.project.szs.entity.medicine.LongTermVisit;
 
 @Data
 @Entity
+@Table(name = "patient_card")
 public class PatientCard {
 
 	@Id
@@ -24,15 +27,15 @@ public class PatientCard {
 	private String surname;
 
 	@ManyToOne
-	private LongTermVisit curentVisit;
+	private LongTermVisit currentVisit;
 
-	@OneToMany
-	@JoinColumn(name = "patient_card")
-	private Collection<LongTermVisit> longTermVisitHistory;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "patient_card_id")
+	private Collection<LongTermVisit> longTermVisits;
 
-	@OneToMany
-	@JoinColumn(name = "patient_card")
-	private Collection<Visit> visitHistory;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "patient_card_id")
+	private Collection<Visit> visits;
 
 	public PatientCard() {
 

@@ -12,8 +12,12 @@ var tools = function () {
             url: url,
             contentType: "application/json",
             type: 'DELETE',
-            success: onSuccess,
-            error: onFailed
+            success: function (response) {
+                onSuccess(response)
+            },
+            error: function (e) {
+                onFailed(e);
+            }
         })
 
     }
@@ -26,8 +30,12 @@ var tools = function () {
             data: data,
             contentType: "application/json",
             type: 'POST',
-            success: onSuccess,
-            error: onFailed
+            success: function (response) {
+                onSuccess(response)
+            },
+            error: function (e) {
+                onFailed(e);
+            }
         })
 
     }
@@ -40,7 +48,9 @@ var tools = function () {
             success: function (response) {
                 onSuccess(response);
             },
-            error: onFailed
+            error: function (e) {
+                onFailed(e);
+            }
         })
 
     }
@@ -53,8 +63,12 @@ var tools = function () {
             data: data,
             contentType: "application/json",
             type: 'PUT',
-            success: onSuccess,
-            error: onFailed
+            success: function (response) {
+                onSuccess(response);
+            },
+            error: function (e) {
+                onFailed(e);
+            }
         })
 
     }
@@ -65,12 +79,20 @@ var tools = function () {
         return tools.isValidationOK(tagId);
     }
 
+    tools.isTagSelect = function (tag) {
+        var tagName = tag.prop('tagName');
+        return tagName == 'SELECT' || tagName == 'select' || tagName == 'Select';
+    }
+
     tools.markRequiredTags = function (tagId) {
         var tag = $('#' + (tagId));
         var func = function (self) {
             var val = self.val();
             var isContainer = (self.children().toArray().length != 0);
             if (isContainer) {
+                if (tools.isTagSelect(self) && val.trim() == "") {
+                    self.addClass("required");
+                }
                 if (!self.html() || self.html().trim() == "") {
                     self.addClass("required");
                 }
@@ -101,6 +123,70 @@ var tools = function () {
         var tag = $('#' + (tagId));
         tag.find(".required").each(function () {
             $(this).removeClass("required");
+        });
+    }
+    tools.jsonToArray = function (obj) {
+        return $.map(obj, function (el) { return el });
+    }
+    tools.inputToJSON = function (inputId) {
+        return $("#" + inputId).val().trim() == "" ? null : $("#" + inputId).val().trim();
+    }
+
+    tools.tagInputsToDTO = function (tagName) {
+        var tag = $('#' + tagName);
+        var dto = {};
+
+        var func = function (el) {
+            var self = $(el);
+            if (self.attr('type') == 'checkbox') {
+                dto[self.attr('name')] = self.prop('checked');
+                return;
+            }
+
+            dto[self.attr('name')] = self.val();
+        }
+
+        tag.find("[" + consts.DTO_VALUE_ATTR + "='true']").each(function () {
+            func(this);
+        });
+        tag.find("[" + consts.DTO_VALUE_ATTR + "='" + consts.DTO_VALUE_ATTR + "']").each(function () {
+            func(this);
+        });
+
+        return dto;
+    }
+
+    tools.openDialog = function () {
+        $('<div>').attr('id', 'add-or-update-dialog').dialog({
+            autoOpen: false,
+            resizable: false,
+            title: "",
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: [{
+                id: 'save-dialog-button',
+                text: "Zapisz",
+                click: function () {
+                    $(this).dialog("close");
+                },
+            },
+            {
+                text: "Anuluj",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+            close: function () {
+                $(this).html("");
+            },
+            open: function () {
+                var content = jsBuilder.createElement('div');
+                jsBuilder.createElement('label').text('Nazwa:').appendTo(content);
+                content.append('  ');
+                jsBuilder.createInput('text', 'dialog-input').attr('required', true).appendTo(content);
+                $(this).html(content);
+            }
         });
     }
 

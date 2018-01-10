@@ -16,4 +16,9 @@ public class AdministrationFrontController {
 	public String patientView(Model model) {
 		return getTemplateDir("administration");
 	}
+
+	@GetMapping("/view/administration/new/employee")
+	public String addEmployeeView(Model model) {
+		return getTemplateDir("add-employee");
+	}
 }

@@ -5,8 +5,15 @@
 	<div th:replace="mainMenu :: mainMenu"> </div>
 
 	<div id="config-view" class="content">
-Zakladka dla konfiguracji
-
+			
+		<tr>
+			<td> <a class="simplebutton medical_action_button" th:href="@{/view/config/measurement-type}">Typ pomiaru</a></td>
+			<td> <a class="simplebutton medical_action_button" th:href="@{/view/config/doctor-specialization}">Specjalizacje lekarzy</a></td>
+			<td> <a class="simplebutton medical_action_button" th:href="@{/view/config/drug-name}">Nazwy lekow</a></td>
+			<td> <a class="simplebutton medical_action_button" th:href="@{/view/config/drug-unit}">Jednostki lekow</a></td>
+			<td> <a class="simplebutton medical_action_button" th:href="@{/view/config/examination-type}">Typy badan</a></td>
+		</tr>
+		
 	</div>
 
 	<div th:replace="mainMenu :: footer"> </div>

@@ -2,6 +2,7 @@ package psk.pip.project.szs.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import psk.pip.project.szs.entity.registration.Roles;
@@ -19,6 +20,11 @@ public class HospitalController {
 	@GetMapping("/test/doctor")
 	public String testForDoctor() {
 		return "doctor: dzialam!!";
+	}
+
+	@PostMapping("/hospital/new/room")
+	public void addNewRoom() {
+
 	}
 
 }

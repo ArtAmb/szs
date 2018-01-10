@@ -1,0 +1,36 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="patient-visits-view" class="content">
+		<div id="patient-visits-view-container">
+               <div th:text="${patient.name}"></div>
+               <div th:text="${patient.surname}"></div>
+
+			<table class="table table-bordered table-striped">
+				<tr th:if="${visits.empty}">
+					<td colspan="4">Brak visit</td>
+				</tr>
+				<tr th:each="visit : ${visits}">
+					<td th:text="${visit.id}"></td>
+                    <td> <label th:text="${visit.startDate}" /> <label th:text="${visit.startTime}" /> </td>
+                    <td>dr. <label th:if="${visit.doctor.name}" th:text="${visit.doctor.name}" /> <label th:if="${visit.doctor.surname}" th:text="${visit.doctor.surname}" /> </td>
+                    <td  th:if="${visit.isEnd != null}" th:text="${visit.isEnd}"></td>
+					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
+				</tr>
+
+			</table>
+
+
+
+
+
+		</div>
+
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

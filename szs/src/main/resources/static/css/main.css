@@ -1,11 +1,3 @@
-h1{
-	color:#0000FF;
-}
-
-h2{
-	color:#FF0000;
-}
-
 .main-menu {
 position: relative;
 margin: auto;
@@ -48,14 +40,13 @@ cursor: pointer;
 }
 
 .table{
-    position: absolute;
+    margin-top: 25px;
 	text-align: left;
     line-height: 40px;
     border-collapse: separate;
     border-spacing: 10px;
     border: 2px solid #ed1c40;
     width: 500px;
-    margin: 50px auto;
     border-radius: .25rem;
 }
 
@@ -107,4 +98,10 @@ ul.tree, ul.tree ul {
        border-width: 2px;
        border-style: solid;
        border-color: #FF0000; 
+   }
+
+   .deactivate {
+    background-color: #909090;
+    pointer-events: none;
+    cursor: not-allowed;
    }

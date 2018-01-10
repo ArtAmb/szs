@@ -7,16 +7,13 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
-
 @Data
 @Entity
 public class ExaminationType {
 
-	@Id 
-	@GeneratedValue(strategy = GenerationType.AUTO) 
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String examinationType;
-	
+	private String name;
 
 }
