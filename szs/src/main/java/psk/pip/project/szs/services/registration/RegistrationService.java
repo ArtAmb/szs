@@ -1,5 +1,6 @@
 package psk.pip.project.szs.services.registration;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,12 @@ public class RegistrationService {
 	}
 
 	public void addUser(User user) {
+		user.setActive(true);
+		List<Role> col = new LinkedList<>();
+		col.add(Roles.ROLE_ADMIN.toRole());
+		col.add(Roles.ROLE_DOCTOR.toRole());
+		col.add(Roles.ROLE_NURSE.toRole());
+		user.setRoles(col);
 		saveUser(user);
 	}
 
