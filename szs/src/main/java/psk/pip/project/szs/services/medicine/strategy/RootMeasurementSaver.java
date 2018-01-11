@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import psk.pip.project.szs.entity.medicine.MeasurementRoot;
 import psk.pip.project.szs.entity.medicine.NurseAction;
+import psk.pip.project.szs.services.medicine.NurseActionType;
 
 @Service
 public class RootMeasurementSaver extends NurseActionSaverStrategy<MeasurementRoot> {
@@ -13,7 +14,7 @@ public class RootMeasurementSaver extends NurseActionSaverStrategy<MeasurementRo
 	@Override
 	protected void createNurseAction(MeasurementRoot obj) {
 		nurseAction = NurseAction.builder().description(obj.getDescription()).medicalEmployee(medicalEmployee)
-				.measurementRoot(obj).date(new Timestamp(obj.getDate())).build();
+				.measurementRoot(obj).type(NurseActionType.MEASUREMENT).date(new Timestamp(obj.getDate())).build();
 	}
 
 	@Override

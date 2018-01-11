@@ -134,9 +134,13 @@ var tools = function () {
     
     tools.selectToJSON = function(selectId){
        var select = $("#" + selectId);
-       return { 
+       var selVal = select.find("[value='"+select.val()+"']").text();
+       if(select.val() == null)
+        return null;
+       
+        return { 
         id: select.val(),
-        name: select.find("[value='"+select.val()+"']").text()
+        name: tools.isBlank(selVal) ? null : selVal
        };
     }
 

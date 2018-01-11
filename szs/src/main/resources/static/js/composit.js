@@ -117,8 +117,8 @@ var compositeTools = function () {
 
 
         var unitSelect = jsBuilder.createSelect(valueName + '-unit-select', consts.URLS.getMeasurementUnits, null, valueToSetForSelectTag)
-        .attr(consts.REQUIRED_ATTR, true);
-        
+            .attr(consts.REQUIRED_ATTR, true);
+
         inputDiv.append(inputName);
         inputDiv.append(inputValue);
         inputDiv.append(unitSelect);
@@ -151,12 +151,16 @@ var compositeTools = function () {
                     var measurement = {};
                     measurement.name = $(inputs[0]).val();
                     measurement.value = $(inputs[1]).val();
-                    var select=element.find('select');
-                    measurement.unit =  { 
-                    					 id: select.val(),
-                    					 name: select.find("[value='"+select.val()+"']").text()
-                    					};
- 
+                    var select = element.find('select');
+                    var selVal = select.find("[value='" + select.val() + "']").text();
+                    if (select.val() == null) {
+                        measurement.unit = null;
+                    } else
+                        measurement.unit = {
+                            id: select.val(),
+                            name: tools.isBlank(selVal) ? null : selVal
+                        };
+
                     return measurement;
 
                 case 'node':
