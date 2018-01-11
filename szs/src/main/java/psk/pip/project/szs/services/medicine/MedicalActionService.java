@@ -23,7 +23,9 @@ import psk.pip.project.szs.repository.medicine.MeasurementTemplateRootRepository
 import psk.pip.project.szs.repository.medicine.MeasurementTypeRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
+import psk.pip.project.szs.services.medicine.exception.CannotAddMedicalActionException;
 import psk.pip.project.szs.services.medicine.exception.CannotGetMeasurementType;
+import psk.pip.project.szs.services.medicine.strategy.RootMeasurementSaver;
 
 @Service
 public class MedicalActionService {
@@ -41,6 +43,8 @@ public class MedicalActionService {
 	private UserRepository userRepo;
 	@Autowired
 	private PatientCardRepository patientRepo;
+	@Autowired
+	private RootMeasurementSaver rootMeasurementSaver;
 
 	public void addExaminationType(ExaminationTypeDTO dto) {
 
@@ -85,9 +89,13 @@ public class MedicalActionService {
 	 * }
 	 */
 
-	public void saveMeasurement(MeasurementRoot root) {
-		root.setDate(Timestamp.valueOf(LocalDateTime.now()));
-		measurementRootRepo.save(root);
+	public void saveMeasurement(String login, MeasurementRoot root) {
+		root.setDate(Timestamp.valueOf(LocalDateTime.now()).getTime());
+		root.setPatient(patientRepo.findOne(root.getPatient().getId()));
+		if (root.getPatient().getCurrentVisit() == null)
+			throw new CannotAddMedicalActionException("Pacjent musi byc zapisany do szpitala");
+
+		rootMeasurementSaver.saveNurseAction(login, root);
 	}
 
 	public Collection<MeasurementTemplateRoot> getMeasurementTemplates(String login) {

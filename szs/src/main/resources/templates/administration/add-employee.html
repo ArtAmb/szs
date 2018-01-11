@@ -18,11 +18,12 @@
                 </select></td>
             </tr>
             <tr><td><label>Stanowisko</label></td> <td><input id="rank-input"/></td></tr>
-            <tr><td><label>Specjalizacja</label></td> <td><input id="specialization-input" /></td></tr>
+            <tr><td><label>Specjalizacja</label></td> <td id='specialization-td'></td></tr>
         </table>
 
         <button id="save-button" class="simplebutton">Zapisz</button>
         <script>
+            $('#specialization-td').html(jsBuilder.createSelect( 'specialization-select', consts.URLS.getDoctorSpecializations));
             $("#save-button").click(function () {
                 if (tools.validation('new-employee-view')) {
                     var dto = {
@@ -32,7 +33,7 @@
                         pass: tools.inputToJSON('password-input'),
                         type: tools.inputToJSON('type-select'),
                         rank: tools.inputToJSON('rank-input'),
-                        specialization: tools.inputToJSON('specialization-input')
+                        specialization: tools.selectToJSON('specialization-input')
                     }
                     tools.postForObject("/administration/new/employee", dto, function () {
                         alert("Dodano pracownika");

@@ -90,7 +90,7 @@ var tools = function () {
             var val = self.val();
             var isContainer = (self.children().toArray().length != 0);
             if (isContainer) {
-                if (tools.isTagSelect(self) && val.trim() == "") {
+                if (tools.isTagSelect(self) && tools.isBlank(val)) {
                     self.addClass("required");
                 }
                 if (!self.html() || self.html().trim() == "") {
@@ -130,6 +130,14 @@ var tools = function () {
     }
     tools.inputToJSON = function (inputId) {
         return $("#" + inputId).val().trim() == "" ? null : $("#" + inputId).val().trim();
+    }
+    
+    tools.selectToJSON = function(selectId){
+       var select = $("#" + selectId);
+       return { 
+        id: select.val(),
+        name: select.find("[value='"+select.val()+"']").text()
+       };
     }
 
     tools.tagInputsToDTO = function (tagName) {

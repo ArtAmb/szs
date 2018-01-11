@@ -1,7 +1,5 @@
 package psk.pip.project.szs.entity.medicine;
 
-import java.sql.Timestamp;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +19,7 @@ public class MeasurementRoot {
 
 	private String title;
 	private String description;
-	private Timestamp date;
+	private Long date;
 
 	@ManyToOne
 	private PatientCard patient;

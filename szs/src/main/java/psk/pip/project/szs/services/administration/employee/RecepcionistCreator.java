@@ -32,7 +32,7 @@ public class RecepcionistCreator extends EmployeeCreator {
 				.surname(dto.getSurname())
 				.specialization(dto.getSpecialization())
 				.rank(dto.getRank())
-				.type(EmployeeType.DOCTOR.toString())
+				.type(EmployeeType.RECEPCIONIST)
 				.build();
 
 		return result;

@@ -5,8 +5,6 @@ import java.util.LinkedList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,16 +26,16 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(unique = true, nullable = true)
+	@Column(unique = true, nullable = false)
 	private String login;
 
 	@Column(nullable = true)
 	private String password;
 
-	@Enumerated(EnumType.STRING)
 	@ManyToMany
+	@Builder.Default
 	private Collection<Role> roles = new LinkedList<>();
-
+	@Builder.Default
 	private boolean active = true;
 
 	public boolean hasRole(String roleName) {

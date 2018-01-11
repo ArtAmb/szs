@@ -1,0 +1,81 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="long-term-visits-view" class="content">
+		<div id="long-term-visits-view-container">
+               <div th:text="${patient.name}"></div>
+               <div th:text="${patient.surname}"></div>
+
+            <h3>Dane</h3>
+            <div> 
+                <div><label>Id: </label><span th:text="${visit.id}"></span></div>
+                <div><label>Data poczatku: </label><span th:text="${visit.startDate}" /> <span th:text="${visit.startTime}" /></div>
+                <div th:if="${visit.endDate != null}"><label>Data konca: </label><span th:text="${visit.endDate}" /> <label th:text="${visit.endTime}" /> </div>
+                <div><label>Czy zakonczona? </label> <span th:text="${visit.isEnd}"/></div>
+            </div>    
+
+            <div>
+            <button th:attr='visitId=${visit.id}' class="simplebutton medical_action_button" th:id="'sign-in-button'+${visit.id}">Ustaw jako obecna</button>
+            <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a>
+            <script th:inline='javascript'>
+                    var signInButton = $('#sign-in-button' +  [[${ visit.id }]]);
+                    if ([[${ isCurrVisit }]])
+                        signInButton.addClass('deactivate');
+                    
+                    signInButton.click(function () {
+                        var dto = {
+                            patientCardId: [[${ patient.id }]],
+                            longTermVisitId: Number(signInButton.attr('visitId'))
+                        }
+                        tools.postForObject("/patient/sign-in", dto, function () {
+                             alert('Zapisano do szpitala');
+                             window.location.href = '/view/patient/'+ [[${patient.id}]] +'/detail';
+                             }, function (e) { alert("Blad zapisu. " + e); });
+                    });
+            </script>
+            </div>
+
+            
+            <h3 th:if='!${visit.actions.empty}'>Akcje medyczne</h3>
+			<table th:if='!${visit.actions.empty}' class="table table-bordered table-striped">
+					<tr th:each="action : ${visit.actions}">
+					<td th:text="${action.id}"></td>
+                    <td> <label th:text="${#dates.format(action.date, 'dd-MMM-yyyy hh:mm')}" /></td>
+                    <th:block th:switch="${action.type}">
+                        <td th:case='DRUG_GIVEN'>Podanie leku</td>
+                        <td th:case='MEASUREMENT'>Pomiar</td>
+                        <td th:case='ITEM_GIVEN'>Uzycie sprzetu medycznego</td>
+                    </th:block>
+                    <td><label th:text="${action.medicalEmployee.user.login}"/> <label th:text="${action.medicalEmployee.name}"/> <label th:text="${action.medicalEmployee.surname}"/></td>
+                    <td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
+					
+					<script th:inline='javascript'>
+							var signInButton = $('#sign-in-button' +  [[${ visit.id }]]);
+							if ([[${ isCurrVisit }]])
+								signInButton.addClass('deactivate');
+	
+							signInButton.click(function () {
+								var dto = {
+									patientCardId: [[${ patient.id }]],
+									longTermVisitId: Number(signInButton.attr('visitId'))
+								}
+								tools.postForObject("/patient/sign-in", dto, function () { alert('Zapisano do szpitala'); }, function (e) { alert("Blad zapisu. " + e); });
+							});
+					</script>
+				</tr>
+
+			</table>
+
+
+
+
+		</div>
+        <a class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

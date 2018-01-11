@@ -79,7 +79,7 @@
                             patient: [[${ patient }]],
                             measurement: result
                         }
-                        tools.postForObject("/medicalAction/measurement", measurementRoot, function () { alert("Zapisano pomiar"); }, function () { alert("Nie udalo sie zapisac pomiaru pomiar"); });
+                        tools.postForObject("/medicalAction/measurement", measurementRoot, function () { alert("Zapisano pomiar"); }, function (e) { alert("Nie udalo sie zapisac pomiaru pomiar\n"+e.responseJSON.message); });
                     } else
                         alert('Prosze uzupelnic wymagane pola');
                 });

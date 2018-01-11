@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import psk.pip.project.szs.entity.patient.PatientCard;
+import psk.pip.project.szs.repository.patient.LongTermVisitRepository;
+import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.services.patient.PatientService;
 
 @Controller
@@ -14,6 +17,10 @@ public class PatientFrontController {
 
 	@Autowired
 	private PatientService patientService;
+	@Autowired
+	private LongTermVisitRepository longTermVisitRepo;
+	@Autowired
+	private PatientCardRepository patientRepo;
 
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
@@ -81,5 +88,14 @@ public class PatientFrontController {
 		model.addAttribute("patient", patientService.getPatientCard(patientId));
 		model.addAttribute("visits", patientService.getVisits(patientId, isEnd));
 		return getTemplateDir("visits");
+	}
+
+	@GetMapping("/view/patient/{patientId}/long-term-visit/{visitId}/detail")
+	public String getLongTermVisitDetailView(@PathVariable Long patientId, @PathVariable Long visitId, Model model) {
+		model.addAttribute("visit", longTermVisitRepo.findOne(visitId));
+		PatientCard patientCard = patientRepo.findOne(patientId);
+		model.addAttribute("patient", patientCard.toPatient());
+		model.addAttribute("isCurrVisit", patientCard.getCurrentVisit() != null);
+		return getTemplateDir("long-term-visit-detail");
 	}
 }

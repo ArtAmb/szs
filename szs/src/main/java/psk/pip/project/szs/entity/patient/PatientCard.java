@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import psk.pip.project.szs.entity.medicine.LongTermVisit;
+import psk.pip.project.szs.services.patient.Patient;
 
 @Data
 @Entity
@@ -45,5 +46,9 @@ public class PatientCard {
 		this.name = name;
 		this.surname = surname;
 
+	}
+
+	public Patient toPatient() {
+		return Patient.builder().id(id).name(name).surname(surname).build();
 	}
 }

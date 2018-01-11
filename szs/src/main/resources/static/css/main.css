@@ -4,6 +4,10 @@ margin: auto;
 
 }
 
+.lonewolfbutton{
+    margin-top: 10px;
+}
+
 .simplebutton {
     background-color: #4CAF50; /* Green */
     border: none;

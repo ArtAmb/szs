@@ -15,6 +15,7 @@ import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.MedicalActionService;
+import psk.pip.project.szs.services.patient.Patient;
 
 @Controller
 public class MedicalActionController {
@@ -58,7 +59,7 @@ public class MedicalActionController {
 	@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
 	@GetMapping("/view/medical/action/patient/{patientId}/measurement")
 	public String mesurementView(@PathVariable Long patientId, Model model, Principal principal) {
-		PatientCard patient = patientCardRepository.findOne(patientId);
+		Patient patient = patientCardRepository.findPatientById(patientId);
 		model.addAttribute("templates", medicalActionService.getTemplates(principal.getName()));
 		model.addAttribute("patient", patient);
 		return getTemplateDir("measurement");

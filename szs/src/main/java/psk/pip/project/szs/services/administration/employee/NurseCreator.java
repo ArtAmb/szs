@@ -16,7 +16,7 @@ public class NurseCreator extends EmployeeCreator {
 	@Override
 	public Employee createEmployee(EmployeeDTO dto) {
 		List<Role> col = new LinkedList<>();
-		col.add(Roles.ROLE_DOCTOR.toRole());
+		col.add(Roles.ROLE_NURSE.toRole());
 		col.add(Roles.ROLE_MEDICAL_EMPLOYEE.toRole());
 
 		User user = User.builder()
@@ -32,7 +32,7 @@ public class NurseCreator extends EmployeeCreator {
 				.surname(dto.getSurname())
 				.specialization(dto.getSpecialization())
 				.rank(dto.getRank())
-				.type(EmployeeType.DOCTOR.toString())
+				.type(EmployeeType.NURSE)
 				.build();
 
 		return result;

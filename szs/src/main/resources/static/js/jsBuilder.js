@@ -13,7 +13,7 @@ var jsBuilder = function () {
         return $("<option>").attr('value', value).addClass(classes);
     }
 
-    jsBuilder.createSelect = function (id, sourceUrl, classes) {
+    jsBuilder.createSelect = function (id, sourceUrl, classes, valueToSet) {
         var selectTag = $('<select>').attr('id', id).addClass(classes);
         selectTag.append(jsBuilder.createSelectOption(" ").text(" "));
         
@@ -23,7 +23,8 @@ var jsBuilder = function () {
                 var self = this;
                 selectTag.append(jsBuilder.createSelectOption(self.id).text(self.name));
             });
-
+            
+            selectTag.val(valueToSet);
         }, function () {
             alert('Blad pobrania wartosci do selecta');
         });

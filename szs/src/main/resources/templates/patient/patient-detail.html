@@ -14,7 +14,7 @@
                     <td  th:if="${patient.currentVisit.isEnd != null}" th:text="${patient.currentVisit.isEnd}"></td>
 					<td> <button class="simplebutton medical_action_button" id='sign-out-button'>Zakoncz pobyt</button></td>
 					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
-					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} + '/long-term-visit/' + ${patient.currentVisit.id} + '/detail'}">Szczegoly</a></td>
 				</tr>
 			</table>
 		</div>
@@ -24,8 +24,8 @@
 					patientCardId: [[${patient.id}]],
 					longTermVisitId: [[${patient.currentVisit.id}]]
 				}
-				tools.postForObject("/patient/sign-out", dto, function(){ alert('Wypisano za szpitala')}, function() {alert("Blad wypisu")});
-				location.reload();
+				tools.postForObject("/patient/sign-out", dto, function(){ alert('Wypisano za szpitala'); location.reload();}, function() {alert("Blad wypisu")});
+				
 			});
 		</script>
 
@@ -45,7 +45,8 @@
 		</div>
 
 		</div>
-
+		
+		<a class="simplebutton medical_action_button lonewolfbutton" th:href="@{'/view/medical/action/patient/' + ${patient.id}}">Akcja</a>
 	</div>
 
 	<div th:replace="mainMenu :: footer"> </div>

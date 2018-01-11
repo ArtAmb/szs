@@ -89,8 +89,8 @@ var compositeTools = function () {
             return groupName;
         }
 
-    compositeTools.addValue = function (valueName, parentDivId, isTemplate) {
-        if (isTemplate == undefined) isTemplate = false;
+    compositeTools.addValue = function (valueName, parentDivId, isTemplate, valueToSetForSelectTag) {
+        if (isTemplate == undefined || isTemplate == null) isTemplate = false;
         var parentGroup = $('#' + parentDivId);
         var buttonDiv = $('<span>');
         buttonDiv.attr('id', valueName + '-buttons');
@@ -116,7 +116,7 @@ var compositeTools = function () {
 
 
 
-        var unitSelect = jsBuilder.createSelect(valueName + '-unit-select', consts.URLS.getMeasurementUnits)
+        var unitSelect = jsBuilder.createSelect(valueName + '-unit-select', consts.URLS.getMeasurementUnits, null, valueToSetForSelectTag)
         .attr(consts.REQUIRED_ATTR, true);
         
         inputDiv.append(inputName);
@@ -151,9 +151,10 @@ var compositeTools = function () {
                     var measurement = {};
                     measurement.name = $(inputs[0]).val();
                     measurement.value = $(inputs[1]).val();
-                    measurement.unit = { 
-                    					 id: element.find('select').val(),
-                    					 name: element.find('select').text()
+                    var select=element.find('select');
+                    measurement.unit =  { 
+                    					 id: select.val(),
+                    					 name: select.find("[value='"+select.val()+"']").text()
                     					};
  
                     return measurement;
@@ -183,10 +184,9 @@ var compositeTools = function () {
 
             if (isLeaf) {
                 var valueName = $('#' + parentDivId).parent().attr('id') + "-detail-leaf";
-                var leaf = compositeTools.addValue(valueName, parentDivId);
+                var leaf = compositeTools.addValue(valueName, parentDivId, null, element.unit.id);
                 leaf.find('#' + valueName + '-value-input').prop('disabled', readOnlyValue).val(element.value);
                 leaf.find('#' + valueName + '-name-input').val(element.name);
-                leaf.find('#' + valueName + '-unit-input').val(element.unit);
                 return;
             }
             else {

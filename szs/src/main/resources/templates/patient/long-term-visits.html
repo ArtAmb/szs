@@ -18,21 +18,23 @@
                     <td> <label th:text="${visit.startDate}" /> <label th:text="${visit.startTime}" /> </td>
                     <td> <label th:if="${visit.endDate != null}" th:text="${visit.endDate}" /> <label th:if="${visit.endTime}" th:text="${visit.endTime}" /> </td>
                     <td  th:if="${visit.isEnd != null}" th:text="${visit.isEnd}"></td>
-					<td> <a th:attr='visitId=${visit.id}' class="simplebutton medical_action_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}" th:id="'sign-in-button'+${visit.id}">Ustaw jako obecna</a></td>
+					<td> <button th:attr='visitId=${visit.id}' class="simplebutton medical_action_button" th:id="'sign-in-button'+${visit.id}">Ustaw jako obecna</button></td>
 					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
-					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
-					
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} + '/long-term-visit/' + ${visit.id} + '/detail'}">Szczegoly</a></td>
 					<script th:inline='javascript'>
 							var signInButton = $('#sign-in-button' +  [[${ visit.id }]]);
 							if ([[${ patient.currentVisit }]] != null)
 								signInButton.addClass('deactivate');
-	
+							
 							signInButton.click(function () {
 								var dto = {
 									patientCardId: [[${ patient.id }]],
 									longTermVisitId: Number(signInButton.attr('visitId'))
 								}
-								tools.postForObject("/patient/sign-in", dto, function () { alert('Zapisano do szpitala'); }, function (e) { alert("Blad zapisu. " + e); });
+								tools.postForObject("/patient/sign-in", dto, function () {
+									 alert('Zapisano do szpitala');
+									 window.location.href = '/view/patient/'+ [[${patient.id}]] +'/detail';
+									 }, function (e) { alert("Blad zapisu. " + e); });
 							});
 					</script>
 				</tr>
@@ -41,7 +43,7 @@
 
 
 
-
+			<a class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
 		</div>
 
 	</div>

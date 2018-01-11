@@ -1,8 +1,10 @@
 package psk.pip.project.szs.controller;
 
+import java.security.Principal;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import psk.pip.project.szs.entity.medicine.Measurement;
 import psk.pip.project.szs.entity.medicine.MeasurementRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementTemplateRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementType;
+import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.services.medicine.MedicalActionService;
 
 @RestController
@@ -41,6 +44,7 @@ public class MedicalActionControler {
 	public MeasurementType getMeasurementType(@PathVariable Long id) {
 		return medicalActionService.getMeasurementType(id);
 	}
+
 	/*
 	 * @PostMapping(value = "/medicalAction/saveMedicalExamination") public void
 	 * saveExamination(@RequestBody ExaminationDTO dto) {
@@ -50,10 +54,10 @@ public class MedicalActionControler {
 	 * getExamination(@PathVariable Long id) { return
 	 * medicalActionService.getExamination(id); }
 	 */
-
+	@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
 	@PostMapping(value = "/medicalAction/measurement")
-	public void addMeasurement(@RequestBody MeasurementRoot root) {
-		medicalActionService.saveMeasurement(root);
+	public void addMeasurement(@RequestBody MeasurementRoot root, Principal principal) {
+		medicalActionService.saveMeasurement(principal.getName(), root);
 	}
 
 	@PostMapping(value = "/medicalAction/measurement/template")
@@ -79,5 +83,11 @@ public class MedicalActionControler {
 	@GetMapping(value = "/medicalAction/measurement/template/{id}")
 	public Measurement getMeasurementTemplate(@PathVariable Long id) {
 		return medicalActionService.getMeasurementTemplate(id).getMeasurement();
+	}
+
+	@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
+	@PostMapping(value = "/medicalAction/new/nurse-action")
+	public void saveNurseAction(Principal principal) {
+
 	}
 }
