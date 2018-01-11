@@ -3,8 +3,11 @@
 <body>
 
 	<div th:replace="mainMenu :: mainMenu"> </div>
+	<button id="searchNursesButton" class="simplebutton">Szukaj</button>
+	<button th:href='@{/view/administration/new/employee}' id="addNursesButton" class="simplebutton">Dodaj</button>
 
-	<div id="login-form-sign-in" class="content">
+	<div id="nurses-form-sign-in" class="content">
+			<table class="table table-bordered table-striped">
 				<tr th:if="${nurses.empty}">
 					<td colspan="4">Brak pielegniarek</td>
 				</tr>
@@ -14,6 +17,7 @@
 					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${nurse.id} +'/edit'}">Edytuj</a></td>
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${nurse.id} +'/detail'}">Szczegoly</a></td>
 				</tr>
+			</table>
 	</div>
 
 	<div th:replace="mainMenu :: footer"> </div>

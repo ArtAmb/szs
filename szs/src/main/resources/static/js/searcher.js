@@ -33,9 +33,12 @@ var searcher = function () {
                     selectResult.attr('title', 'Nie udalo sie znalezc frazy "' + queryString + '".');
                 }
                 $(array).each(function () {
-                    options.buildOptionDataFunc(jsBuilder.createSelectOption(this.entityId).text(this.text).appendTo(selectResult), this);
+                    if (options.buildOptionDataFunc != undefined)
+                        options.buildOptionDataFunc(jsBuilder.createSelectOption(this.entityId).text(this.text).appendTo(selectResult), this);
+                    else
+                        jsBuilder.createSelectOption(this.entityId).text(this.text).appendTo(selectResult);
                 });
-                
+
             },
                 function () { }
             )

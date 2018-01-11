@@ -131,17 +131,17 @@ var tools = function () {
     tools.inputToJSON = function (inputId) {
         return $("#" + inputId).val().trim() == "" ? null : $("#" + inputId).val().trim();
     }
-    
-    tools.selectToJSON = function(selectId){
-       var select = $("#" + selectId);
-       var selVal = select.find("[value='"+select.val()+"']").text();
-       if(select.val() == null)
-        return null;
-       
-        return { 
-        id: select.val(),
-        name: tools.isBlank(selVal) ? null : selVal
-       };
+
+    tools.selectToJSON = function (selectId) {
+        var select = $("#" + selectId);
+        var selVal = select.find("[value='" + select.val() + "']").text();
+        if (select.val() == null)
+            return null;
+
+        return {
+            id: select.val(),
+            name: tools.isBlank(selVal) ? null : selVal
+        };
     }
 
     tools.tagInputsToDTO = function (tagName) {
@@ -202,5 +202,43 @@ var tools = function () {
         });
     }
 
+    tools.openDialogToDrugTransfer = function () {
+        $('<div>').attr('id', 'drug-transfer-dialog').dialog({
+            autoOpen: false,
+            resizable: false,
+            title: "",
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: [{
+                id: 'drug-transfer-confirm-button',
+                text: "Przeslij",
+                click: function () {
+                    $(this).dialog("close");
+                },
+            },
+            {
+                text: "Anuluj",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+            close: function () {
+                $(this).html("");
+            },
+            open: function () {
+                var content = jsBuilder.createElement('div');
+                jsBuilder.createElement('label').text('Nazwa:').appendTo(content);
+                content.append('  ');
+                searcher.buildSearcher(content, 'drug-searcher', '/searcher/drug/query', {
+                    isRequired: true,
+                    isDTOValue: true,
+                    name: 'drug'
+                });
+                jsBuilder.createInput('number', 'drugs-to-move-input').appendTo(content).attr(consts.REQUIRED_ATTR, true).attr(consts.DTO_VALUE_ATTR, true).attr('name', 'drugsAmountToMove');
+                $(this).html(content);
+            }
+        });
+    }
     return tools;
 }();

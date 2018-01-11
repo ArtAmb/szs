@@ -44,7 +44,7 @@
 					<tr th:each="action : ${visit.actions}">
 					<td th:text="${action.id}"></td>
                     <td> <label th:text="${#dates.format(action.date, 'dd-MMM-yyyy hh:mm')}" /></td>
-                    <th:block th:switch="${action.type}">
+                    <th:block th:switch="${action.type.name()}">
                         <td th:case='DRUG_GIVEN'>Podanie leku</td>
                         <td th:case='MEASUREMENT'>Pomiar</td>
                         <td th:case='ITEM_GIVEN'>Uzycie sprzetu medycznego</td>
