@@ -13,6 +13,7 @@ import psk.pip.project.szs.dto.searcher.SearcherParams;
 import psk.pip.project.szs.dto.searcher.SearcherResponse;
 import psk.pip.project.szs.repository.medicine.DrugRepository;
 import psk.pip.project.szs.services.administration.employee.EmployeeService;
+import psk.pip.project.szs.services.rooms.StorageService;
 
 @RestController
 public class SearcherController {
@@ -22,6 +23,9 @@ public class SearcherController {
 	@Autowired
 	private DrugRepository drugRepo;
 
+	@Autowired
+	private StorageService storageService;
+
 	@PostMapping("/searcher/doctor/query")
 	public Collection<SearcherResponse> findDoctorsByQueryString(@RequestBody SearcherParams params)
 			throws InstantiationException, IllegalAccessException {
@@ -29,10 +33,16 @@ public class SearcherController {
 	}
 
 	@PostMapping("/searcher/drug/query")
-	public Collection<SearcherResponse> findDrugsByQueryString(@RequestBody SearcherParams params)
+	public Collection<SearcherResponse> findDrugsInStorageByQueryString(@RequestBody SearcherParams params)
 			throws InstantiationException, IllegalAccessException {
-		return drugRepo.findByName_NameContaining(params.getQueryString()).stream().map(d -> SearcherMapper.map(d))
+		return storageService.getStorage().getDrugs().stream()
+				.filter(d -> d.getName().getName().contains(params.getQueryString()))
+				.map(d -> SearcherMapper.map(d))
 				.collect(Collectors.toList());
+		// return
+		// drugRepo.findByName_NameContaining(params.getQueryString()).stream().map(d
+		// -> SearcherMapper.map(d))
+		// .collect(Collectors.toList());
 	}
 
 }

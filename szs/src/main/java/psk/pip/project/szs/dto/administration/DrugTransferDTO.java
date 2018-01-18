@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class DrugTransferDTO {
 	private Long roomId;
 	private Long drugId;
-	private Long drugsAmountToMove;
+	private Integer drugsAmountToMove;
 }

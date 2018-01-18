@@ -33,4 +33,17 @@ public class HospitalRoom {
 	@JoinColumn(name = "hospital_room")
 	private Collection<Drug> drugs;
 
+	public void addDrug(Drug drug) {
+		drug.setId(null);
+		Drug drugTmp = getDrugs().stream().filter(
+				d -> d.getDosage().equals(drug.getDosage()) && d.getName().getId().equals(drug.getName().getId()))
+				.findFirst().orElse(drug);
+
+		if (drugTmp.getId() == null) {
+			getDrugs().add(drugTmp);
+		} else {
+			drugTmp.setAmount(drugTmp.getAmount() + drug.getAmount());
+		}
+	}
+
 }

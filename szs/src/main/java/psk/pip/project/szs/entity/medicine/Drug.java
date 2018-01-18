@@ -30,4 +30,13 @@ public class Drug {
 	@ManyToOne
 	@JoinColumn(name = "drug_unit")
 	private Unit unit;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Drug))
+			return false;
+		Drug drug = (Drug) obj;
+		return drug.getName().getName().equals(name.getName()) && drug.getDosage().equals(dosage)
+				&& drug.getUnit().getName().equals(unit.getName());
+	}
 }
