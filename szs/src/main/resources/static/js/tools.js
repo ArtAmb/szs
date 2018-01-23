@@ -233,7 +233,7 @@ var tools = function () {
                 searcher.buildSearcher(content, 'drug-searcher', '/searcher/drug/query', {
                     isRequired: true,
                     isDTOValue: true,
-                    name: 'drug'
+                    name: 'drugId'
                 });
                 jsBuilder.createInput('number', 'drugs-to-move-input').appendTo(content).attr(consts.REQUIRED_ATTR, true).attr(consts.DTO_VALUE_ATTR, true).attr('name', 'drugsAmountToMove');
                 $(this).html(content);

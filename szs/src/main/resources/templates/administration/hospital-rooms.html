@@ -19,27 +19,36 @@
                         <div th:text="${drug.amount}" />
                         <div th:text="${drug.unit.name}" />
                     </td>
-                    <td> <button id="update-room-button" class="simplebutton edit_button">Edytuj</button></td>
-                    <td> <button id="add-drugs-button" class="simplebutton edit_button">Pobierz leki z magazynu</button></td>
+                    <td> <button th:id="'update-room-button' + ${room.id}" class="simplebutton edit_button">Edytuj</button></td>
+                    <td> <button th:id="'add-drugs-button' + ${room.id}" class="simplebutton edit_button">Pobierz leki z magazynu</button></td>
+                    <td> <a th:id="'room-detail' + ${room.id}" th:href="@{'/view/hospital/room/' + ${room.id}}" class="simplebutton edit_button">Szczegoly</a></td>
                     
                     <script th:inline='javascript'>
-                    $('#update-room-button').click(function () { 
-                        $('#save-dialog-button').unbind().click(function () {
-                            if (tools.validation('add-or-update-dialog')) {
-                                var dto = {
-                                    id: [[${room.id}]],
-                                    roomName: tools.inputToJSON('dialog-input')
+                        $('#update-room-button' + [[${ room.id }]]).click(function () {
+                            $('#save-dialog-button').unbind().click(function () {
+                                if (tools.validation('add-or-update-dialog')) {
+                                    var dto = {
+                                        id: [[${ room.id }]],
+                                        roomName: tools.inputToJSON('dialog-input')
+                                    }
+                                    tools.postForObject("/hospital/new/room", dto, function () { alert('Edytowano sale'); location.reload(); }, function () { alert('Blad edycji nowej sali'); });
                                 }
-                                tools.postForObject("/hospital/new/room", dto, function () { alert('Edytowano sale'); location.reload(); }, function () { alert('Blad edycji nowej sali'); });
-                            }
+                            });
+                            $('#add-or-update-dialog').dialog('option', 'title', "Edycja sali");
+                            $('#add-or-update-dialog').dialog('open');
                         });
-                        $('#add-or-update-dialog').dialog('option', 'title', "Edycja sali");
-                        $('#add-or-update-dialog').dialog('open');
-                    });
+                        $('#add-drugs-button'+ [[${ room.id }]]).click(function () {
+                            $('#drug-transfer-confirm-button').unbind().click(function () {
+                                if (tools.validation('drug-transfer-dialog')) {
+                                    var dto = tools.tagInputsToDTO('drug-transfer-dialog');
+                                    dto.roomId = [[${ room.id }]];
+                                    tools.postForObject("/hospital/room/drug/transfer", dto, function () { alert('Przeslano leki'); location.reload(); }, function (e) { alert('Blad transferu' + e.message); });
+                                }
+                            });
+                            $('#drug-transfer-dialog').dialog('option', 'title', "Transfer lekow");
+                            $('#drug-transfer-dialog').dialog('open');
+                        });
                     </script>
-
-
-
                 </tr>
             </table>
 	</div>
@@ -62,16 +71,7 @@
             });
             
             tools.openDialogToDrugTransfer();
-            $('#add-drugs-button').click(function () { 
-				$('#drug-transfer-confirm-button').unbind().click(function () {
-					if (tools.validation('drug-transfer-dialog')) {
-						var dto = tools.tagInputsToDTO('drug-transfer-dialog');
-						tools.postForObject("/hospital/room/drug/transfer", dto, function () { alert('Przeslano leki'); location.reload(); }, function (e) { alert('Blad transferu' + e.message); });
-					}
-				});
-				$('#drug-transfer-dialog').dialog('option', 'title', "Transfer lekow");
-				$('#drug-transfer-dialog').dialog('open');
-            });
+            
 
 		</script>
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import psk.pip.project.szs.dto.administration.DrugTransferDTO;
@@ -34,12 +35,12 @@ public class HospitalController {
 	}
 
 	@PostMapping("/hospital/new/room")
-	public void addNewRoom(HospitalRoom dto) {
+	public void addNewRoom(@RequestBody HospitalRoom dto) {
 		roomRepo.save(dto);
 	}
 
 	@PostMapping("/hospital/room/drug/transfer")
-	public void transferDrugsFromWarehouseToHospitalRoom(DrugTransferDTO dto) {
+	public void transferDrugsFromWarehouseToHospitalRoom(@RequestBody DrugTransferDTO dto) {
 		hospitalService.transferDurgsFromStorageToRoom(dto);
 	}
 

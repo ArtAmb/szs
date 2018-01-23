@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.rooms.StorageService;
@@ -39,8 +40,13 @@ public class AdministrationFrontController {
 	}
 
 	@GetMapping("/view/administration/room/storage")
-	public String View(Model model) {
+	public String storageView(Model model) {
 		return getTemplateDir("storage-room");
 	}
 
+	@GetMapping("/view/hospital/room/{id}")
+	public String hospitalRoomView(@PathVariable Long id, Model model) {
+		model.addAttribute("room", roomRepository.findOne(id));
+		return getTemplateDir("room-detail");
+	}
 }
