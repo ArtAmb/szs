@@ -65,7 +65,7 @@
             $('#add-drugs-button').click(function () { 
 				$('#drug-transfer-confirm-button').unbind().click(function () {
 					if (tools.validation('drug-transfer-dialog')) {
-						var dto = tools.tagInputsToDTO(drug-transfer-dialog);
+						var dto = tools.tagInputsToDTO('drug-transfer-dialog');
 						tools.postForObject("/hospital/room/drug/transfer", dto, function () { alert('Przeslano leki'); location.reload(); }, function (e) { alert('Blad transferu' + e.message); });
 					}
 				});
