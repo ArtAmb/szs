@@ -18,6 +18,10 @@ public class AdministrationFrontController {
 	@Autowired
 	private RoomRepository roomRepository;
 
+	/*
+	 * @Autowired private WardRepository wardRepository;
+	 */
+
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
 	}
@@ -30,6 +34,34 @@ public class AdministrationFrontController {
 	@GetMapping("/view/administration/new/employee")
 	public String addEmployeeView(Model model) {
 		return getTemplateDir("add-employee");
+	}
+
+	@GetMapping("/view/administration/wards")
+	public String wardsView(Model model) {
+		model.addAttribute("wards");
+		return getTemplateDir("hospital-wards");
+	}
+
+	@GetMapping("/view/administration/teamDoctors")
+	public String teamDoctorsView(Model model) {
+		model.addAttribute("teamDoctors");
+		return getTemplateDir("hospital-teamDoctors");
+	}
+
+	@GetMapping("/view/administration/teamNurses")
+	public String teamNursesView(Model model) {
+		model.addAttribute("teamNurses");
+		return getTemplateDir("hospital-teamNurses");
+	}
+
+	@GetMapping("/view/administration/new/teamDoctors")
+	public String addteamDoctorsView(Model model) {
+		return getTemplateDir("add-teamDoctors");
+	}
+
+	@GetMapping("/view/administration/new/teamNurses")
+	public String addteamNursesView(Model model) {
+		return getTemplateDir("add-teamNurses");
 	}
 
 	@GetMapping("/view/administration/rooms")
