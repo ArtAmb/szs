@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,4 +56,9 @@ public class SearcherController {
 				.collect(Collectors.toList());
 	}
 
+	@PostMapping("/searcher/doctor/query/filter/inTeam/{isInTeam}")
+	public Collection<SearcherResponse> findDoctorsFilterInTeamByQueryString(@RequestBody SearcherParams params,
+			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
+		return employeeService.findDoctorsByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
+	};
 }

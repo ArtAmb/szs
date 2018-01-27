@@ -43,4 +43,7 @@ public class Employee {
 	private BigDecimal salary;
 	@ManyToOne
 	private DoctorSpecialization specialization;
+
+	@Builder.Default
+	private boolean inTeam = false;
 }

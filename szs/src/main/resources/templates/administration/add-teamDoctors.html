@@ -9,10 +9,10 @@
         <div id="new-teamDoctors-view-container">
             <script th:inline='javascript'>
                 var napisHtml = "";
-                for (var x=0; x<5; x++) 
+                for (var x = 0; 5 > x; x++) 
                 {
                     napisHtml = '<div id="doctor-searcher-div"><label>Doktor </label> </div><br/><br/>';
-                    document.getElementById("napis").innerHTML = napisHtml;
+                    $("#new-teamDoctors-view-container").append(napisHtml);
                         var options = {
                             isRequired: true,
                             isDTOValue: true,
@@ -32,8 +32,8 @@
                             else {
                                 alert("Prosze uzupelnic wymagane pola");
                             }
-                        });
-                    }
+                        }); 
+                }
             </script>
             <button id="arrangeteamDoctorsButton" class="simplebutton">Utwórz drużynę</button>
         </div>
