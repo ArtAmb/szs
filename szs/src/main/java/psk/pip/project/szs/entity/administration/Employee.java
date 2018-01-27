@@ -32,7 +32,7 @@ public class Employee {
 	private Long id;
 
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
-	@JoinColumn(name = "employee_id")
+	@JoinColumn(name = "user_id")
 	private User user;
 	private String name;
 	private String surname;
@@ -43,4 +43,7 @@ public class Employee {
 	private BigDecimal salary;
 	@ManyToOne
 	private DoctorSpecialization specialization;
+
+	@Builder.Default
+	private boolean inTeam = false;
 }

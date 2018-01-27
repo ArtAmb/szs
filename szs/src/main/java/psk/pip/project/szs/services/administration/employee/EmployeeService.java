@@ -25,16 +25,19 @@ public class EmployeeService {
 	public Collection<SearcherResponse> findDoctorsByQueryStr(String query) {
 		return employeeRepository.findByQuery(query).stream().map(e -> SearcherMapper.map(e))
 				.collect(Collectors.toList());
-
 	}
-	
-	public Collection<Employee> findAllDoctors(){
+
+	public Collection<SearcherResponse> findDoctorsByQueryStrWithFilerOnInTeam(String query, boolean inTeam) {
+		return employeeRepository.findByQuery(query).stream().filter(d -> d.isInTeam() == inTeam)
+				.map(e -> SearcherMapper.map(e)).collect(Collectors.toList());
+	}
+
+	public Collection<Employee> findAllDoctors() {
 		return employeeRepository.findAllDoctors();
 	}
-	
-	public Collection<Employee> findAllNurses(){
+
+	public Collection<Employee> findAllNurses() {
 		return employeeRepository.findAllNurses();
 	}
-	
 
 }

@@ -15,6 +15,9 @@
 					<td> <button class="simplebutton medical_action_button" id='sign-out-button'>Zakoncz pobyt</button></td>
 					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} + '/long-term-visit/' + ${patient.currentVisit.id} + '/detail'}">Szczegoly</a></td>
+					<td  th:if="${patient.room == null}" ><button class="simplebutton medical_action_button important_button" id='set-in-room-button'>UWAGA! Pacjent nie jest przypisany do sali! Kliknij tutaj!</button></td>
+					<td  th:if="${patient.room != null}" ><a class="simplebutton medical_action_button" th:text="${patient.room.roomName}" th:href="@{'/view/hospital/room/' + ${patient.room.id}}"/></td>
+					<td  th:if="${patient.room != null}" ><button class="simplebutton medical_action_button" id='set-in-room-button'>Przenies pacjenta</button></td>
 				</tr>
 			</table>
 		</div>
@@ -27,6 +30,19 @@
 				tools.postForObject("/patient/sign-out", dto, function(){ alert('Wypisano za szpitala'); location.reload();}, function() {alert("Blad wypisu")});
 				
 			});
+			tools.openDialogToSetPatientInRoom();
+			$('#set-in-room-button').click(function () {
+					$('#set-patient-in-room-confirm-button').unbind().click(function () {
+						if (tools.validation('set-patient-in-room-dialog')) {
+							var roomId = tools.tagInputsToDTO('set-patient-in-room-dialog').roomId;
+							var patientId = [[${ patient.id }]];
+							tools.postForObject("/patient/" + patientId + "/set-in-room/" + roomId, null, function () { alert('Przypisano sale'); location.reload(); }, function () { alert('Nie udalo sie przypisac sali'); });
+						}
+					});
+					$('#set-patient-in-room-dialog').dialog('option', 'title', "Przypisz sale");
+					$('#set-patient-in-room-dialog').dialog('open');
+				});
+			
 		</script>
 
 

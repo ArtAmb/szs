@@ -8,10 +8,14 @@
     <br/>Dodawanie lekarzy
         <div id="new-teamDoctors-view-container">
             <script th:inline='javascript'>
+
                 var napisHtml;
                 for(var x=0; 5 > x; x++) 
+
                 {
+
                     napisHtml = '<div id="doctor-searcher-div'+ x +'"><label>Doktor </label> </div><br/><br/>';
+
                     $("#new-teamDoctors-view-container").append(napisHtml);
                         var options = {
                             isRequired: true,
@@ -19,9 +23,11 @@
                             name: 'doctorId',
                             buildOptionDataFunc: function (optionTag, dto) { }
                         };
+
                         searcher.buildSearcher($("#doctor-searcher-div" + x), "doctor-searcher", "/searcher/doctor/query", options);
                         
                     }
+
             </script>
             <button id="arrangeteamDoctorsButton" class="simplebutton">Utwórz drużynę</button>
             <script>

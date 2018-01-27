@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import psk.pip.project.szs.entity.medicine.LongTermVisit;
+import psk.pip.project.szs.entity.storage.HospitalRoom;
 import psk.pip.project.szs.services.patient.Patient;
 
 @Data
@@ -29,6 +30,9 @@ public class PatientCard {
 
 	@ManyToOne
 	private LongTermVisit currentVisit;
+
+	@ManyToOne
+	private HospitalRoom room;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "patient_card_id")

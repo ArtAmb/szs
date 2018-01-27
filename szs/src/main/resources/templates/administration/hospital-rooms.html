@@ -13,12 +13,6 @@
 				<tr th:each="room : ${rooms}">
 					<td th:text="${room.id}"></td>
                     <td th:text="${room.roomName}"></td>
-                    <td th:each="drug : ${room.drugs}" th:text="Leki">
-                        <div th:text="${drug.name.name}" />
-                        <div th:text="${drug.dosage}" />
-                        <div th:text="${drug.amount}" />
-                        <div th:text="${drug.unit.name}" />
-                    </td>
                     <td> <button th:id="'update-room-button' + ${room.id}" class="simplebutton edit_button">Edytuj</button></td>
                     <td> <button th:id="'add-drugs-button' + ${room.id}" class="simplebutton edit_button">Pobierz leki z magazynu</button></td>
                     <td> <a th:id="'room-detail' + ${room.id}" th:href="@{'/view/hospital/room/' + ${room.id}}" class="simplebutton edit_button">Szczegoly</a></td>
@@ -42,7 +36,7 @@
                                 if (tools.validation('drug-transfer-dialog')) {
                                     var dto = tools.tagInputsToDTO('drug-transfer-dialog');
                                     dto.roomId = [[${ room.id }]];
-                                    tools.postForObject("/hospital/room/drug/transfer", dto, function () { alert('Przeslano leki'); location.reload(); }, function (e) { alert('Blad transferu' + e.message); });
+                                    tools.postForObject("/hospital/room/drug/transfer", dto, function () { alert('Przeslano leki'); location.reload(); }, function (e) { alert('Blad transferu ' + e.responseJSON.message); });
                                 }
                             });
                             $('#drug-transfer-dialog').dialog('option', 'title', "Transfer lekow");

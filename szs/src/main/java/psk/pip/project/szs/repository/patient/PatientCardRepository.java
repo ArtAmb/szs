@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import psk.pip.project.szs.entity.patient.PatientCard;
+import psk.pip.project.szs.entity.storage.HospitalRoom;
 import psk.pip.project.szs.services.patient.Patient;
 
 public interface PatientCardRepository extends JpaRepository<PatientCard, Long> {
@@ -16,4 +17,6 @@ public interface PatientCardRepository extends JpaRepository<PatientCard, Long> 
 	Patient findPatientById(Long id);
 
 	Collection<PatientCard> findLongTermVisitsByIdAndLongTermVisits_isEndTrue(Long id);
+
+	Collection<PatientCard> findByRoom(HospitalRoom room);
 }
