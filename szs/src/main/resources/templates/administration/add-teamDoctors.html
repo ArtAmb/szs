@@ -24,7 +24,7 @@
                             buildOptionDataFunc: function (optionTag, dto) { }
                         };
 
-                        searcher.buildSearcher($("#doctor-searcher-div" + x), "doctor-searcher", "/searcher/doctor/query", options);
+                        searcher.buildSearcher($("#doctor-searcher-div" + x), "doctor-searcher", "/searcher/doctor/query/filter/inTeam/false", options);
                         
                     }
 
@@ -40,6 +40,7 @@
                             }
                             var dto = {memberIds:memberIds};
                             tools.postForObject('/administration/team/doctor', dto, function () {
+                                
                                 alert("Dodano zespół lekarzy");
                             }, function () {
                                 alert("Blad dodania zespoły lekarzy");

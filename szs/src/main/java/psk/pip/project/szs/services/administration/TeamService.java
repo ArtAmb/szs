@@ -42,7 +42,9 @@ public class TeamService {
 			Employee doctor = employeeRepo.findDoctorById(id);
 			if (doctor == null)
 				throw new CannotCreateTeamException("Nie znaleziono Doktora o tym ID = " + id);
+			doctor.setInTeam(true);
 			doctors.add(doctor);
+
 		}
 
 		DoctorTeam doctorTeam = new DoctorTeam();
@@ -51,6 +53,19 @@ public class TeamService {
 		doctorTeam.setLeader(leader);
 
 		doctorTeamRepo.save(doctorTeam);
+	}
+
+	public void deleteDoctorTeam(Long id) {
+		DoctorTeam doctorTeam = doctorTeamRepo.findOne(id);
+		if (doctorTeam == null)
+			throw new RuntimeException("Drużyna lekarzy o id:" + id + "nie istnieje");
+		for (Employee doctor : doctorTeam.getMembers()) {
+			doctor.setInTeam(false);
+			employeeRepo.save(doctor);
+		}
+		// TODO zrobić kiedyś tranzakcję
+		doctorTeamRepo.delete(id);
+
 	}
 
 	public void createTeamNurse(TeamDTO dto) {
