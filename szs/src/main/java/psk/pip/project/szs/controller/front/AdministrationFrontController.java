@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import psk.pip.project.szs.entity.storage.HospitalRoom;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.storage.RoomRepository;
+import psk.pip.project.szs.services.administration.TeamService;
 import psk.pip.project.szs.services.rooms.StorageService;
 
 @Controller
@@ -29,6 +30,8 @@ public class AdministrationFrontController {
 	/*
 	 * @Autowired private WardRepository wardRepository;
 	 */
+	@Autowired
+	private TeamService teamService;
 
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
@@ -52,7 +55,7 @@ public class AdministrationFrontController {
 
 	@GetMapping("/view/administration/teamDoctors")
 	public String teamDoctorsView(Model model) {
-		model.addAttribute("teamDoctors");
+		model.addAttribute("teamDoctors", teamService.allTeamDoctors());
 		return getTemplateDir("hospital-teamDoctors");
 	}
 
