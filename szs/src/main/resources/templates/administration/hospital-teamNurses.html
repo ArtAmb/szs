@@ -1,0 +1,14 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+        
+	<div id="teamNurses-view" class="content">
+        <a th:href="@{'/view/administration/new/teamNurses'}" id="arrangeVisitButton" class="simplebutton">Stwórz nowy</a>
+        <br/>wyswietlenie zespołu pielęgniarek
+	</div>
+
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>
