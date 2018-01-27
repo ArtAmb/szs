@@ -8,34 +8,44 @@
     <br/>Dodawanie lekarzy
         <div id="new-teamDoctors-view-container">
             <script th:inline='javascript'>
-                var napisHtml = "";
-                for (var x=0; x<5; x++) 
+                var napisHtml;
+                for(var x=0; 5 > x; x++) 
                 {
-                    napisHtml = '<div id="doctor-searcher-div"><label>Doktor </label> </div><br/><br/>';
-                    document.getElementById("napis").innerHTML = napisHtml;
+                    napisHtml = '<div id="doctor-searcher-div'+ x +'"><label>Doktor </label> </div><br/><br/>';
+                    $("#new-teamDoctors-view-container").append(napisHtml);
                         var options = {
                             isRequired: true,
                             isDTOValue: true,
                             name: 'doctorId',
                             buildOptionDataFunc: function (optionTag, dto) { }
                         };
-                        searcher.buildSearcher($("#doctor-searcher-div"), "doctor-searcher", "/searcher/doctor/query", options);
-                        $("#arrangeteamDoctorsButton").click(function () {
-                            var dto = tools.tagInputsToDTO("new-teamDoctors-view-container");
-                            
-                            if (tools.validation("new-teamDoctors-view-container"))
-                                tools.postForObject('/administration/createTeamDoctor', dto, function () {
-                                    alert("Dodano zespół lekarzy");
-                                }, function () {
-                                    alert("Blad dodania zespoły lekarzy");
-                                });
-                            else {
-                                alert("Prosze uzupelnic wymagane pola");
-                            }
-                        });
+                        searcher.buildSearcher($("#doctor-searcher-div" + x), "doctor-searcher", "/searcher/doctor/query", options);
+                        
                     }
             </script>
             <button id="arrangeteamDoctorsButton" class="simplebutton">Utwórz drużynę</button>
+            <script>
+                $("#arrangeteamDoctorsButton").click(function () {
+                        if (tools.validation("new-teamDoctors-view-container")) {
+                            var memberIds = [];
+                            for (var y = 0; 5 > y; y++) {
+                                var dto = tools.tagInputsToDTO("doctor-searcher-div" + y);
+                                memberIds.push(dto.doctorId);
+                            }
+                            var dto = {memberIds:memberIds};
+                            tools.postForObject('/administration/team/doctor', dto, function () {
+                                alert("Dodano zespół lekarzy");
+                            }, function () {
+                                alert("Blad dodania zespoły lekarzy");
+                            });
+                        }
+                        else {
+                            alert("Prosze uzupelnic wymagane pola");
+                        }
+
+                    });
+            </script>
+
         </div>
 	</div>
 

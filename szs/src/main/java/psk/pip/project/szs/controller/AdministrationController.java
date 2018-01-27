@@ -1,6 +1,7 @@
 package psk.pip.project.szs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import psk.pip.project.szs.dto.administration.WardDTO;
 import psk.pip.project.szs.entity.administration.DoctorTeam;
 import psk.pip.project.szs.entity.administration.NurseTeam;
 import psk.pip.project.szs.entity.administration.Ward;
+import psk.pip.project.szs.repository.administration.DoctorTeamRepository;
 import psk.pip.project.szs.services.administration.TeamService;
 import psk.pip.project.szs.services.administration.WardService;
 import psk.pip.project.szs.services.administration.employee.EmployeeService;
@@ -24,6 +26,9 @@ public class AdministrationController {
 	private TeamService teamService;
 
 	@Autowired
+	private DoctorTeamRepository doctorTeamRepo;
+
+	@Autowired
 	private WardService wardService;
 
 	@Autowired
@@ -32,6 +37,11 @@ public class AdministrationController {
 	@PostMapping(value = "/administration/team/doctor")
 	public void createDoctorTeam(@RequestBody TeamDTO dto) {
 		teamService.createTeamDoctor(dto);
+	}
+
+	@DeleteMapping("/administration/teamDoctor/{id}")
+	public void deleteTeamDoctor(@PathVariable Long id) {
+		doctorTeamRepo.delete(id);
 	}
 
 	@PostMapping(value = "/administration/team/nurse")

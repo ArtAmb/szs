@@ -6,7 +6,30 @@
         
 	<div id="teamDoctors-view" class="content">
         <a th:href="@{'/view/administration/new/teamDoctors'}" id="arrangeVisitButton" class="simplebutton">Stwórz nowy</a>
-    <br/>wyswietlenie zespołu lekarzy
+	<br/>wyswietlenie zespołu lekarzy
+	<br/>
+	<table class="table table-bordered table-striped">
+			<tr th:if="${teamDoctors.empty}">
+				<td colspan="4">Brak zespołów lekarzy</td>
+			</tr>
+			<tr th:each="teamDoctor : ${teamDoctors}">
+				<td th:text="${teamDoctor.id}"></td>
+				<td th:text="'dr. '+${teamDoctor.leader.surname}"></td>
+
+				<td> <button th:id="'update-doctorTeam-button' + ${teamDoctor.id}" class="simplebutton edit_button">Edytuj</button></td>
+				<td> <button th:id="'delete-doctorTeam-button' + ${teamDoctor.id}" class="simplebutton edit_button">Usuń</button></td>
+				<script th:inline='javascript'>
+					$('#delete-doctorTeam-button'+[[${teamDoctor.id}]]).click(function(){
+						tools.deleteObject('/administration/teamDoctor/' +[[${teamDoctor.id}]],function () {
+                                alert("Usunięto zespół lekarzy");
+								location.reload();
+                            }, function () {
+                                alert("Bląd usunięcia zespołu lekarzy");
+                            });
+					});
+				</script>
+			</tr>
+		</table>
 	</div>
 
 

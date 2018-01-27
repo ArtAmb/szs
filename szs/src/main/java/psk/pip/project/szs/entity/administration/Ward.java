@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
-import psk.pip.project.szs.entity.employee.Doctor;
 
 @Data
 @Entity
@@ -18,7 +17,7 @@ public class Ward {
 
 	private String nameWard;
 	@ManyToOne
-	private Doctor idLeader;
+	private Employee leader;
 	@ManyToOne
 	private DoctorTeam idDoctorTeam;
 	@ManyToOne
