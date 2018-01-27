@@ -41,7 +41,7 @@ public class AdministrationController {
 
 	@DeleteMapping("/administration/teamDoctor/{id}")
 	public void deleteTeamDoctor(@PathVariable Long id) {
-		doctorTeamRepo.delete(id);
+		teamService.deleteDoctorTeam(id);
 	}
 
 	@PostMapping(value = "/administration/team/nurse")

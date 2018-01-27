@@ -37,6 +37,16 @@ public class TeamService {
 
 	public void createTeamDoctor(TeamDTO dto) {
 		Collection<Long> memberIds = dto.getMemberIds();
+		int licznik;
+		for (Long id : memberIds) {
+			licznik = 0;
+			for (Long id2 : memberIds) {
+				if (id == id2)
+					licznik++;
+				if (licznik > 1)
+					throw new RuntimeException("Dodano kilukrotnie tego samego doktora");
+			}
+		}
 		LinkedList<Employee> doctors = new LinkedList<>();
 		for (Long id : memberIds) {
 			Employee doctor = employeeRepo.findDoctorById(id);
