@@ -1,5 +1,7 @@
 package psk.pip.project.szs.services;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +33,14 @@ public class HospitalService {
 		drugRepo.save(drug); // TODO potrzebna transakacja...
 
 		HospitalRoom room = roomRepo.findOne(dto.getRoomId());
-		room.addDrug(drug);
+		room.addDrug(Drug.builder().name(drug.getName()).dosage(drug.getDosage()).amount(dto.getDrugsAmountToMove())
+				.unit(drug.getUnit()).build());
 		roomRepo.save(room);
 
+	}
+
+	public Collection<HospitalRoom> findByQuery(String query) {
+		return roomRepo.findByQuery(query);
 	}
 
 }

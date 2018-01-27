@@ -240,5 +240,43 @@ var tools = function () {
             }
         });
     }
+
+    tools.openDialogToSetPatientInRoom = function () {
+        $('<div>').attr('id', 'set-patient-in-room-dialog').dialog({
+            autoOpen: false,
+            resizable: false,
+            title: "",
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: [{
+                id: 'set-patient-in-room-confirm-button',
+                text: "Zapisz",
+                click: function () {
+                    $(this).dialog("close");
+                },
+            },
+            {
+                text: "Anuluj",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+            close: function () {
+                $(this).html("");
+            },
+            open: function () {
+                var content = jsBuilder.createElement('div');
+                jsBuilder.createElement('label').text('Sala:').appendTo(content);
+                content.append('  ');
+                searcher.buildSearcher(content, 'room-searcher', '/searcher/room/query', {
+                    isRequired: true,
+                    isDTOValue: true,
+                    name: 'roomId'
+                });
+                $(this).html(content);
+            }
+        });
+    }
     return tools;
 }();

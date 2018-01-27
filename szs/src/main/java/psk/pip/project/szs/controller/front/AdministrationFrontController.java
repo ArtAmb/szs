@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import psk.pip.project.szs.entity.storage.HospitalRoom;
+import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.rooms.StorageService;
 
@@ -16,7 +18,13 @@ public class AdministrationFrontController {
 	public static String templateDirRoot = "administration/";
 
 	@Autowired
+	private PatientCardRepository patientCardRepo;
+
+	@Autowired
 	private RoomRepository roomRepository;
+
+	@Autowired
+	private StorageService storageService;
 
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
@@ -41,12 +49,16 @@ public class AdministrationFrontController {
 
 	@GetMapping("/view/administration/room/storage")
 	public String storageView(Model model) {
+		model.addAttribute("room", storageService.getStorage());
 		return getTemplateDir("storage-room");
 	}
 
 	@GetMapping("/view/hospital/room/{id}")
 	public String hospitalRoomView(@PathVariable Long id, Model model) {
-		model.addAttribute("room", roomRepository.findOne(id));
+		HospitalRoom room = roomRepository.findOne(id);
+		model.addAttribute("room", room);
+		model.addAttribute("patients",
+				patientCardRepo.findByRoom(room).stream().map(p -> p.toPatient()).collect(Collectors.toList()));
 		return getTemplateDir("room-detail");
 	}
 }

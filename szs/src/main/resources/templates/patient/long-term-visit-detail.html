@@ -33,7 +33,7 @@
                         tools.postForObject("/patient/sign-in", dto, function () {
                              alert('Zapisano do szpitala');
                              window.location.href = '/view/patient/'+ [[${patient.id}]] +'/detail';
-                             }, function (e) { alert("Blad zapisu. " + e); });
+                             }, function (e) { alert("Blad zapisu. " + e.responseJSON.message); });
                     });
             </script>
             </div>
@@ -63,7 +63,7 @@
 									patientCardId: [[${ patient.id }]],
 									longTermVisitId: Number(signInButton.attr('visitId'))
 								}
-								tools.postForObject("/patient/sign-in", dto, function () { alert('Zapisano do szpitala'); }, function (e) { alert("Blad zapisu. " + e); });
+								tools.postForObject("/patient/sign-in", dto, function () { alert('Zapisano do szpitala'); }, function (e) { alert("Blad zapisu. " + e.responseJSON.message); });
 							});
 					</script>
 				</tr>

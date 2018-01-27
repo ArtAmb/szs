@@ -22,20 +22,22 @@
 					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} + '/long-term-visit/' + ${visit.id} + '/detail'}">Szczegoly</a></td>
 					<script th:inline='javascript'>
-							var signInButton = $('#sign-in-button' +  [[${ visit.id }]]);
-							if ([[${ patient.currentVisit }]] != null)
-								signInButton.addClass('deactivate');
-							
-							signInButton.click(function () {
-								var dto = {
-									patientCardId: [[${ patient.id }]],
-									longTermVisitId: Number(signInButton.attr('visitId'))
-								}
-								tools.postForObject("/patient/sign-in", dto, function () {
-									 alert('Zapisano do szpitala');
-									 window.location.href = '/view/patient/'+ [[${patient.id}]] +'/detail';
-									 }, function (e) { alert("Blad zapisu. " + e); });
-							});
+						(function() {
+								var signInButton = $('#sign-in-button' + [[${ visit.id }]]);
+								if ([[${ isCurrVisit }]])
+									signInButton.addClass('deactivate');
+
+								signInButton.click(function () {
+									var dto = {
+										patientCardId: [[${ patient.id }]],
+										longTermVisitId: Number(signInButton.attr('visitId'))
+									}
+									tools.postForObject("/patient/sign-in", dto, function () {
+										alert('Zapisano do szpitala');
+										window.location.href = '/view/patient/' + [[${ patient.id }]] + '/detail';
+									}, function (e) { alert("Blad zapisu. " + e.responseJSON.message); });
+								});
+							}) ();
 					</script>
 				</tr>
 

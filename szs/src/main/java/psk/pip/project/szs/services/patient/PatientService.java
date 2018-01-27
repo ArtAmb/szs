@@ -18,6 +18,7 @@ import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.patient.Referral;
 import psk.pip.project.szs.entity.patient.ReferralType;
 import psk.pip.project.szs.entity.patient.Visit;
+import psk.pip.project.szs.entity.storage.HospitalRoom;
 import psk.pip.project.szs.repository.administration.EmployeeRepository;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
 import psk.pip.project.szs.repository.patient.LongTermVisitRepository;
@@ -25,6 +26,7 @@ import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.patient.ReferralRepository;
 import psk.pip.project.szs.repository.patient.ReferralTypeRepository;
 import psk.pip.project.szs.repository.patient.VisitRepository;
+import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.patient.exception.CannotAddVisitException;
 import psk.pip.project.szs.services.patient.exception.CannotDeleteVisit;
 import psk.pip.project.szs.services.patient.exception.CannotGetPatientCard;
@@ -56,6 +58,9 @@ public class PatientService {
 
 	@Autowired
 	private ReferralRepository referralRepo;
+
+	@Autowired
+	private RoomRepository hospitalRoomRepo;
 
 	public void addPatientCard(PersonalDataDTO patient) {
 		PatientCard patientCard = new PatientCard();
@@ -151,6 +156,7 @@ public class PatientService {
 		}
 
 		card.setCurrentVisit(null);
+		card.setRoom(null);
 		longTermVisit.setIsEnd(true);
 		longTermVisitRepo.save(longTermVisit);
 		patientCardRepo.save(card);
@@ -192,6 +198,15 @@ public class PatientService {
 
 	public Patient findPatientByCardId(Long id) {
 		return patientCardRepo.findPatientById(id);
+	}
+
+	public void setPatientInRoom(Long patientId, Long roomId) {
+		PatientCard card = patientCardRepo.findOne(patientId);
+		HospitalRoom room = hospitalRoomRepo.findOne(roomId);
+		if (room == null)
+			throw new RuntimeException("Sala o id == " + roomId + " nie istnieje");
+		card.setRoom(room);
+		patientCardRepo.save(card);
 	}
 
 }

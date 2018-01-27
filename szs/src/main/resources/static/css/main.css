@@ -24,6 +24,10 @@ margin: auto;
     background-color: #3e8e41;
 }
 
+.important_button{
+    background-color: red !important;
+}
+
 .clickable{
 cursor: pointer;
 }

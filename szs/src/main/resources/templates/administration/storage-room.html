@@ -2,17 +2,33 @@
 
 <body>
 
-	<div th:replace="mainMenu :: mainMenu"> </div>
+    <div th:replace="mainMenu :: mainMenu"> </div>
 
-	<div id="administration-view" class="content">
+    <div id="administration-view" class="content">
 
-	<a class="simplebutton">Zarejestruj pacjenta (???)</a>
-	<a th:href='@{/view/administration/new/employee}' class="simplebutton">Dodaj pracownika</a>
-	<a class="simplebutton">Stworz oddzial</a>
-	<a th:href='@{/view/administration/rooms}' class="simplebutton">Sale</a>
-	<a th:href='@{/view/administration/room/storage}' class="simplebutton">Magazyn</a>
+            <div ><lable >Id: </lable> <span th:text="${room.id}"/> </div>
+            <div > <lable >Nazwa: </lable> <span th:text="${room.roomName}"/> </div>
+        <table class="table table-bordered table-striped">
+            <tr th:if="${room.drugs.empty}">
+                <td>Brak lekow w magazynie!</td>
+            </tr>
+			<tr>
+                <td th:text="Lek " />
+                <td th:text="Dawka " />
+				<td th:text="jednostka " />
+				<td th:text="ilosc " />
+            </tr>
+            <tr th:each="drug: ${room.drugs}">
+                <td th:text="${drug.name.name}" />
+                 <td th:text="${drug.dosage}" />
+				<td th:text="${drug.unit.name}" />
+				<td th:text="${drug.amount}" />
+            </tr>
+        </table>
 
-	</div>
+        <a th:href='@{/view/administration}' class="simplebutton">Wroc</a>
 
-	<div th:replace="mainMenu :: footer"> </div>
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
 </body>

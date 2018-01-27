@@ -83,4 +83,10 @@ public class PatientController {
 	public void registerReferral(@RequestBody ReferralDTO dto) {
 		patientService.registerReferral(dto);
 	}
+
+	@PostMapping(value = "/patient/{patientId}/set-in-room/{roomId}")
+	public void registerReferral(@PathVariable Long patientId, @PathVariable Long roomId) {
+		patientService.setPatientInRoom(patientId, roomId);
+	}
+
 }
