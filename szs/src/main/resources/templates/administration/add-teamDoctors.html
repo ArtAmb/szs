@@ -40,10 +40,9 @@
                             }
                             var dto = {memberIds:memberIds};
                             tools.postForObject('/administration/team/doctor', dto, function () {
-                                
                                 alert("Dodano zespół lekarzy");
-                            }, function () {
-                                alert("Blad dodania zespoły lekarzy");
+                            }, function (e) {
+                                alert("Blad dodania zespołu lekarzy \n" +e.responseJSON.message);
                             });
                         }
                         else {
