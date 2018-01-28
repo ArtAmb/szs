@@ -11,7 +11,10 @@ import psk.pip.project.szs.entity.registration.User;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	@Query(value = "select e from Employee e where e.type='DOCTOR' and (e.name like %?1% or e.surname like %?1% or e.id like %?1%)")
-	Collection<Employee> findByQuery(String query);
+	Collection<Employee> findDoctorsByQuery(String query);
+
+	@Query(value = "select e from Employee e where e.type='NURSE' and (e.name like %?1% or e.surname like %?1% or e.id like %?1%)")
+	Collection<Employee> findNursesByQuery(String query);
 
 	@Query(value = "select e from Employee e where e.type='DOCTOR' and e.id=?1")
 	Employee findDoctorById(Long id);

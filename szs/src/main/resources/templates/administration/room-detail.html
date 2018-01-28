@@ -1,0 +1,42 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="administration-view" class="content">
+
+        <div><lable >Id: </lable> <span th:text="${room.id}"/> </div>
+        <div> <lable >Nazwa: </lable> <span th:text="${room.roomName}"/> </div>
+        <table class="table table-bordered table-striped">
+            <tr th:if="${room.drugs.empty}">
+                <td>Brak lekow na sali!</td>
+            </tr>
+
+            <tr th:each="drug: ${room.drugs}">
+                <td th:text="${drug.name.name}" />
+                <td th:text="${drug.dosage}" />
+                <td th:text="${drug.amount}" />
+                <td th:text="${drug.unit.name}" />
+            </tr>
+        </table>
+        <h3>Pacjenci: </h3>
+        <table class="table table-bordered table-striped">
+            <tr th:if="${patients.empty}">
+                <td colspan="4">Brak pacjentow</td>
+            </tr>
+            <tr th:each="patient : ${patients}">
+                <td th:text="${patient.name}"></td>
+                <td th:text="${patient.surname}"></td>
+                <td> <a class="simplebutton medical_action_button" th:href="@{'/view/medical/action/patient/' + ${patient.id}}">Akcja</a></td>
+                <td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
+            </tr>
+
+        </table>
+
+        <a th:href='@{/view/administration/rooms}' class="simplebutton">Wroc</a>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

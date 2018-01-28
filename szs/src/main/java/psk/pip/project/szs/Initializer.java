@@ -4,15 +4,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import psk.pip.project.szs.dto.administration.EmployeeDTO;
+import psk.pip.project.szs.dto.patient.VisitDTO;
+import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.employee.Nurse;
 import psk.pip.project.szs.entity.medicine.Drug;
 import psk.pip.project.szs.entity.medicine.DrugName;
+import psk.pip.project.szs.entity.medicine.MeasurementType;
 import psk.pip.project.szs.entity.medicine.Unit;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.patient.ReferralType;
@@ -20,6 +24,7 @@ import psk.pip.project.szs.entity.registration.Role;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.entity.storage.HospitalRoom;
+import psk.pip.project.szs.repository.administration.EmployeeRepository;
 import psk.pip.project.szs.repository.employee.DoctorRepository;
 import psk.pip.project.szs.repository.employee.NurseRepository;
 import psk.pip.project.szs.repository.medicine.DrugNameRepository;
@@ -32,6 +37,9 @@ import psk.pip.project.szs.repository.systemUser.RoleRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.administration.employee.EmployeeService;
 import psk.pip.project.szs.services.administration.employee.EmployeeType;
+import psk.pip.project.szs.services.medicine.ConfigService;
+import psk.pip.project.szs.services.medicine.MedicalActionService;
+import psk.pip.project.szs.services.patient.PatientService;
 import psk.pip.project.szs.services.rooms.StorageService;
 
 @Component
@@ -73,6 +81,18 @@ public class Initializer {
 	@Autowired
 	EmployeeService employeeService;
 
+	@Autowired
+	EmployeeRepository employeeRepository;
+
+	@Autowired
+	MedicalActionService medicalActionService;
+
+	@Autowired
+	PatientService patientService;
+
+	@Autowired
+	ConfigService configService;
+
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@PostConstruct
@@ -84,6 +104,8 @@ public class Initializer {
 		addReferralType();
 		addStorage();
 		addDrugs();
+		// addVisit();
+		addConfigTypes();
 	}
 
 	void addStorage() {
@@ -164,6 +186,7 @@ public class Initializer {
 		referralTypeRepo.save(new ReferralType());
 	}
 
+	@Transactional
 	void addSystemUsers() {
 		for (Role role : Roles.toRoleValues()) {
 			roleRepo.save(role);
@@ -174,17 +197,32 @@ public class Initializer {
 		col.add(Roles.ROLE_DOCTOR.toRole());
 		col.add(Roles.ROLE_NURSE.toRole());
 		col.add(Roles.ROLE_MEDICAL_EMPLOYEE.toRole());
-		userRepo.save(new User(1l, "user1", encoder.encode("test"), col, true));
+		User user = User.builder().login("user1").password(encoder.encode("test")).roles(col).active(true).build();
+		employeeRepository.save(
+				Employee.builder().user(user).name("Admin").surname("Adminowski").type(EmployeeType.DOCTOR).build());
 
 		col = new LinkedList<>();
 		col.add(Roles.ROLE_DOCTOR.toRole());
 		col.add(Roles.ROLE_NURSE.toRole());
 		col.add(Roles.ROLE_MEDICAL_EMPLOYEE.toRole());
-		userRepo.save(new User(2l, "user2", encoder.encode("test"), col, true));
+		User user2 = User.builder().login("user22").password(encoder.encode("test")).roles(col).active(true).build();
+		employeeRepository.save(
+				Employee.builder().user(user2).name("Doctor").surname("Doctorowski").type(EmployeeType.DOCTOR).build());
 
 		col = new LinkedList<>();
 		col.add(Roles.ROLE_NURSE.toRole());
 		col.add(Roles.ROLE_MEDICAL_EMPLOYEE.toRole());
-		userRepo.save(new User(3l, "user3", encoder.encode("test"), col, true));
+		User user3 = User.builder().login("user3").password(encoder.encode("test")).roles(col).active(true).build();
+		employeeRepository.save(Employee.builder().user(user3).name("Pielegniarka").surname("Pielegniarska")
+				.type(EmployeeType.NURSE).build());
+	}
+
+	void addVisit() {
+		patientService.addLongTermVisit(VisitDTO.builder().isLongTermVisit(true).patientCardId(1l)
+				.startDate("2018-01-15").startTime("12:00").build());
+	}
+
+	void addConfigTypes() {
+		configService.addMeasurementType(MeasurementType.builder().name("%").build());
 	}
 }

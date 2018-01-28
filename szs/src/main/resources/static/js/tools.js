@@ -129,19 +129,21 @@ var tools = function () {
         return $.map(obj, function (el) { return el });
     }
     tools.inputToJSON = function (inputId) {
-        return $("#" + inputId).val().trim() == "" ? null : $("#" + inputId).val().trim();
+        var input = $("#" + inputId);
+        if(input.val() == null) return null;
+        return input.val().trim() == "" ? null : input.val().trim();
     }
-    
-    tools.selectToJSON = function(selectId){
-       var select = $("#" + selectId);
-       var selVal = select.find("[value='"+select.val()+"']").text();
-       if(select.val() == null)
-        return null;
-       
-        return { 
-        id: select.val(),
-        name: tools.isBlank(selVal) ? null : selVal
-       };
+
+    tools.selectToJSON = function (selectId) {
+        var select = $("#" + selectId);
+        var selVal = select.find("[value='" + select.val() + "']").text();
+        if (select.val() == null)
+            return null;
+
+        return {
+            id: select.val(),
+            name: tools.isBlank(selVal) ? null : selVal
+        };
     }
 
     tools.tagInputsToDTO = function (tagName) {
@@ -166,6 +168,10 @@ var tools = function () {
         });
 
         return dto;
+    }
+
+    tools.validateDtoForGivenDrugs = function (dto) {
+        return ((dto.number != null && dto.drugId != null) || (dto.number == null && dto.drugId == null));
     }
 
     tools.openDialog = function () {
@@ -202,5 +208,81 @@ var tools = function () {
         });
     }
 
+    tools.openDialogToDrugTransfer = function () {
+        $('<div>').attr('id', 'drug-transfer-dialog').dialog({
+            autoOpen: false,
+            resizable: false,
+            title: "",
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: [{
+                id: 'drug-transfer-confirm-button',
+                text: "Przeslij",
+                click: function () {
+                    $(this).dialog("close");
+                },
+            },
+            {
+                text: "Anuluj",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+            close: function () {
+                $(this).html("");
+            },
+            open: function () {
+                var content = jsBuilder.createElement('div');
+                jsBuilder.createElement('label').text('Nazwa:').appendTo(content);
+                content.append('  ');
+                searcher.buildSearcher(content, 'drug-searcher', '/searcher/drug/query', {
+                    isRequired: true,
+                    isDTOValue: true,
+                    name: 'drugId'
+                });
+                jsBuilder.createInput('number', 'drugs-to-move-input').appendTo(content).attr(consts.REQUIRED_ATTR, true).attr(consts.DTO_VALUE_ATTR, true).attr('name', 'drugsAmountToMove');
+                $(this).html(content);
+            }
+        });
+    }
+
+    tools.openDialogToSetPatientInRoom = function () {
+        $('<div>').attr('id', 'set-patient-in-room-dialog').dialog({
+            autoOpen: false,
+            resizable: false,
+            title: "",
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: [{
+                id: 'set-patient-in-room-confirm-button',
+                text: "Zapisz",
+                click: function () {
+                    $(this).dialog("close");
+                },
+            },
+            {
+                text: "Anuluj",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+            close: function () {
+                $(this).html("");
+            },
+            open: function () {
+                var content = jsBuilder.createElement('div');
+                jsBuilder.createElement('label').text('Sala:').appendTo(content);
+                content.append('  ');
+                searcher.buildSearcher(content, 'room-searcher', '/searcher/room/query', {
+                    isRequired: true,
+                    isDTOValue: true,
+                    name: 'roomId'
+                });
+                $(this).html(content);
+            }
+        });
+    }
     return tools;
 }();

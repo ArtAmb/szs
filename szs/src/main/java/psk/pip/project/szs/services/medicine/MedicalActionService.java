@@ -25,6 +25,7 @@ import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.exception.CannotAddMedicalActionException;
 import psk.pip.project.szs.services.medicine.exception.CannotGetMeasurementType;
+import psk.pip.project.szs.services.medicine.strategy.GivenDrugSaver;
 import psk.pip.project.szs.services.medicine.strategy.RootMeasurementSaver;
 
 @Service
@@ -45,6 +46,8 @@ public class MedicalActionService {
 	private PatientCardRepository patientRepo;
 	@Autowired
 	private RootMeasurementSaver rootMeasurementSaver;
+	@Autowired
+	private GivenDrugSaver givenDrugSaver;
 
 	public void addExaminationType(ExaminationTypeDTO dto) {
 
@@ -123,5 +126,9 @@ public class MedicalActionService {
 	public Collection<TemplateDTO> getTemplates(String login) {
 		return getMeasurementTemplates(login).stream().map(root -> TemplateMapper.map(root))
 				.collect(Collectors.toList());
+	}
+
+	public void saveGivenDrug(String login, GivenDrug givenDrug) {
+		givenDrugSaver.saveNurseAction(login, givenDrug);
 	}
 }

@@ -35,7 +35,7 @@ public class WardService {
 		if (nurseTeam == null)
 			throw new CannotCreateWardException("Nie znaleziono DoctorTeam o ID = " + dto.getIdNurseTeam());
 		ward.setNameWard(dto.getNameWard());
-		ward.setIdLeader(doctorTeam.getLeader());
+		ward.setLeader(doctorTeam.getLeader());
 
 		wardRepo.save(ward);
 

@@ -33,4 +33,31 @@ public class HospitalRoom {
 	@JoinColumn(name = "hospital_room")
 	private Collection<Drug> drugs;
 
+	public void addDrug(Drug drug) {
+		drug.setId(null);
+		Drug drugTmp = getDrugs().stream().filter(
+				d -> d.getDosage().equals(drug.getDosage()) && d.getName().getId().equals(drug.getName().getId()))
+				.findFirst().orElse(drug);
+
+		if (drugTmp.getId() == null) {
+			getDrugs().add(drugTmp);
+		} else {
+			drugTmp.setAmount(drugTmp.getAmount() + drug.getAmount());
+		}
+	}
+
+	public void deleteDrugs(Drug drug) {
+		Drug drugInRoom = getDrugs().stream().filter(d -> d.getId().equals(drug.getId())).findFirst().orElse(null);
+		if (drugInRoom == null)
+			throw new RuntimeException("Lek " + drug.toString() + " nie jest obecny na sali");
+
+		Integer newAmount = drugInRoom.getAmount() - drug.getAmount();
+		if (newAmount < 0)
+			throw new RuntimeException(
+					"Ilosc leku " + drug.toString() + " nie jest wystarczajaca! Prosze zlozyc zamowienie do magazynu.");
+
+		drugInRoom.setAmount(newAmount);
+
+	}
+
 }

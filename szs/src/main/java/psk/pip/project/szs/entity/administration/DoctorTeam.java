@@ -12,21 +12,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
-import psk.pip.project.szs.entity.employee.Doctor;
 
-
-
-@Entity 
+@Entity
 @Data
 @Table(name = "doctor_team")
-public class DoctorTeam{
+public class DoctorTeam {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
-	
+
 	@ManyToOne
-	protected Doctor leader;
+	protected Employee leader;
 	@OneToMany
 	@JoinColumn(name = "doctor_team")
-	protected Collection<Doctor> members;
+	protected Collection<Employee> members;
 }

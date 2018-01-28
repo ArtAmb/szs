@@ -39,4 +39,15 @@ public class StorageService {
 		roomRepo.save(storage);
 	}
 
+	public boolean checkIfEnough(Drug drug) {
+		HospitalRoom storage = roomRepo.findOne(STORAGE_ID);
+
+		for (Drug storageDrug : storage.getDrugs()) {
+			if (storageDrug.equals(drug)) {
+				return storageDrug.getAmount() >= drug.getAmount();
+			}
+		}
+		return true;
+	}
+
 }

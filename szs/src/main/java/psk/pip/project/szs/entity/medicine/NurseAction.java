@@ -1,6 +1,7 @@
 package psk.pip.project.szs.entity.medicine;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +38,8 @@ public class NurseAction {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private MedicalItem medicineItem;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Drug drug;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<Drug> drugs;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private MeasurementRoot measurementRoot;

@@ -33,7 +33,7 @@
                         tools.postForObject("/patient/sign-in", dto, function () {
                              alert('Zapisano do szpitala');
                              window.location.href = '/view/patient/'+ [[${patient.id}]] +'/detail';
-                             }, function (e) { alert("Blad zapisu. " + e); });
+                             }, function (e) { alert("Blad zapisu. " + e.responseJSON.message); });
                     });
             </script>
             </div>
@@ -44,7 +44,7 @@
 					<tr th:each="action : ${visit.actions}">
 					<td th:text="${action.id}"></td>
                     <td> <label th:text="${#dates.format(action.date, 'dd-MMM-yyyy hh:mm')}" /></td>
-                    <th:block th:switch="${action.type}">
+                    <th:block th:switch="${action.type.name()}">
                         <td th:case='DRUG_GIVEN'>Podanie leku</td>
                         <td th:case='MEASUREMENT'>Pomiar</td>
                         <td th:case='ITEM_GIVEN'>Uzycie sprzetu medycznego</td>
@@ -63,7 +63,7 @@
 									patientCardId: [[${ patient.id }]],
 									longTermVisitId: Number(signInButton.attr('visitId'))
 								}
-								tools.postForObject("/patient/sign-in", dto, function () { alert('Zapisano do szpitala'); }, function (e) { alert("Blad zapisu. " + e); });
+								tools.postForObject("/patient/sign-in", dto, function () { alert('Zapisano do szpitala'); }, function (e) { alert("Blad zapisu. " + e.responseJSON.message); });
 							});
 					</script>
 				</tr>

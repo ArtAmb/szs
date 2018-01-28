@@ -69,7 +69,8 @@ public class MedicalActionController {
 	@GetMapping("/view/medical/action/patient/{patientId}/giveDrug")
 	public String giveDrugView(@PathVariable Long patientId, Model model) {
 		PatientCard patient = patientCardRepository.findOne(patientId);
-		model.addAttribute("patient", patient);
+		model.addAttribute("patient", patient.toPatient());
+		model.addAttribute("room", patient.getRoom());
 		return getTemplateDir("giveDrug");
 	}
 

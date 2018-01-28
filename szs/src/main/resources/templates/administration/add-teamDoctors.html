@@ -1,0 +1,60 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+        
+	<div id="add-teamDoctors-view" class="content">
+    <br/>Dodawanie lekarzy
+        <div id="new-teamDoctors-view-container">
+            <script th:inline='javascript'>
+
+                var napisHtml;
+                for(var x=0; 5 > x; x++) 
+
+                {
+
+                    napisHtml = '<div id="doctor-searcher-div'+ x +'"><label>Doktor </label> </div><br/><br/>';
+
+                    $("#new-teamDoctors-view-container").append(napisHtml);
+                        var options = {
+                            isRequired: true,
+                            isDTOValue: true,
+                            name: 'doctorId',
+                            buildOptionDataFunc: function (optionTag, dto) { }
+                        };
+
+                        searcher.buildSearcher($("#doctor-searcher-div" + x), "doctor-searcher", "/searcher/doctor/query/filter/inTeam/false", options);
+                        
+                    }
+
+            </script>
+            <button id="arrangeteamDoctorsButton" class="simplebutton">Utwórz drużynę</button>
+            <script>
+                $("#arrangeteamDoctorsButton").click(function () {
+                        if (tools.validation("new-teamDoctors-view-container")) {
+                            var memberIds = [];
+                            for (var y = 0; 5 > y; y++) {
+                                var dto = tools.tagInputsToDTO("doctor-searcher-div" + y);
+                                memberIds.push(dto.doctorId);
+                            }
+                            var dto = {memberIds:memberIds};
+                            tools.postForObject('/administration/team/doctor', dto, function () {
+                                alert("Dodano zespół lekarzy");
+                            }, function (e) {
+                                alert("Blad dodania zespołu lekarzy \n" +e.responseJSON.message);
+                            });
+                        }
+                        else {
+                            alert("Prosze uzupelnic wymagane pola");
+                        }
+
+                    });
+            </script>
+
+        </div>
+	</div>
+
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

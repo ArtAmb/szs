@@ -5,6 +5,8 @@
 	<div th:replace="mainMenu :: mainMenu"> </div>
 
 	<div id="doctor-view" class="content">
+			<button id="searchDoctorButton" class="simplebutton">Szukaj</button>
+			<button th:href='@{/view/administration/new/employee}' id="addDoctorButton" class="simplebutton">Dodaj</button>
 
 		<table class="table table-bordered table-striped">
 				<tr th:if="${doctors.empty}">
@@ -17,7 +19,7 @@
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${doctor.id} +'/detail'}">Szczegoly</a></td>
 				</tr>
 
-			</table>
+		</table>
 
 
 	</div>
