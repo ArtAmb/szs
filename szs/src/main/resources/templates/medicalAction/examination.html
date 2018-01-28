@@ -1,0 +1,52 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+    <div th:replace="mainMenu :: mainMenu"> </div>
+    <div id="new-examination" class="content">
+        <div id="new-examination-view-container">
+            <table>
+            <label>Typ badania</label> 
+            <tr> <td id='examinationType-td'></td></tr>
+            </table>
+            <label>Opis</label> <br/>
+            <textarea name="examinationDescription"  dtovalue='true' required='true' cols="100" rows="5"></textarea> <br/>
+            <label>Data</label> <input type="date" id="start-date-input" name='startDate' dtovalue='true' required='true'/><br/>
+            <label>Czas</label> <input type="time" id="start-time-input" name='startTime' dtovalue='true' required='true'/><br/>
+            <label>Data - planowany koniec (opcjonalna)</label> <input type="date" name='endDate' dtovalue='true' id="end-date-input" /><br/>
+            <label>Czas - planowany koniec (opcjonalna)</label> <input type="ttexime"  name='endTime' dtovalue='true' id="end-time-input"/><br/>
+            <br/>
+
+        <div id="new-recipt-view-container">
+            Recepta <button id="recipt-button-add" clicked='false'>Nowa recepta</button>
+            <br/><br/>
+        </div>
+
+            Skierowanie <button id="refferal-button-add" clicked='false'>Nowe skierowanie</button>
+            <br/><br/>
+
+          
+            <button id="arrangeExaminationButton" class="simplebutton">Zapisz badanie</button>
+
+            <script>
+                 $('#examinationType-td').html(jsBuilder.createSelect( 'examinationType-select', consts.URLS.getExaminationTypes));
+            
+                 var addButton = $('#' + 'recipt-button-add');
+                 addButton.click(function () {
+                    
+                    var new_textarea = $("<input>");
+                 
+
+                    $('#new-recipt-view-container').append(new_textarea);
+     
+     
+                 });
+            
+            </script>
+
+           
+        </div>
+        <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>
