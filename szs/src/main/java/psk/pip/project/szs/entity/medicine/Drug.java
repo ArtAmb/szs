@@ -45,4 +45,8 @@ public class Drug {
 		return name.getName() + " " + dosage + unit.getName();
 	}
 
+	public Drug getCopyWithoutIdAndAmount() {
+		return new Drug.DrugBuilder().name(name).dosage(dosage).build();
+	}
+
 }

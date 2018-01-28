@@ -2,6 +2,7 @@ package psk.pip.project.szs.services.medicine.strategy;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import psk.pip.project.szs.entity.medicine.Drug;
 import psk.pip.project.szs.entity.medicine.NurseAction;
 import psk.pip.project.szs.entity.storage.HospitalRoom;
+import psk.pip.project.szs.repository.medicine.DrugRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.medicine.GivenDrug;
@@ -22,6 +24,9 @@ public class GivenDrugSaver extends NurseActionSaverStrategy<GivenDrug> {
 
 	@Autowired
 	private RoomRepository roomRepo;
+	
+	@Autowired
+	private DrugRepository drugRepo;
 
 	@Override
 	protected void createNurseAction(GivenDrug obj) {
@@ -50,6 +55,18 @@ public class GivenDrugSaver extends NurseActionSaverStrategy<GivenDrug> {
 			room.deleteDrugs(drug);
 
 		roomRepo.save(room);
+		
+		
+		Collection<Drug> givenDrugsInfoCol = new LinkedList<>();
+		for (Drug drug : drugs){
+			Drug realDrug = drugRepo.findOne(drug.getId());
+			Drug givenDrugInfo = realDrug.getCopyWithoutIdAndAmount();
+			givenDrugInfo.setAmount(drug.getAmount());
+			givenDrugsInfoCol.add(givenDrugInfo);
+		}
+		object.setDrugs(givenDrugsInfoCol);
+		
+		
 		return true;
 	}
 

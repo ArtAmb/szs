@@ -19,26 +19,28 @@
     <br/>
     <br/>
     <div>
-        <div th:if="${room.drugs.empty}">Brak lekow na sali</div>
+        <div th:if="${room != null}"><span th:if="${room.drugs.empty}">Brak lekow na sali</span></div>
    
-        <table class="table table-bordered table-striped">
+        <script> var drugsIds = []; </script>
+        <table th:if="${room != null}" class="table table-bordered table-striped">
             <tr th:each="drug : ${room.drugs}" th:id="'drug' + ${drug.id}">
                 <td th:text="${drug.name.name} +' '+${drug.dosage}+' '+${drug.unit.name}+' w ilosci '+${drug.amount} + ' sztuk'"></td>
-                <td><input type='number' id='drug-number-to-give' name='number' dtovalue='true' /></td>
+                <td><input type='number' id='drug-number-to-give' name='amount' dtovalue='true' /></td>
+                <script th:inline='javascript'> drugsIds.push([[${drug.id}]]); </script>
             </tr>
         </table>    
     </div>
     <div><input id='given-drug-desc-input' type='text'/></div>
     <div><button class="simplebutton" id="give-drug-save-button">Zapisz</button></div>
         <script th:if="${room} != null" th:inline="javascript">
+            var room = [[${ room.id }]];
             $('#give-drug-save-button').click(function () {
-                var drugs = [[${ room.drugs }]];
                 var drugsDto = [];
-                
-                $(drugs).each(function () {
+                var patientId = [[${ patient.id }]];
+                $(drugsIds).each(function () {
                     var self = this;
-                    var dto = tools.tagInputsToDTO('drug' + self.id);
-                    dto.drugId = self.id;
+                    var dto = tools.tagInputsToDTO('drug' + self);
+                    dto.id = self;
 
                     if (tools.validateDtoForGivenDrugs(dto))
                         drugsDto.push(dto);
@@ -48,35 +50,18 @@
                 } else {
                     tools.postForObject("/medicalAction/givenDrug", 
                     {
-                      patientId: [[patient.id]],
+                      patientId: patientId,
                       drugs: drugsDto,
                       description: tools.inputToJSON('given-drug-desc-input')
                     }, function () {
                         alert('Podanie leku zostalo zapisane');
+                        location.reload();
                     }, function (e) {
                         alert('Blad! ' + e.responseJSON.message);
                     });
                 }
 
             });
-            var containerTag = $('#container');
-            var url = "/searcher/drug/in-room/" + [[${ room.id }]] + "/query";
-
-            options = {
-                buildOptionDataFunc: function (optionTag, dto) { },
-                isRequired: true,
-                isDTOValue: true,
-                name: "drugId"
-            }
-
-                    // var baseSearcherName = "drug-in-room-searcher";
-                    // var tag = $("#drugs-searchers");
-                    // searcher.buildSearcher(tag, baseSearcherName, url, options);
-                    // jsBuilder.createInput('number', 'drug-number-to-give')
-                    //     .appendTo(containerTag)
-                    //     .attr(consts.REQUIRED_ATTR, true)
-                    //     .attr(consts.DTO_VALUE_ATTR, true)
-                    //     .attr('name', 'number');
         </script>
     
     <div th:replace="mainMenu :: footer" ></div>

@@ -171,7 +171,7 @@ var tools = function () {
     }
 
     tools.validateDtoForGivenDrugs = function (dto) {
-        return ((dto.number != null && dto.drugId != null) || (dto.number == null && dto.drugId == null));
+        return ((!tools.isBlank(dto.amount) && dto.id != null) || (tools.isBlank(dto.amount) == null && dto.id == null));
     }
 
     tools.openDialog = function () {
