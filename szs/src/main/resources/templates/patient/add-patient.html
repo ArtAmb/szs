@@ -1,0 +1,36 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="new-patient-view" class="content">
+        <table>
+            <tr><td><label>Imie</label></td> <td><input id="name-input" required='true' /></td></tr>
+            <tr><td><label>Nazwisko</label></td> <td><input id="surname-input" required='true' /></td></tr>
+        </table>
+
+        <button id="save-button" class="simplebutton">Zapisz</button>
+
+        <script>
+            $("#save-button").click(function () {
+                if (tools.validation('new-patient-view')) {
+                    var dto = {
+                        name: tools.inputToJSON('name-input'),
+                        surname: tools.inputToJSON('surname-input'),
+                    }
+                    tools.postForObject("/patient/addPatientCard", dto, function () {
+                        alert("Dodano pacjenta");
+                    },
+                        function () {
+                            alert("Blad. Nie udalo sie dodac pacjenta");
+                        });
+                } else {
+                    alert('Prosze uzupelnic wymagane pola');
+                }
+            });
+
+        </script>
+    </div>
+	<div th:replace="mainMenu :: footer"> </div>
+</body>
