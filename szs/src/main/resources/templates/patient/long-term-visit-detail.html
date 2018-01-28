@@ -50,8 +50,7 @@
                         <td th:case='ITEM_GIVEN'>Uzycie sprzetu medycznego</td>
                     </th:block>
                     <td><label th:text="${action.medicalEmployee.user.login}"/> <label th:text="${action.medicalEmployee.name}"/> <label th:text="${action.medicalEmployee.surname}"/></td>
-                    <td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
-					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
+					<td> <a class="simplebutton detail_button" th:href="@{'/view/medical/action/'+${action.id}+'/patient/' + ${patient.id} +'/visit/' + ${visit.id} }">Szczegoly</a></td>
 					
 					<script th:inline='javascript'>
 							var signInButton = $('#sign-in-button' +  [[${ visit.id }]]);
