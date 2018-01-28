@@ -4,8 +4,9 @@ var compositeTools = function () {
     compositeTools.reset = function () {
         compositeTools.size = 0;
     },
-        compositeTools.addGroup = function (groupName, parentDivId, isTemplate) {
+        compositeTools.addGroup = function (groupName, parentDivId, isTemplate, readOnlyInDetailView) {
             if (isTemplate == undefined) isTemplate = false;
+            if (readOnlyInDetailView == undefined) readOnlyInDetailView = false;
 
             groupName = groupName + compositeTools.size;
             compositeTools.size = compositeTools.size + 1;
@@ -56,9 +57,12 @@ var compositeTools = function () {
                 .addClass('tree-element-container')
                 .attr(consts.REQUIRED_ATTR, true);
 
-            buttonDiv.append(addGroupB);
-            buttonDiv.append(addValueB);
-            buttonDiv.append(delGroupB);
+            if (!readOnlyInDetailView) {
+                buttonDiv.append(addGroupB);
+                buttonDiv.append(addValueB);
+                buttonDiv.append(delGroupB);
+            }
+
             buttonDiv.append(hideGroupB);
 
             var group = $('<li>')
@@ -89,8 +93,10 @@ var compositeTools = function () {
             return groupName;
         }
 
-    compositeTools.addValue = function (valueName, parentDivId, isTemplate, valueToSetForSelectTag) {
+    compositeTools.addValue = function (valueName, parentDivId, isTemplate, valueToSetForSelectTag, readOnlyInDetailView) {
         if (isTemplate == undefined || isTemplate == null) isTemplate = false;
+        if (readOnlyInDetailView == undefined || readOnlyInDetailView == null) readOnlyInDetailView = false;
+
         var parentGroup = $('#' + parentDivId);
         var buttonDiv = $('<span>');
         buttonDiv.attr('id', valueName + '-buttons');
@@ -114,8 +120,6 @@ var compositeTools = function () {
             .attr('type', "text")
             .attr(consts.REQUIRED_ATTR, true);
 
-
-
         var unitSelect = jsBuilder.createSelect(valueName + '-unit-select', consts.URLS.getMeasurementUnits, null, valueToSetForSelectTag)
             .attr(consts.REQUIRED_ATTR, true);
 
@@ -123,7 +127,8 @@ var compositeTools = function () {
         inputDiv.append(inputValue);
         inputDiv.append(unitSelect);
 
-        buttonDiv.append(delValueB);
+        if (!readOnlyInDetailView)
+            buttonDiv.append(delValueB);
 
         var leaf = $("<li>");
         leaf.attr('id', valueName + 'ID');
@@ -203,6 +208,30 @@ var compositeTools = function () {
                 });
             }
         };
+
+    compositeTools.showCompositeResult = function (element, groupName, parentDivId) {
+        var isLeaf = (element.elements == undefined || element.elements == null || element.elements.length == 0);
+
+        if (isLeaf) {
+            var valueName = $('#' + parentDivId).parent().attr('id') + "-detail-leaf";
+            var leaf = compositeTools.addValue(valueName, parentDivId, null, element.unit.id, true);
+            leaf.find('#' + valueName + '-value-input').prop('disabled', true).val(element.value);
+            leaf.find('#' + valueName + '-name-input').prop('disabled', true).val(element.name);
+            leaf.find('#' + valueName + '-unit-select').prop('disabled', true).val(element.name);
+            return;
+        }
+        else {
+            var newGroupName = compositeTools.addGroup(groupName, parentDivId, null, true);
+            $(element.elements).each(function () {
+                var groupContainerID = newGroupName + '-group-container';
+                var inputNameId = newGroupName + '-name';
+                $('#' + inputNameId).prop('disabled', true).val(element.name);
+                compositeTools.showCompositeResult(this, groupName, groupContainerID);
+            });
+        }
+    };
+
+
 
     return compositeTools;
 }();

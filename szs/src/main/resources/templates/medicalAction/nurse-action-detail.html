@@ -1,0 +1,50 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="nurse-action-detail" class="content">
+        <div><label>Id: </label><span th:text="${action.id}" /></div>
+        <div><h3>Pacjent</h3></div>
+        <div><label>Imie: </label><span th:text="${patient.name}" /></div>
+        <div><label>Nazwisko: </label><span th:text="${patient.surname}" /></div>
+        <div><a class="simplebutton" th:href="@{'/view/patient/' + ${patient.id} + '/long-term-visit/' + ${visitId} + '/detail'}">Przejdz do wizyty</a></div>
+        <div><h3>Pracownik medyczny:</h3></div>
+        <div><label>Login: </label><span th:text="${action.medicalEmployee.user.login}" /></div>
+        <div><label>Imie: </label><span th:text="${action.medicalEmployee.name}" /></div>
+        <div><label>Nazwisko: </label><span th:text="${action.medicalEmployee.surname}" /></div>
+        <br/>
+        <br/>
+        <div><h3>Szczegoly</h3></div>
+        <div><label>Data: </label><span th:text="${#dates.format(action.date, 'dd-MMM-yyyy hh:mm')}"/></div>
+        <div><label>Typ: </label><span th:text="${action.type.name()}" /></div>
+        <div><label>Opis: </label><span th:text="${action.description}" /></div>
+        <br/>
+        <br/>
+        <div th:switch='${action.type.name()}'>
+            <div th:case='DRUG_GIVEN'>
+                
+                <table class="table table-bordered table-striped">
+                    <tr th:each="drug : ${action.drugs}" th:id="'drug' + ${drug.id}">
+                        <td th:text="${drug.name.name} +' '+${drug.dosage}+' '+${drug.unit.name}+' w ilosci '+${drug.amount} + ' sztuk'"></td>
+                    </tr>
+                </table>  
+
+
+            </div>
+            <div id='nurse-action-measumerent-detail-div' th:case='MEASUREMENT'>
+                    <script th:inline="javascript">
+                        var measumerent = [[${action.measurementRoot.measurement}]];
+                        compositeTools.showCompositeResult(measumerent, 'nurse-action-measumerent-detail', 'nurse-action-measumerent-detail-div');
+                    </script>
+
+            </div>
+            <div th:case='ITEM_GIVEN'>Uzycie sprzetu medycznego</div>
+        </div>
+        
+       
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

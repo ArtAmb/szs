@@ -46,7 +46,7 @@ public class Drug {
 	}
 
 	public Drug getCopyWithoutIdAndAmount() {
-		return new Drug.DrugBuilder().name(name).dosage(dosage).build();
+		return new Drug.DrugBuilder().name(name).unit(unit).dosage(dosage).build();
 	}
 
 }

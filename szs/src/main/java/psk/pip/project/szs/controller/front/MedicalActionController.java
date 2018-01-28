@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
+import psk.pip.project.szs.repository.medicine.NurseActionRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.MedicalActionService;
@@ -28,6 +29,8 @@ public class MedicalActionController {
 	private UserRepository userRepo;
 	@Autowired
 	private MedicalActionService medicalActionService;
+	@Autowired
+	private NurseActionRepository nurseActionRepo;
 
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
@@ -87,6 +90,16 @@ public class MedicalActionController {
 		User user = userRepo.findByLogin(login);
 		model.addAttribute("user", user);
 		return getTemplateDir("measurement-template");
+	}
+
+	@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
+	@GetMapping("/view/medical/action/{id}/patient/{patientId}/visit/{visitId}")
+	public String nurseActionDetailsView(@PathVariable Long id, @PathVariable Long patientId,
+			@PathVariable Long visitId, Model model) {
+		model.addAttribute("visitId", visitId);
+		model.addAttribute("patient", patientCardRepository.findOne(patientId).toPatient());
+		model.addAttribute("action", nurseActionRepo.findOne(id));
+		return getTemplateDir("nurse-action-detail");
 	}
 
 }

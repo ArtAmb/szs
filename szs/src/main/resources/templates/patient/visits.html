@@ -18,7 +18,6 @@
                     <td> <label th:text="${visit.startDate}" /> <label th:text="${visit.startTime}" /> </td>
                     <td>dr. <label th:if="${visit.doctor.name}" th:text="${visit.doctor.name}" /> <label th:if="${visit.doctor.surname}" th:text="${visit.doctor.surname}" /> </td>
                     <td  th:if="${visit.isEnd != null}" th:text="${visit.isEnd}"></td>
-					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
 				</tr>
 
