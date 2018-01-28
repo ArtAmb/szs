@@ -39,4 +39,10 @@ public class Drug {
 		return drug.getName().getName().equals(name.getName()) && drug.getDosage().equals(dosage)
 				&& drug.getUnit().getName().equals(unit.getName());
 	}
+
+	@Override
+	public String toString() {
+		return name.getName() + " " + dosage + unit.getName();
+	}
+
 }

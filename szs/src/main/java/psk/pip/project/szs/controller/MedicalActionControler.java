@@ -19,9 +19,11 @@ import psk.pip.project.szs.entity.medicine.MeasurementRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementTemplateRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementType;
 import psk.pip.project.szs.entity.registration.Roles;
+import psk.pip.project.szs.services.medicine.GivenDrug;
 import psk.pip.project.szs.services.medicine.MedicalActionService;
 
 @RestController
+@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
 public class MedicalActionControler {
 
 	@Autowired
@@ -58,6 +60,11 @@ public class MedicalActionControler {
 	@PostMapping(value = "/medicalAction/measurement")
 	public void addMeasurement(@RequestBody MeasurementRoot root, Principal principal) {
 		medicalActionService.saveMeasurement(principal.getName(), root);
+	}
+
+	@PostMapping(value = "/medicalAction/givenDrug")
+	public void addGivenDrug(@RequestBody GivenDrug givenDrug, Principal principal) {
+		medicalActionService.saveGivenDrug(principal.getName(), givenDrug);
 	}
 
 	@PostMapping(value = "/medicalAction/measurement/template")

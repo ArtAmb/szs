@@ -13,6 +13,7 @@ import psk.pip.project.szs.dto.searcher.SearcherMapper;
 import psk.pip.project.szs.dto.searcher.SearcherParams;
 import psk.pip.project.szs.dto.searcher.SearcherResponse;
 import psk.pip.project.szs.repository.medicine.DrugRepository;
+import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.HospitalService;
 import psk.pip.project.szs.services.administration.employee.EmployeeService;
 import psk.pip.project.szs.services.rooms.StorageService;
@@ -27,6 +28,9 @@ public class SearcherController {
 
 	@Autowired
 	private StorageService storageService;
+
+	@Autowired
+	private RoomRepository roomRepo;
 
 	@Autowired
 	private HospitalService hospitalRoomService;
@@ -47,6 +51,13 @@ public class SearcherController {
 		// drugRepo.findByName_NameContaining(params.getQueryString()).stream().map(d
 		// -> SearcherMapper.map(d))
 		// .collect(Collectors.toList());
+	}
+
+	@PostMapping("/searcher/drug/in-room/{roomId}/query")
+	public Collection<SearcherResponse> findDrugsInRoomByQueryString(@RequestBody SearcherParams params,
+			@PathVariable Long roomId) throws InstantiationException, IllegalAccessException {
+		return roomRepo.findOne(roomId).getDrugs().stream().map(d -> SearcherMapper.map(d))
+				.collect(Collectors.toList());
 	}
 
 	@PostMapping("/searcher/room/query")
@@ -72,6 +83,6 @@ public class SearcherController {
 	public Collection<SearcherResponse> findNursesFilterInTeamByQueryString(@RequestBody SearcherParams params,
 			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
 		return employeeService.findDoctorsByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
-	};
+	}
 
 }

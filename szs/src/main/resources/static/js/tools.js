@@ -129,7 +129,9 @@ var tools = function () {
         return $.map(obj, function (el) { return el });
     }
     tools.inputToJSON = function (inputId) {
-        return $("#" + inputId).val().trim() == "" ? null : $("#" + inputId).val().trim();
+        var input = $("#" + inputId);
+        if(input.val() == null) return null;
+        return input.val().trim() == "" ? null : input.val().trim();
     }
 
     tools.selectToJSON = function (selectId) {
@@ -166,6 +168,10 @@ var tools = function () {
         });
 
         return dto;
+    }
+
+    tools.validateDtoForGivenDrugs = function (dto) {
+        return ((dto.number != null && dto.drugId != null) || (dto.number == null && dto.drugId == null));
     }
 
     tools.openDialog = function () {
