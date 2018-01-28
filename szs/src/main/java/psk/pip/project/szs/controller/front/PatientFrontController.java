@@ -47,7 +47,7 @@ public class PatientFrontController {
 	@GetMapping("/view/patient/add")
 	public String addPatientView(Model model) {
 		model.addAttribute("patients", patientService.getPatientCards());
-		return getTemplateDir("add");
+		return getTemplateDir("add-patient");
 	}
 
 	@GetMapping("/view/patient/{patientId}/detail")
