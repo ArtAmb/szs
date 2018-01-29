@@ -8,4 +8,6 @@ import psk.pip.project.szs.entity.administration.DoctorTeam;
 
 public interface DoctorTeamRepository extends CrudRepository<DoctorTeam, Long> {
 	Collection<DoctorTeam> findAll();
+
+	Collection<DoctorTeam> findByLeader_surnameContaining(String query);
 }

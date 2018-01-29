@@ -2,6 +2,7 @@ package psk.pip.project.szs.services.administration;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -135,6 +136,24 @@ public class TeamService {
 	public NurseTeam getTeamNurse(Long id) {
 		NurseTeam nurseTeam = nurseTeamRepo.findOne(id);
 		return nurseTeam;
+	}
+
+	public Collection<DoctorTeam> findTeamDoctorsByQueryStr(String queryString) {
+		return doctorTeamRepo.findByLeader_surnameContaining(queryString);
+	}
+
+	public Collection<DoctorTeam> findTeamDoctorsByQueryStrWithFilerOnInWard(String queryString, boolean inWard) {
+		return findTeamDoctorsByQueryStr(queryString).stream().filter(t -> t.isInWard() == inWard)
+				.collect(Collectors.toList());
+	}
+
+	public Collection<NurseTeam> findTeamNursesByQueryStr(String queryString) {
+		return nurseTeamRepo.findByLeader_surnameContaining(queryString);
+	}
+
+	public Collection<NurseTeam> findTeamNursesyQueryStrWithFilerOnInWard(String queryString, boolean inWard) {
+		return findTeamNursesByQueryStr(queryString).stream().filter(t -> t.isInWard() == inWard)
+				.collect(Collectors.toList());
 	}
 
 }

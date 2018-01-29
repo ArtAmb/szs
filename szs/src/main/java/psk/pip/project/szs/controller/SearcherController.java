@@ -35,7 +35,7 @@ public class SearcherController {
 
 	@Autowired
 	private HospitalService hospitalRoomService;
-	
+
 	@Autowired
 	private PatientService patientService;
 
@@ -88,11 +88,23 @@ public class SearcherController {
 			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
 		return employeeService.findNursesByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
 	}
-	
+
 	@PostMapping("/searcher/patient/query")
 	public Collection<SearcherResponse> findPatientsByQueryString(@RequestBody SearcherParams params)
 			throws InstantiationException, IllegalAccessException {
 		return patientService.findPatientsByQueryStr(params.getQueryString());
+	}
+
+	@PostMapping("/searcher/team/nurse/query/filter/inWard/{isInTeam}")
+	public Collection<SearcherResponse> findTeamNursesFilterInWardByQueryString(@RequestBody SearcherParams params,
+			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
+		return employeeService.findDoctorsByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
+	}
+
+	@PostMapping("/searcher/team/nurse/query/filter/inWard/{isInTeam}")
+	public Collection<SearcherResponse> findDoctorTeamsFilterInWardByQueryString(@RequestBody SearcherParams params,
+			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
+		return employeeService.findDoctorsByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
 	}
 
 }
