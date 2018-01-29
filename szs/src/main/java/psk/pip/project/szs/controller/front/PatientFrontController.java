@@ -3,6 +3,7 @@ package psk.pip.project.szs.controller.front;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -115,5 +116,12 @@ public class PatientFrontController {
 		PatientCard patientCard = patientRepo.findOne(patientId);
 		model.addAttribute("patient", patientCard.toPatient());
 		return getTemplateDir("visit-detail");
+	}
+	
+	@DeleteMapping("/view/patient/delete/{patientId}")
+	public String deletePatientCard(@PathVariable Long patientId, Model model) {
+		PatientCard patientCard = patientRepo.findOne(patientId);
+		model.addAttribute("patient", patientCard.toPatient());
+		return getTemplateDir("delete-patient-card");
 	}
 }
