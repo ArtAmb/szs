@@ -16,6 +16,7 @@ import psk.pip.project.szs.repository.medicine.DrugRepository;
 import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.HospitalService;
 import psk.pip.project.szs.services.administration.employee.EmployeeService;
+import psk.pip.project.szs.services.patient.PatientService;
 import psk.pip.project.szs.services.rooms.StorageService;
 
 @RestController
@@ -34,6 +35,9 @@ public class SearcherController {
 
 	@Autowired
 	private HospitalService hospitalRoomService;
+	
+	@Autowired
+	private PatientService patientService;
 
 	@PostMapping("/searcher/doctor/query")
 	public Collection<SearcherResponse> findDoctorsByQueryString(@RequestBody SearcherParams params)
@@ -83,6 +87,12 @@ public class SearcherController {
 	public Collection<SearcherResponse> findNursesFilterInTeamByQueryString(@RequestBody SearcherParams params,
 			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
 		return employeeService.findDoctorsByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
+	}
+	
+	@PostMapping("/searcher/patient/query")
+	public Collection<SearcherResponse> findPatientsByQueryString(@RequestBody SearcherParams params)
+			throws InstantiationException, IllegalAccessException {
+		return patientService.findPatientsByQueryStr(params.getQueryString());
 	}
 
 }

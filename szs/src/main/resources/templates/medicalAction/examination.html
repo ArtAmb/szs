@@ -4,44 +4,119 @@
     <div th:replace="mainMenu :: mainMenu"> </div>
     <div id="new-examination" class="content">
         <div id="new-examination-view-container">
-            <table>
-            <label>Typ badania</label> 
-            <tr> <td id='examinationType-td'></td></tr>
+            <table>            
+            <tr><td><label>Typ badania</label></td> <td id='examinationType-td'></td></tr>
             </table>
             <label>Opis</label> <br/>
             <textarea name="examinationDescription"  dtovalue='true' required='true' cols="100" rows="5"></textarea> <br/>
             <label>Data</label> <input type="date" id="start-date-input" name='startDate' dtovalue='true' required='true'/><br/>
             <label>Czas</label> <input type="time" id="start-time-input" name='startTime' dtovalue='true' required='true'/><br/>
-            <label>Data - planowany koniec (opcjonalna)</label> <input type="date" name='endDate' dtovalue='true' id="end-date-input" /><br/>
-            <label>Czas - planowany koniec (opcjonalna)</label> <input type="ttexime"  name='endTime' dtovalue='true' id="end-time-input"/><br/>
+            
             <br/>
 
-        <div id="new-recipt-view-container">
-            Recepta <button id="recipt-button-add" clicked='false'>Nowa recepta</button>
-            <br/><br/>
-        </div>
+            <div id="new-recipt-view-container">
+                Recepta <button id="recipt-button-add" clicked='false'>Nowa recepta</button>
+                <br/><br/>
+            </div>
 
-            Skierowanie <button id="refferal-button-add" clicked='false'>Nowe skierowanie</button>
-            <br/><br/>
+            <div id="new-refferal-view-container">
+                Skierowanie <button id="refferal-button-add" clicked='false'>Nowe skierowanie</button>
+                <br/><br/>
+            </div>
+
+            
 
           
-            <button id="arrangeExaminationButton" class="simplebutton">Zapisz badanie</button>
+            <button id="saveExaminationButton" class="simplebutton">Zapisz badanie</button>
 
-            <script>
+            <script th:inline='javascript'>
                  $('#examinationType-td').html(jsBuilder.createSelect( 'examinationType-select', consts.URLS.getExaminationTypes));
             
-                 var addButton = $('#' + 'recipt-button-add');
-                 addButton.click(function () {
-                    
-                    var new_textarea = $("<input>");
+                 var numberOfRecipt =0;
+                 var recipts= [];
+                 var space='<br/><br/>';
+                 var addReciptButton = $('#' + 'recipt-button-add');
                  
+                 addReciptButton.click(function () {
+                    
+                    
+                    var reciptsTextarea=[];
+                    recipts.push('recipt-'+numberOfRecipt);
+                    reciptsTextarea.push('recipt-'+numberOfRecipt);
 
+                    var text='Tresc recepty:<br/>';
+                    var new_textarea = jsBuilder.createTextarea('100','5',recipts[numberOfRecipt], reciptsTextarea[numberOfRecipt]);                 
+                    
+                    $('#new-recipt-view-container').append(text);
                     $('#new-recipt-view-container').append(new_textarea);
+                    $('#new-recipt-view-container').append(space);
+
+                    numberOfRecipt++;
      
      
                  });
+
+                 var addRefferalButton = $('#' + 'refferal-button-add');
+                 var numberOfRefferal =1;
+                 addRefferalButton.click(function () {
+                    
+                    var text='Skierowanie:<br/>';
+                    var label1='<label>Typ skierowania</label>';
+                    var new_input = jsBuilder.createInput('text', 'refferalType-input-'+numberOfRefferal);
+                    var label2='<br/><label>Dodatkowy opis</label><br/>';
+                    var new_textarea = jsBuilder.createTextarea('100','5','refferalDescription-'+numberOfRefferal, 'refferalDescription-textarea'+numberOfRefferal);                 
+
+                    $('#new-refferal-view-container').append(text);
+                    $('#new-refferal-view-container').append(label1);
+                    $('#new-refferal-view-container').append(new_input);
+                    $('#new-refferal-view-container').append(label2);
+                    $('#new-refferal-view-container').append(new_textarea);
+                    $('#new-refferal-view-container').append(space);
+                    numberOfRefferal++;
+     
+     
+                 });
+
+                 $("#saveExaminationButton").click(function () {
+                if (tools.validation('new-examination-view')) {
+
+                    for(i=0; i<recipts.length;i++){
+                        var reciptDTO = {
+                            
+                            recipt: tools.textareaToJSON(recipts[i]+'-input')                       
+                            
+                        }
+
+                        tools.postForObject("/medicalAction/recipt", examinationDTO, function () {
+                        alert("Dodano recepte");
+                        },
+                            function () {
+                                alert("Blad. Nie udalo sie dodac recepty");
+                            });
+                    }
+                    var examinationDTO = {
+                        examinationType: tools.selectToJSON('examinationType-input'),
+                        examinationDescription: tools.textareaToJSON('examinationDescription-input'),
+                        startDate: tools.inputToJSON('start-date-input'),
+                        startTime: tools.inputToJSON('start-time-input')                       
+                        
+                    }
+                    tools.postForObject("/administration/new/examination", examinationDTO, function () {
+                        alert("Dodano badanie");
+                    },
+                        function () {
+                            alert("Blad. Nie udalo sie dodac badania");
+                        });
+                } else {
+                    alert('Prosze uzupelnic wymagane pola');
+                }
+            });
+
+               
             
             </script>
+
+            
 
            
         </div>
