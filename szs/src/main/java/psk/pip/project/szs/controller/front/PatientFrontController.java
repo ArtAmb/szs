@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.repository.patient.LongTermVisitRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
+import psk.pip.project.szs.repository.patient.VisitRepository;
 import psk.pip.project.szs.services.patient.PatientService;
 
 @Controller
@@ -19,6 +20,8 @@ public class PatientFrontController {
 	private PatientService patientService;
 	@Autowired
 	private LongTermVisitRepository longTermVisitRepo;
+	@Autowired
+	private VisitRepository VisitRepo;
 	@Autowired
 	private PatientCardRepository patientRepo;
 
@@ -108,10 +111,9 @@ public class PatientFrontController {
 	
 	@GetMapping("/view/patient/{patientId}/visit/{visitId}/detail")
 	public String getVisitDetailView(@PathVariable Long patientId, @PathVariable Long visitId, Model model) {
-		model.addAttribute("visit", longTermVisitRepo.findOne(visitId));
+		model.addAttribute("visit", VisitRepo.findOne(visitId));
 		PatientCard patientCard = patientRepo.findOne(patientId);
 		model.addAttribute("patient", patientCard.toPatient());
-		model.addAttribute("isCurrVisit", patientCard.getCurrentVisit() != null);
 		return getTemplateDir("visit-detail");
 	}
 }
