@@ -49,6 +49,11 @@ public class AdministrationController {
 		teamService.deleteNurseTeam(id);
 	}
 
+	@DeleteMapping("/administration/ward/{id}")
+	public void deleteWard(@PathVariable Long id) {
+		wardService.deleteWard(id);
+	}
+
 	@PostMapping(value = "/administration/team/nurse")
 	public void createNurseTeam(@RequestBody TeamDTO dto) {
 		teamService.createTeamNurse(dto);

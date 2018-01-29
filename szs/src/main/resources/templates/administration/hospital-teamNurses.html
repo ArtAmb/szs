@@ -17,13 +17,13 @@
 			<td th:text="${teamNurse.id}"></td>
 			<td th:text="'dr. '+${teamNurse.leader.surname}"></td>
 
-			<td> <button th:id="'update-nurseTeam-button' + ${teamNurse.id}" class="simplebutton edit_button">Szczegóły</button></td>
+			<td> <a th:id="'teamNurse-detail' + ${teamNurse.id}" th:href="@{'/view/hospital/teamNurse/' + ${teamNurse.id}}" class="simplebutton edit_button">Szczegóły</a></td>
 			<td> <button th:id="'delete-nurseTeam-button' + ${teamNurse.id}" class="simplebutton edit_button">Usuń</button></td>
 			<script th:inline='javascript'>
 				$('#delete-nurseTeam-button'+[[${teamNurse.id}]]).click(function(){
 					tools.deleteObject('/administration/teamNurse/' +[[${teamNurse.id}]],function () {
 			alert("Usunięto zespół pielęgniarek");
-							location.reload();
+			location.reload();
 		    }, function () {
 			alert("Bląd usunięcia zespołu pielęgniarek");
 		    });
@@ -31,6 +31,7 @@
 			</script>
 		</tr>
 	</table>
+	<a th:href='@{/view/administration/wards}' class="simplebutton">Wroc</a>
 
 	<div th:replace="mainMenu :: footer"> </div>
 </body>

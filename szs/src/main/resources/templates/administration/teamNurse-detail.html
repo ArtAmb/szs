@@ -1,0 +1,30 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="administration-view" class="content">
+
+        <div><lable >Id: </lable> <span th:text="${team.id}"/> </div>
+        <div> <lable >Lider: </lable> <span th:text="${team.leader.name}+' '+${team.leader.surname}+' '+${team.leader.user.login} " /> </div>
+        <table class="table table-bordered table-striped">
+            
+            <td>Pozostałe pielęgniarki:</td>
+            
+
+            <tr th:each="member: ${team.members}">
+                <th:block th:if="${team.leader.id} != ${member.id}">
+                    <td th:text="${member.name}" />
+                    <td th:text="${member.surname}" />
+                    <td th:text="${member.user.login}" />
+                </th:block >
+            </tr>
+        </table>
+        
+        <a th:href='@{/view/administration/teamNurses}' class="simplebutton">Wroc</a>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

@@ -14,7 +14,7 @@
 					<td th:text="${nurse.name}"></td>
 					<td th:text="${nurse.surname}"></td>
 					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${nurse.id} +'/edit'}">Edytuj</a></td>
-					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${nurse.id} +'/detail'}">Szczegoly</a></td>
+					<td> <a th:id="'nurse-detail' + ${nurse.id}" th:href="@{'/view/nurse/' + ${nurse.id}}" class="simplebutton detail_button">Szczegóły</a></td>
 				</tr>
 			</table>
 	</div>

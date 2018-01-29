@@ -41,6 +41,7 @@
 				var dto = {memberIds:memberIds};
 				tools.postForObject('/administration/team/nurse', dto, function () {
 				    alert("Dodano zespół pielęgniarek");
+				    location="/view/administration/teamNurses";
 				}, function (e) {
 				    alert("Blad dodania zespołu pielęgniarek \n" +e.responseJSON.message);
 				});
