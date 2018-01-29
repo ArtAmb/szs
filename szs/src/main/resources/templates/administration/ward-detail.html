@@ -1,0 +1,22 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="administration-view" class="content">
+
+        <div><lable >Id: </lable> <span th:text="${ward.id}"/> </div>
+        <div><lable >Nazwa: </lable> <span th:text="${ward.nameWard}"/> </div>
+        <div> <lable >Ordynator: </lable> <span th:text="${ward.leader.name}+' '+${ward.leader.surname}+' '+${ward.leader.user.login} " /> </div>
+        <table class="table table-bordered table-striped">
+                <td> <a th:id="'teamDoctor-detail' + ${ward.idDoctorTeam.id}" th:href="@{'/view/hospital/teamDoctor/' + ${ward.idDoctorTeam.id}}" class="simplebutton edit_button">Zobacz lekarzy w oddziale</a></td>
+                <td> <a th:id="'teamNurse-detail' + ${ward.idNurseTeam.id}" th:href="@{'/view/hospital/teamNurse/' + ${ward.idNurseTeam.id}}" class="simplebutton edit_button">Zobacz pielęgniarki w oddziale</a></td>
+        </table>
+        
+        <a th:href='@{/view/administration/teamNurses}' class="simplebutton">Wroc</a>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

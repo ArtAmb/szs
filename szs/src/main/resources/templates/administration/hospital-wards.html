@@ -8,7 +8,34 @@
         <a th:href="@{'/view/administration/teamDoctors'}" class="simplebutton">Zespół lekarzy</a>
 	<a th:href="@{'/view/administration/teamNurses'}" class="simplebutton">Zespół pielęgniarek</a>
 	<br/>
+	<br/>
 	<a th:href="@{'/view/administration/new/ward'}" class="simplebutton">Stwórz oddział</a>
+	<br/> 
+	<br/> Oddziały:
+	<table class="table table-bordered table-striped">
+			<tr th:if="${wards.empty}">
+				<td colspan="4">Brak oddziałów.</td>
+			</tr>
+			<tr th:each="ward : ${wards}">
+				<td th:text="${ward.id}"></td>
+				<td th:text="'dr. '+${ward.leader.surname}"></td>
+	
+				<td> <a th:id="'ward-detail' + ${ward.id}" th:href="@{'/view/hospital/ward/' + ${ward.id}}" class="simplebutton edit_button">Szczegóły</a></td>
+				<td> <button th:id="'delete-ward-button' + ${ward.id}" class="simplebutton edit_button">Usuń</button></td>
+				<script th:inline='javascript'>
+					$('#delete-ward-button'+[[${ward.id}]]).click(function(){
+						tools.deleteObject('/administration/ward/' +[[${ward.id}]],function () {
+				alert("Usunięto oddział");
+								location.reload();
+			    }, function () {
+				alert("Bląd usunięcia oddziału");
+			    });
+					});
+				</script>
+			</tr>
+		</table>
+		<a th:href='@{/view/administration}' class="simplebutton">Wroc</a>
+
 	</div>
 
 

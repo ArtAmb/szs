@@ -6,8 +6,8 @@
         
 	<div id="teamDoctors-view" class="content">
         <a th:href="@{'/view/administration/new/teamDoctors'}" id="arrangeVisitButton" class="simplebutton">Stwórz nowy</a>
-	<br/>wyswietlenie zespołu lekarzy
 	<br/>
+	<br/>Zespoły lekarzy:
 	<table class="table table-bordered table-striped">
 			<tr th:if="${teamDoctors.empty}">
 				<td colspan="4">Brak zespołów lekarzy</td>
@@ -16,7 +16,7 @@
 				<td th:text="${teamDoctor.id}"></td>
 				<td th:text="'dr. '+${teamDoctor.leader.surname}"></td>
 
-				<td> <button th:id="'update-doctorTeam-button' + ${teamDoctor.id}" class="simplebutton edit_button">Szczegóły</button></td>
+				<td> <a th:id="'teamDoctor-detail' + ${teamDoctor.id}" th:href="@{'/view/hospital/teamDoctor/' + ${teamDoctor.id}}" class="simplebutton edit_button">Szczegóły</a></td>
 				<td> <button th:id="'delete-doctorTeam-button' + ${teamDoctor.id}" class="simplebutton edit_button">Usuń</button></td>
 				<script th:inline='javascript'>
 					$('#delete-doctorTeam-button'+[[${teamDoctor.id}]]).click(function(){
@@ -30,6 +30,7 @@
 				</script>
 			</tr>
 		</table>
+		<a th:href='@{/view/administration/wards}' class="simplebutton">Wroc</a>
 	</div>
 
 

@@ -34,10 +34,26 @@ public class WardService {
 		NurseTeam nurseTeam = nurseTeamRepo.findOne(dto.getIdNurseTeam());
 		if (nurseTeam == null)
 			throw new CannotCreateWardException("Nie znaleziono DoctorTeam o ID = " + dto.getIdNurseTeam());
+		ward.setIdDoctorTeam(doctorTeam);
+		ward.setIdNurseTeam(nurseTeam);
 		ward.setNameWard(dto.getNameWard());
 		ward.setLeader(doctorTeam.getLeader());
 
 		wardRepo.save(ward);
+
+	}
+
+	public void deleteWard(Long id) {
+		Ward ward = wardRepo.findOne(id);
+		if (ward == null)
+			throw new RuntimeException("Oddział o id:" + id + "nie istnieje");
+
+		ward.getIdDoctorTeam().setInWard(false);
+		ward.getIdNurseTeam().setInWard(false);
+		wardRepo.save(ward);
+
+		// TODO zrobić kiedyś tranzakcję
+		wardRepo.delete(id);
 
 	}
 
