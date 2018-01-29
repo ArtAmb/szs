@@ -151,7 +151,7 @@ public class TeamService {
 		return nurseTeamRepo.findByLeader_surnameContaining(queryString);
 	}
 
-	public Collection<NurseTeam> findTeamNursesyQueryStrWithFilerOnInWard(String queryString, boolean inWard) {
+	public Collection<NurseTeam> findTeamNursesQueryStrWithFilerOnInWard(String queryString, boolean inWard) {
 		return findTeamNursesByQueryStr(queryString).stream().filter(t -> t.isInWard() == inWard)
 				.collect(Collectors.toList());
 	}
