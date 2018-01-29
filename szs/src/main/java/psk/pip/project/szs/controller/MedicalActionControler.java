@@ -48,11 +48,12 @@ public class MedicalActionControler {
 		return medicalActionService.getMeasurementType(id);
 	}
 
-	
-	  @PostMapping(value = "/medicalAction/saveExamination") public void
-	  saveExamination(@RequestBody ExaminationDTO dto, Principal principal) {
-	  medicalActionService.saveExamination(principal.getName(), dto); }
-	/* 
+	@PostMapping(value = "/medicalAction/saveExamination")
+	public void saveExamination(@RequestBody ExaminationDTO dto, Principal principal) {
+		medicalActionService.saveExamination(principal.getName(), dto);
+	}
+
+	/*
 	 * @GetMapping(value = "/medicalAction/Examination/{id}") public Examination
 	 * getExamination(@PathVariable Long id) { return
 	 * medicalActionService.getExamination(id); }
