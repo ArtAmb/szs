@@ -9,9 +9,12 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Recipt {
+public class Refferal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;	
-	private String reciptDescription;
+	private String refferalType;
+	private String refferalDescription;
+	
+	
 }

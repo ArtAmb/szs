@@ -12,26 +12,31 @@ import psk.pip.project.szs.dto.medicine.ExaminationDTO;
 import psk.pip.project.szs.dto.medicine.ExaminationTypeDTO;
 import psk.pip.project.szs.dto.medicine.MeasurementTypeDTO;
 import psk.pip.project.szs.dto.medicine.TemplateDTO;
+import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.medicine.Examination;
 import psk.pip.project.szs.entity.medicine.ExaminationType;
 import psk.pip.project.szs.entity.medicine.MeasurementRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementTemplateRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementType;
 import psk.pip.project.szs.entity.medicine.Recipt;
+import psk.pip.project.szs.entity.medicine.Refferal;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.registration.User;
+import psk.pip.project.szs.repository.administration.EmployeeRepository;
 import psk.pip.project.szs.repository.medicine.ExaminationRepository;
 import psk.pip.project.szs.repository.medicine.ExaminationTypeRepository;
 import psk.pip.project.szs.repository.medicine.MeasurementRootRepository;
 import psk.pip.project.szs.repository.medicine.MeasurementTemplateRootRepository;
 import psk.pip.project.szs.repository.medicine.MeasurementTypeRepository;
 import psk.pip.project.szs.repository.medicine.ReciptRepository;
+import psk.pip.project.szs.repository.medicine.RefferalRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.exception.CannotAddMedicalActionException;
 import psk.pip.project.szs.services.medicine.exception.CannotGetMeasurementType;
 import psk.pip.project.szs.services.medicine.strategy.GivenDrugSaver;
 import psk.pip.project.szs.services.medicine.strategy.RootMeasurementSaver;
+
 
 @Service
 public class MedicalActionService {
@@ -44,7 +49,11 @@ public class MedicalActionService {
 	@Autowired
 	private ExaminationRepository examinationRepo;
 	@Autowired
+	private EmployeeRepository employeeRepo;
+	@Autowired
 	private ReciptRepository reciptRepo;
+	@Autowired
+	private RefferalRepository refferalRepo;
 	@Autowired
 	private MeasurementRootRepository measurementRootRepo;
 	@Autowired
@@ -128,25 +137,38 @@ public class MedicalActionService {
 	}
 	
 	
-	public void saveExamination(ExaminationDTO dto) {
+	public void saveExamination(String login, ExaminationDTO dto) {
+		
+		Employee medicalEmployee;
+		User user = userRepo.findByLogin(login); 
+		medicalEmployee = employeeRepo.findByUser(user); 
+		
+		
+		
+		
 
 		Examination examination = new Examination();
 		
-		examination.setPatientCardId(dto.getPatientCardId());
+		examination.setEmployee(medicalEmployee);
 		examination.setStartDate(dto.getStartDate());
-		examination.setStartTime(dto.getStartTime());
-		examination.setExaminationType(dto.getExaminationType());
+		examination.setStartTime(dto.getStartTime());		
 		examination.setExaminationDescription(dto.getExaminationDescription());
 		
+		ExaminationType examinationType= new ExaminationType();		
+		examinationType.setName(dto.getExaminationTypeDTO().getExaminationType());		
+		examination.setExaminationType(examinationType);
 		
-		
-		Recipt recipt= new Recipt();
-		
-		recipt.setReciptDescription(dto.getReciptDTO().getReciptDescription());			
-		
+		Recipt recipt= new Recipt();		
+		recipt.setReciptDescription(dto.getReciptDTO().getReciptDescription());
 		examination.setRecipt(recipt);
+		
+		Refferal refferal= new Refferal();		
+		refferal.setRefferalType(dto.getRefferalDTO().getRefferalType());
+		refferal.setRefferalDescription(dto.getRefferalDTO().getRefferalDescription());
+		examination.setRefferal(refferal);
 	  
 		reciptRepo.save(recipt);
+		refferalRepo.save(refferal);
 		examinationRepo.save(examination);
 
 

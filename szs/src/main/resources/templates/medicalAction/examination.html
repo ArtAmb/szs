@@ -8,7 +8,7 @@
             <tr><td><label>Typ badania</label></td> <td id='examinationType-td'></td></tr>
             </table>
             <label>Opis</label> <br/>
-            <textarea name="examinationDescription"  dtovalue='true' required='true' cols="100" rows="5"></textarea> <br/>
+            <textarea id="examinationDescription-textarea"  dtovalue='true' required='true' cols="100" rows="5"></textarea> <br/>
             <label>Data</label> <input type="date" id="start-date-input" name='startDate' dtovalue='true' required='true'/><br/>
             <label>Czas</label> <input type="time" id="start-time-input" name='startTime' dtovalue='true' required='true'/><br/>
             
@@ -40,7 +40,7 @@
                                                          
 
                     var text='Tresc recepty:<br/>';
-                    var new_textarea = jsBuilder.createTextarea('100','5','reciptDescription', 'reciptDescription-textarea');                 
+                    var new_textarea = jsBuilder.createTextarea('100','5', 'reciptDescription-textarea');                 
                     
                     $('#new-recipt-view-container').append(text);
                     $('#new-recipt-view-container').append(new_textarea);
@@ -60,7 +60,7 @@
                     var label1='<label>Typ skierowania</label>';
                     var new_input = jsBuilder.createInput('text', 'refferalType-input');
                     var label2='<br/><label>Dodatkowy opis</label><br/>';
-                    var new_textarea = jsBuilder.createTextarea('100','5','refferalDescription', 'refferalDescription-textarea');                 
+                    var new_textarea = jsBuilder.createTextarea('100','5','refferalDescription-textarea');                 
 
                     $('#new-refferal-view-container').append(text);
                     $('#new-refferal-view-container').append(label1);
@@ -79,42 +79,26 @@
                             //recepta
 
                             var reciptDTO = {                                
-                                reciptDescription: tools.textareaToJSON('reciptDescription-textarea')                            
+                                reciptDescription: tools.inputToJSON('reciptDescription-textarea')                            
     
                             }
                             
-
-                            tools.postForObject("/medicalAction/recipt", reciptDTO, function () {
-                                alert("Zapisano recepte");
-                            },
-                                function () {
-                                    alert("Blad. Nie udalo sie zapisac recepty");
-                                });
 
 
                             //skierowanie 
 
                             var refferalDTO = { 
                                 refferalType: tools.selectToJSON('refferalType-input'),                               
-                                refferalDescription: tools.textareaToJSON('refferalDescription-textarea')                            
+                                refferalDescription: tools.inputToJSON('refferalDescription-textarea')                            
     
                             }
                             
-
-                            tools.postForObject("/medicalAction/refferal", reciptDTO, function () {
-                                alert("Zapisano recepte");
-                            },
-                                function () {
-                                    alert("Blad. Nie udalo sie zapisac skierowania");
-                                });
-   
-                            
+                          
                             //badanie
                             var examinationDTO = {
                                 patient: [[${ patient }]],
-                                doctor: [[${ doctor }]],
-                                examinationType: tools.selectToJSON('examinationType-input'),
-                                examinationDescription: tools.textareaToJSON('examinationDescription-textarea'),
+                                examinationType: tools.selectToJSON('examinationType-select'),
+                                examinationDescription: tools.inputToJSON('examinationDescription-textarea'),
                                 startDate: tools.inputToJSON('start-date-input'),
                                 startTime: tools.inputToJSON('start-time-input'),
                                 recipt: reciptDTO,
@@ -122,7 +106,7 @@
     
                             }
 
-                            tools.postForObject("/medicalAction/examination", examinationDTO, function () {
+                            tools.postForObject("/medicalAction/saveExamination", examinationDTO, function () {
                                 alert("Zapisano badanie");
                             },
                                 function () {

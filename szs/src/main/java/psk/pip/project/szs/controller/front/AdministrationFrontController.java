@@ -8,7 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import psk.pip.project.szs.entity.administration.DoctorTeam;
+import psk.pip.project.szs.entity.administration.NurseTeam;
+import psk.pip.project.szs.entity.administration.Ward;
 import psk.pip.project.szs.entity.storage.HospitalRoom;
+import psk.pip.project.szs.repository.administration.DoctorTeamRepository;
+import psk.pip.project.szs.repository.administration.NurseTeamRepository;
+import psk.pip.project.szs.repository.administration.WardRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.administration.TeamService;
@@ -27,11 +33,17 @@ public class AdministrationFrontController {
 	@Autowired
 	private StorageService storageService;
 
-	/*
-	 * @Autowired private WardRepository wardRepository;
-	 */
+	@Autowired
+	private WardRepository wardRepository;
+
 	@Autowired
 	private TeamService teamService;
+
+	@Autowired
+	private DoctorTeamRepository doctorTeamRepo;
+
+	@Autowired
+	private NurseTeamRepository nurseTeamRepo;
 
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
@@ -49,7 +61,7 @@ public class AdministrationFrontController {
 
 	@GetMapping("/view/administration/wards")
 	public String wardsView(Model model) {
-		model.addAttribute("wards");
+		model.addAttribute("wards", wardRepository.findAll());
 		return getTemplateDir("hospital-wards");
 	}
 
@@ -100,5 +112,26 @@ public class AdministrationFrontController {
 		model.addAttribute("patients",
 				patientCardRepo.findByRoom(room).stream().map(p -> p.toPatient()).collect(Collectors.toList()));
 		return getTemplateDir("room-detail");
+	}
+
+	@GetMapping("/view/hospital/teamDoctor/{id}")
+	public String hospitalTeamDoctorView(@PathVariable Long id, Model model) {
+		DoctorTeam teamDoctor = doctorTeamRepo.findOne(id);
+		model.addAttribute("team", teamDoctor);
+		return getTemplateDir("teamDoctor-detail");
+	}
+
+	@GetMapping("/view/hospital/teamNurse/{id}")
+	public String hospitalTeamNurseView(@PathVariable Long id, Model model) {
+		NurseTeam teamNurse = nurseTeamRepo.findOne(id);
+		model.addAttribute("team", teamNurse);
+		return getTemplateDir("teamNurse-detail");
+	}
+
+	@GetMapping("/view/hospital/ward/{id}")
+	public String hospitalWardView(@PathVariable Long id, Model model) {
+		Ward ward = wardRepository.findOne(id);
+		model.addAttribute("ward", ward);
+		return getTemplateDir("ward-detail");
 	}
 }

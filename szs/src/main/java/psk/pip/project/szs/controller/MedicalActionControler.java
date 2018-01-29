@@ -50,8 +50,8 @@ public class MedicalActionControler {
 
 	
 	  @PostMapping(value = "/medicalAction/saveExamination") public void
-	  saveExamination(@RequestBody ExaminationDTO dto) {
-	  medicalActionService.saveExamination(dto); }
+	  saveExamination(@RequestBody ExaminationDTO dto, Principal principal) {
+	  medicalActionService.saveExamination(principal.getName(), dto); }
 	/* 
 	 * @GetMapping(value = "/medicalAction/Examination/{id}") public Examination
 	 * getExamination(@PathVariable Long id) { return

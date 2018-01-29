@@ -1,0 +1,21 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="administration-view" class="content">
+
+        <div><lable >Imie: </lable> <span th:text="${employee.name}"/> </div>
+        <div> <lable >Nazwisko: </lable> <span th:text="${employee.surname}" /> </div>
+        <div> <lable >Login: </lable> <span th:text="${employee.user.login}" /> </div>
+        <div> <lable >Ranga: </lable> <span th:text="${employee.rank}" /> </div>
+        <div> <lable >Wynagrodzenie: </lable> <span th:text="${employee.salary}" /> </div>
+        <div> <lable >Specjalizacja: </lable> <span th:text="${employee.specialization}" /> </div>
+
+        <a th:href='@{/view/doctor}' class="simplebutton">Wroc</a>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>
