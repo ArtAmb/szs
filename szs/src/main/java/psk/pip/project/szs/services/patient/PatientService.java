@@ -11,6 +11,8 @@ import psk.pip.project.szs.dto.patient.ReferralDTO;
 import psk.pip.project.szs.dto.patient.ReferralTypeDTO;
 import psk.pip.project.szs.dto.patient.SignInOutDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
+import psk.pip.project.szs.dto.searcher.SearcherMapper;
+import psk.pip.project.szs.dto.searcher.SearcherResponse;
 import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.employee.Doctor;
 import psk.pip.project.szs.entity.medicine.LongTermVisit;
@@ -40,7 +42,8 @@ public class PatientService {
 
 	@Autowired
 	private PatientCardRepository patientCardRepo;
-
+	
+	
 	@Autowired
 	private VisitRepository visitRepo;
 
@@ -207,6 +210,11 @@ public class PatientService {
 			throw new RuntimeException("Sala o id == " + roomId + " nie istnieje");
 		card.setRoom(room);
 		patientCardRepo.save(card);
+	}
+	
+	public Collection<SearcherResponse> findPatientsByQueryStr(String query) {
+		return  patientCardRepo.findPatientsByQuery(query).stream().map(e -> SearcherMapper.map(e))
+				.collect(Collectors.toList());
 	}
 
 }
