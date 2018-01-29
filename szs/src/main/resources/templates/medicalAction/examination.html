@@ -23,21 +23,16 @@
                 Skierowanie <button id="refferal-button-add" clicked='false'>Dodaj skierowanie</button>
                 <br/><br/>
             </div>
-
-            
-
-          
+    
             <button id="saveExaminationButton" class="simplebutton">Zapisz badanie</button>
 
             <script th:inline='javascript'>
-                 $('#examinationType-td').html(jsBuilder.createSelect( 'examinationType-select', consts.URLS.getExaminationTypes));
-            
-                 
+                 $('#examinationType-td').html(jsBuilder.createSelect( 'examinationType-select', consts.URLS.getExaminationTypes).attr(consts.REQUIRED_ATTR, true));
+                             
                  var space='<br/><br/>';
                  var addReciptButton = $('#' + 'recipt-button-add');
                  
-                 addReciptButton.click(function () {
-                                                         
+                 addReciptButton.click(function () {                                                      
 
                     var text='Tresc recepty:<br/>';
                     var new_textarea = jsBuilder.createTextarea('100','5', 'reciptDescription-textarea');                 
@@ -47,9 +42,7 @@
                     $('#new-recipt-view-container').append(space);
 
                     
-                    $('#recipt-button-add').prop('disabled', true);                                       
-     
-     
+                    $('#recipt-button-add').prop('disabled', true);     
                  });
 
                  var addRefferalButton = $('#' + 'refferal-button-add');
@@ -70,65 +63,42 @@
                     $('#new-refferal-view-container').append(space);
 
                     $('#refferal-button-add').prop('disabled', true);
-                   
-     
                  });
 
                  $("#saveExaminationButton").click(function () {
-                        if (tools.validation('new-examination-view')) {
-                            //recepta
-
-                            var reciptDTO = {                                
-                                reciptDescription: tools.inputToJSON('reciptDescription-textarea')                            
-    
-                            }
-                            
-
-
+                        if (tools.validation('new-examination-view-container')) {
                             //skierowanie 
-
                             var refferalDTO = { 
-                                refferalType: tools.selectToJSON('refferalType-input'),                               
-                                refferalDescription: tools.inputToJSON('refferalDescription-textarea')                            
-    
+                                refferalType: $('refferalType-input').val(),                               
+                                refferalDescription: tools.inputToJSON('refferalDescription-textarea')                           
                             }
-                            
-                          
+                                                   
                             //badanie
                             var examinationDTO = {
-                                patient: [[${ patient }]],
+                                patientCardId: [[${ patient.id }]],
                                 examinationType: tools.selectToJSON('examinationType-select'),
                                 examinationDescription: tools.inputToJSON('examinationDescription-textarea'),
                                 startDate: tools.inputToJSON('start-date-input'),
                                 startTime: tools.inputToJSON('start-time-input'),
-                                recipt: reciptDTO,
-                                refferal: refferalDTO
-    
+                                reciptDescription: tools.inputToJSON('reciptDescription-textarea'),
+                                refferal: refferalDTO    
                             }
 
                             tools.postForObject("/medicalAction/saveExamination", examinationDTO, function () {
                                 alert("Zapisano badanie");
                             },
-                                function () {
-                                    alert("Blad. Nie udalo sie zapisac badania");
-                                });
-
-
+                            function () {
+                                alert("Blad. Nie udalo sie zapisac badania");
+                            });
 
                         } else {
                             alert('Prosze uzupelnic wymagane pola');
                         }
                     });
-
-             
-            </script>
-
             
-
-           
+            </script>
         </div>
         <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
     </div>
-
     <div th:replace="mainMenu :: footer"> </div>
 </body>

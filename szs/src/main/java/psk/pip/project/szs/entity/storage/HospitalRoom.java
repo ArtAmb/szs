@@ -1,6 +1,7 @@
 package psk.pip.project.szs.entity.storage;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -35,19 +36,22 @@ public class HospitalRoom {
 
 	public void addDrug(Drug drug) {
 		drug.setId(null);
-		Drug drugTmp = getDrugs().stream().filter(
-				d -> d.getDosage().equals(drug.getDosage()) && d.getName().getId().equals(drug.getName().getId()))
-				.findFirst().orElse(drug);
+		if (getDrugs() == null)
+			drugs = new LinkedList<>();
 
-		if (drugTmp.getId() == null) {
-			getDrugs().add(drugTmp);
+		Drug tmpDrug = getDrugs().stream().filter(
+				d -> d.equals(drug))
+				.findFirst().orElse(null);
+
+		if (tmpDrug == null) {
+			getDrugs().add(drug);
 		} else {
-			drugTmp.setAmount(drugTmp.getAmount() + drug.getAmount());
+			tmpDrug.setAmount(tmpDrug.getAmount() + drug.getAmount());
 		}
 	}
 
 	public void deleteDrugs(Drug drug) {
-		Drug drugInRoom = getDrugs().stream().filter(d -> d.getId().equals(drug.getId())).findFirst().orElse(null);
+		Drug drugInRoom = drugs.stream().filter(d -> d.equals(drug)).findFirst().orElse(null);
 		if (drugInRoom == null)
 			throw new RuntimeException("Lek " + drug.toString() + " nie jest obecny na sali");
 

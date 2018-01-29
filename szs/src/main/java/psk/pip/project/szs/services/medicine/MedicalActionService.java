@@ -37,7 +37,6 @@ import psk.pip.project.szs.services.medicine.exception.CannotGetMeasurementType;
 import psk.pip.project.szs.services.medicine.strategy.GivenDrugSaver;
 import psk.pip.project.szs.services.medicine.strategy.RootMeasurementSaver;
 
-
 @Service
 public class MedicalActionService {
 
@@ -45,7 +44,7 @@ public class MedicalActionService {
 	private ExaminationTypeRepository examinationTypeRepo;
 	@Autowired
 	private MeasurementTypeRepository measurementTypeRepo;
-	
+
 	@Autowired
 	private ExaminationRepository examinationRepo;
 	@Autowired
@@ -93,9 +92,6 @@ public class MedicalActionService {
 		return measurementType;
 	}
 
-	
-	
-
 	public void saveMeasurement(String login, MeasurementRoot root) {
 		root.setDate(Timestamp.valueOf(LocalDateTime.now()).getTime());
 		root.setPatient(patientRepo.findOne(root.getPatient().getId()));
@@ -135,42 +131,33 @@ public class MedicalActionService {
 	public void saveGivenDrug(String login, GivenDrug givenDrug) {
 		givenDrugSaver.saveNurseAction(login, givenDrug);
 	}
-	
-	
+
 	public void saveExamination(String login, ExaminationDTO dto) {
-		
 		Employee medicalEmployee;
-		User user = userRepo.findByLogin(login); 
-		medicalEmployee = employeeRepo.findByUser(user); 
-		
-		
-		
-		
+		User user = userRepo.findByLogin(login);
+		medicalEmployee = employeeRepo.findByUser(user);
 
 		Examination examination = new Examination();
-		
+
 		examination.setEmployee(medicalEmployee);
 		examination.setStartDate(dto.getStartDate());
-		examination.setStartTime(dto.getStartTime());		
+		examination.setStartTime(dto.getStartTime());
 		examination.setExaminationDescription(dto.getExaminationDescription());
-		
-		ExaminationType examinationType= new ExaminationType();		
-		examinationType.setName(dto.getExaminationTypeDTO().getExaminationType());		
-		examination.setExaminationType(examinationType);
-		
-		Recipt recipt= new Recipt();		
-		recipt.setReciptDescription(dto.getReciptDTO().getReciptDescription());
+
+		examination.setExaminationType(dto.getExaminationType());
+
+		Recipt recipt = new Recipt();
+		recipt.setReciptDescription(dto.getReciptDescription());
 		examination.setRecipt(recipt);
-		
-		Refferal refferal= new Refferal();		
-		refferal.setRefferalType(dto.getRefferalDTO().getRefferalType());
-		refferal.setRefferalDescription(dto.getRefferalDTO().getRefferalDescription());
+
+		Refferal refferal = new Refferal();
+		refferal.setRefferalType(dto.getRefferalType());
+		refferal.setRefferalDescription(dto.getRefferalDescription());
 		examination.setRefferal(refferal);
-	  
+
 		reciptRepo.save(recipt);
 		refferalRepo.save(refferal);
 		examinationRepo.save(examination);
-
 
 	}
 }
