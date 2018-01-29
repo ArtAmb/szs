@@ -8,19 +8,24 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import psk.pip.project.szs.dto.medicine.ExaminationDTO;
 import psk.pip.project.szs.dto.medicine.ExaminationTypeDTO;
 import psk.pip.project.szs.dto.medicine.MeasurementTypeDTO;
 import psk.pip.project.szs.dto.medicine.TemplateDTO;
+import psk.pip.project.szs.entity.medicine.Examination;
 import psk.pip.project.szs.entity.medicine.ExaminationType;
 import psk.pip.project.szs.entity.medicine.MeasurementRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementTemplateRoot;
 import psk.pip.project.szs.entity.medicine.MeasurementType;
+import psk.pip.project.szs.entity.medicine.Recipt;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.registration.User;
+import psk.pip.project.szs.repository.medicine.ExaminationRepository;
 import psk.pip.project.szs.repository.medicine.ExaminationTypeRepository;
 import psk.pip.project.szs.repository.medicine.MeasurementRootRepository;
 import psk.pip.project.szs.repository.medicine.MeasurementTemplateRootRepository;
 import psk.pip.project.szs.repository.medicine.MeasurementTypeRepository;
+import psk.pip.project.szs.repository.medicine.ReciptRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.exception.CannotAddMedicalActionException;
@@ -35,7 +40,11 @@ public class MedicalActionService {
 	private ExaminationTypeRepository examinationTypeRepo;
 	@Autowired
 	private MeasurementTypeRepository measurementTypeRepo;
-	// private ExaminationRepository examinationRepo;
+	
+	@Autowired
+	private ExaminationRepository examinationRepo;
+	@Autowired
+	private ReciptRepository reciptRepo;
 	@Autowired
 	private MeasurementRootRepository measurementRootRepo;
 	@Autowired
@@ -75,22 +84,8 @@ public class MedicalActionService {
 		return measurementType;
 	}
 
-	/*
-	 * public void saveExamination(ExaminationDTO dto) {
-	 * 
-	 * Examination examination = new Examination();
-	 * 
-	 * 
-	 * Examination.setStartDate(dto.getStartDate());
-	 * Examination.setEndDate(dto.getEndDate());
-	 * Examination.setTypeOfExamination(dto.getTypeOfExamination());
-	 * Examination.setEndDate(dto.getEndDate());
-	 * 
-	 * examinationRepo.save(examination);
-	 * 
-	 * 
-	 * }
-	 */
+	
+	
 
 	public void saveMeasurement(String login, MeasurementRoot root) {
 		root.setDate(Timestamp.valueOf(LocalDateTime.now()).getTime());
@@ -130,5 +125,30 @@ public class MedicalActionService {
 
 	public void saveGivenDrug(String login, GivenDrug givenDrug) {
 		givenDrugSaver.saveNurseAction(login, givenDrug);
+	}
+	
+	
+	public void saveExamination(ExaminationDTO dto) {
+
+		Examination examination = new Examination();
+		
+		examination.setPatientCardId(dto.getPatientCardId());
+		examination.setStartDate(dto.getStartDate());
+		examination.setStartTime(dto.getStartTime());
+		examination.setExaminationType(dto.getExaminationType());
+		examination.setExaminationDescription(dto.getExaminationDescription());
+		
+		
+		
+		Recipt recipt= new Recipt();
+		
+		recipt.setReciptDescription(dto.getReciptDTO().getReciptDescription());			
+		
+		examination.setRecipt(recipt);
+	  
+		reciptRepo.save(recipt);
+		examinationRepo.save(examination);
+
+
 	}
 }
