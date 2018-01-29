@@ -14,9 +14,13 @@
     
 		    {
     
-			napisHtml = '<div id="nurse-searcher-div'+ x +'"><label>Nurse </label> </div><br/><br/>';
-    
-			$("#new-teamNurses-view-container").append(napisHtml);
+			napisHtml = '<div id="nurse-searcher-div'+ x +'"><label>Lider </label> </div><br/><br/>';
+			napisHtml2 = '<div id="nurse-searcher-div'+ x +'"><label>Nurse </label> </div><br/><br/>';
+			
+                    if(x==0)
+		    	$("#new-teamNurses-view-container").append(napisHtml);
+                    else
+			$("#new-teamNurses-view-container").append(napisHtml2);
 			    var options = {
 				isRequired: true,
 				isDTOValue: true,

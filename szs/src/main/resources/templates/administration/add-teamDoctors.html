@@ -9,14 +9,17 @@
         <div id="new-teamDoctors-view-container">
             <script th:inline='javascript'>
 
-                var napisHtml;
+                
                 for(var x=0; 5 > x; x++) 
 
                 {
 
-                    napisHtml = '<div id="doctor-searcher-div'+ x +'"><label>Doktor </label> </div><br/><br/>';
-
-                    $("#new-teamDoctors-view-container").append(napisHtml);
+                    var napisHtml = '<div id="doctor-searcher-div'+ x +'"><label>Lider </label> </div><br/><br/>';
+                    var napisHtml2 = '<div id="doctor-searcher-div'+ x +'"><label>Doktor </label> </div><br/><br/>';
+                    if(x==0)
+                        $("#new-teamDoctors-view-container").append(napisHtml);
+                    else
+                        $("#new-teamDoctors-view-container").append(napisHtml2);
                         var options = {
                             isRequired: true,
                             isDTOValue: true,
