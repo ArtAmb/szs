@@ -9,8 +9,8 @@ var jsBuilder = function () {
         return $("<input>").attr("id", id).attr('type', type).addClass(classes);
     }
 
-    jsBuilder.createTextarea = function (cols, rows, name, classes) {
-        return $("<textarea>").attr("name", name).attr('cols', cols).attr('rows', rows).addClass(classes);
+    jsBuilder.createTextarea = function (cols, rows, id, classes) {
+        return $("<textarea>").attr("id", id).attr('cols', cols).attr('rows', rows).addClass(classes);
     }
     
 

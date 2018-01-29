@@ -5,14 +5,16 @@ import lombok.Data;
 @Data
 public class ExaminationDTO {
 	private Long patientCardId;
-	private String examinationType;
+	
 	private String examinationDescription;
 	private String startDate;
 	private String startTime;
 	
 	
+	private ExaminationTypeDTO examinationTypeDTO;
 	private ReciptDTO reciptDTO;
-	//private RefferalDTO refferalDTO;
+	private RefferalDTO refferalDTO;
+	
 	
 	
 }
