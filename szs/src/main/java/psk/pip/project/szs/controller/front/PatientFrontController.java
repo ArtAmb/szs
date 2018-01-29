@@ -118,7 +118,7 @@ public class PatientFrontController {
 		return getTemplateDir("visit-detail");
 	}
 	
-	@DeleteMapping("/view/patient/delete/{patientId}")
+	@GetMapping("/view/patient/delete/{patientId}")
 	public String deletePatientCard(@PathVariable Long patientId, Model model) {
 		PatientCard patientCard = patientRepo.findOne(patientId);
 		model.addAttribute("patient", patientCard.toPatient());
