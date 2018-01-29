@@ -1,0 +1,68 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+        
+	<div id="add-teamDoctors-view" class="content">
+    <br/>Tworzenie oddziału
+        <div id="new-ward-view-container">
+            <script th:inline='javascript'>
+
+                var napisHtml;
+
+                napisHtml = '<div id="teamDoctor-searcher-div"><label>Zaspół lekarzy</label> </div><br/><br/>';
+
+                $("#new-ward-view-container").append(napisHtml);
+                    var options = {
+                        isRequired: true,
+                        isDTOValue: true,
+                        name: 'teamDoctorId',
+                        buildOptionDataFunc: function (optionTag, dto) { }
+                    };
+
+                    searcher.buildSearcher($("#teamDoctor-searcher-div"), "teamDoctor-searcher", "/searcher/teamDoctor/query/filter/inWard/false", options);
+                        
+                var napisHtml2;
+
+                napisHtml2 = '<div id="teamDoctor-searcher-div"><label>Zaspół pielęgniarek</label> </div><br/><br/>';
+
+                $("#new-ward-view-container").append(napisHtml2);
+                    var options = {
+                        isRequired: true,
+                        isDTOValue: true,
+                        name: 'teamNurseId',
+                        buildOptionDataFunc: function (optionTag, dto) { }
+                    };
+
+                    searcher.buildSearcher($("#teamNurser-searcher-div"), "teamNurse-searcher", "/searcher/teamNurse/query/filter/inWard/false", options);
+
+            </script>
+            <button id="arrangewardButton" class="simplebutton">Utwórz drużynę</button>
+            <script>
+                $("#arrangewardButton").click(function () {
+                        if (tools.validation("new-ward-view-container")) {
+                            var memberIds = [];
+
+                            var dto = tools.tagInputsToDTO("teamNurse-searcher-div");
+
+
+                            tools.postForObject('/administration/team/nurse', dto, function () {
+                                alert("Dodano zespół lekarzy");
+                            }, function (e) {
+                                alert("Blad dodania zespołu lekarzy \n" +e.responseJSON.message);
+                            });
+                        }
+                        else {
+                            alert("Prosze uzupelnic wymagane pola");
+                        }
+
+                    });
+            </script>
+
+        </div>
+	</div>
+
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>

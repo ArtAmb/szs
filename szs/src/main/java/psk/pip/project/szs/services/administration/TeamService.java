@@ -2,6 +2,7 @@ package psk.pip.project.szs.services.administration;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import psk.pip.project.szs.dto.administration.TeamDTO;
 import psk.pip.project.szs.entity.administration.DoctorTeam;
 import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.administration.NurseTeam;
-import psk.pip.project.szs.entity.employee.Nurse;
 import psk.pip.project.szs.repository.administration.DoctorTeamRepository;
 import psk.pip.project.szs.repository.administration.EmployeeRepository;
 import psk.pip.project.szs.repository.administration.NurseTeamRepository;
@@ -80,20 +80,44 @@ public class TeamService {
 
 	public void createTeamNurse(TeamDTO dto) {
 		Collection<Long> memberIds = dto.getMemberIds();
-		LinkedList<Nurse> nurses = new LinkedList<>();
+		int licznik;
 		for (Long id : memberIds) {
-			Nurse nurse = nurseRepo.findOne(id);
+			licznik = 0;
+			for (Long id2 : memberIds) {
+				if (id == id2)
+					licznik++;
+				if (licznik > 1)
+					throw new RuntimeException("Dodano kilukrotnie tą samą pielęgniarke.");
+			}
+		}
+		LinkedList<Employee> nurses = new LinkedList<>();
+		for (Long id : memberIds) {
+			Employee nurse = employeeRepo.findNurseById(id);
 			if (nurse == null)
 				throw new CannotCreateTeamException("Nie znaleziono Pielęgniarki o tym ID = " + id);
+			nurse.setInTeam(true);
 			nurses.add(nurse);
 		}
 
 		NurseTeam nurseTeam = new NurseTeam();
 		nurseTeam.setMembers(nurses);
-		Nurse leader = nurses.getFirst();
+		Employee leader = nurses.getFirst();
 		nurseTeam.setLeader(leader);
 
 		nurseTeamRepo.save(nurseTeam);
+	}
+
+	public void deleteNurseTeam(Long id) {
+		NurseTeam nurseTeam = nurseTeamRepo.findOne(id);
+		if (nurseTeam == null)
+			throw new RuntimeException("Drużyna pielęgniarek o id:" + id + "nie istnieje");
+		for (Employee nurse : nurseTeam.getMembers()) {
+			nurse.setInTeam(false);
+			employeeRepo.save(nurse);
+		}
+		// TODO zrobić kiedyś tranzakcję
+		nurseTeamRepo.delete(id);
+
 	}
 
 	public DoctorTeam getTeamDoctor(Long id) {
@@ -105,9 +129,31 @@ public class TeamService {
 		return doctorTeamRepo.findAll();
 	}
 
+	public Collection<NurseTeam> allTeamNurses() {
+		return nurseTeamRepo.findAll();
+	}
+
 	public NurseTeam getTeamNurse(Long id) {
 		NurseTeam nurseTeam = nurseTeamRepo.findOne(id);
 		return nurseTeam;
+	}
+
+	public Collection<DoctorTeam> findTeamDoctorsByQueryStr(String queryString) {
+		return doctorTeamRepo.findByLeader_surnameContaining(queryString);
+	}
+
+	public Collection<DoctorTeam> findTeamDoctorsByQueryStrWithFilerOnInWard(String queryString, boolean inWard) {
+		return findTeamDoctorsByQueryStr(queryString).stream().filter(t -> t.isInWard() == inWard)
+				.collect(Collectors.toList());
+	}
+
+	public Collection<NurseTeam> findTeamNursesByQueryStr(String queryString) {
+		return nurseTeamRepo.findByLeader_surnameContaining(queryString);
+	}
+
+	public Collection<NurseTeam> findTeamNursesQueryStrWithFilerOnInWard(String queryString, boolean inWard) {
+		return findTeamNursesByQueryStr(queryString).stream().filter(t -> t.isInWard() == inWard)
+				.collect(Collectors.toList());
 	}
 
 }

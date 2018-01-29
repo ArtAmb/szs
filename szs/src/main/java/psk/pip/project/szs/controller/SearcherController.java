@@ -15,6 +15,7 @@ import psk.pip.project.szs.dto.searcher.SearcherResponse;
 import psk.pip.project.szs.repository.medicine.DrugRepository;
 import psk.pip.project.szs.repository.storage.RoomRepository;
 import psk.pip.project.szs.services.HospitalService;
+import psk.pip.project.szs.services.administration.TeamService;
 import psk.pip.project.szs.services.administration.employee.EmployeeService;
 import psk.pip.project.szs.services.patient.PatientService;
 import psk.pip.project.szs.services.rooms.StorageService;
@@ -35,9 +36,12 @@ public class SearcherController {
 
 	@Autowired
 	private HospitalService hospitalRoomService;
-	
+
 	@Autowired
 	private PatientService patientService;
+
+	@Autowired
+	private TeamService teamService;
 
 	@PostMapping("/searcher/doctor/query")
 	public Collection<SearcherResponse> findDoctorsByQueryString(@RequestBody SearcherParams params)
@@ -86,13 +90,27 @@ public class SearcherController {
 	@PostMapping("/searcher/nurse/query/filter/inTeam/{isInTeam}")
 	public Collection<SearcherResponse> findNursesFilterInTeamByQueryString(@RequestBody SearcherParams params,
 			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
-		return employeeService.findDoctorsByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
+		return employeeService.findNursesByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
 	}
-	
+
 	@PostMapping("/searcher/patient/query")
 	public Collection<SearcherResponse> findPatientsByQueryString(@RequestBody SearcherParams params)
 			throws InstantiationException, IllegalAccessException {
 		return patientService.findPatientsByQueryStr(params.getQueryString());
+	}
+
+	@PostMapping("/searcher/team/doctor/query/filter/inWard/{isInTeam}")
+	public Collection<SearcherResponse> findTeamNursesFilterInWardByQueryString(@RequestBody SearcherParams params,
+			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
+		return teamService.findTeamDoctorsByQueryStrWithFilerOnInWard(params.getQueryString(), isInTeam).stream()
+				.map(t -> SearcherMapper.map(t)).collect(Collectors.toList());
+	}
+
+	@PostMapping("/searcher/team/nurse/query/filter/inWard/{isInTeam}")
+	public Collection<SearcherResponse> findDoctorTeamsFilterInWardByQueryString(@RequestBody SearcherParams params,
+			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
+		return teamService.findTeamNursesQueryStrWithFilerOnInWard(params.getQueryString(), isInTeam).stream()
+				.map(t -> SearcherMapper.map(t)).collect(Collectors.toList());
 	}
 
 }

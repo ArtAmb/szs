@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import psk.pip.project.szs.dto.administration.EmployeeDTO;
 import psk.pip.project.szs.dto.patient.VisitDTO;
 import psk.pip.project.szs.entity.administration.Employee;
-import psk.pip.project.szs.entity.employee.Nurse;
 import psk.pip.project.szs.entity.medicine.Drug;
 import psk.pip.project.szs.entity.medicine.DrugName;
 import psk.pip.project.szs.entity.medicine.MeasurementType;
@@ -163,11 +162,32 @@ public class Initializer {
 	}
 
 	void addNurses() {
-		nurseRepo.save(new Nurse());
-		nurseRepo.save(new Nurse());
-		nurseRepo.save(new Nurse());
-		nurseRepo.save(new Nurse());
-		nurseRepo.save(new Nurse());
+
+		try {
+			EmployeeDTO dto = EmployeeDTO.builder().name("Anna").surname("Piotrowska").type(EmployeeType.NURSE)
+					.login("nurse").pass("test").build();
+			employeeService.saveEmpolyee(dto);
+
+			dto = EmployeeDTO.builder().name("Marta").surname("Mała").type(EmployeeType.NURSE).login("nurse1")
+					.pass("test").build();
+			employeeService.saveEmpolyee(dto);
+
+			dto = EmployeeDTO.builder().name("Sandra").surname("Chodakowska").type(EmployeeType.NURSE).login("nurse2")
+					.pass("test").build();
+			employeeService.saveEmpolyee(dto);
+
+			dto = EmployeeDTO.builder().name("Natalia").surname("Duża").type(EmployeeType.NURSE).login("nurse3")
+					.pass("test").build();
+			employeeService.saveEmpolyee(dto);
+
+			dto = EmployeeDTO.builder().name("Dominika").surname("Pawlik").type(EmployeeType.NURSE).login("nurse4")
+					.pass("test").build();
+			employeeService.saveEmpolyee(dto);
+
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	void addPatientCard() {

@@ -26,4 +26,6 @@ public class DoctorTeam {
 	@OneToMany
 	@JoinColumn(name = "doctor_team")
 	protected Collection<Employee> members;
+
+	private boolean inWard = false;
 }

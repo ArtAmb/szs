@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import psk.pip.project.szs.entity.employee.Doctor;
 
-public interface DoctorRepository extends CrudRepository<Doctor, Long>{
-	
+public interface DoctorRepository extends CrudRepository<Doctor, Long> {
+
 }
