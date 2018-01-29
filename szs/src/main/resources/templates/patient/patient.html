@@ -8,7 +8,6 @@
 		<button id="searchPatientButton" class="simplebutton">Szukaj</button>
 		<a th:href='@{/view/patient/add}' class="simplebutton">Dodaj pacjenta</a>
 
-
 		<div id="patient-view-container">
 
 			<table class="table table-bordered table-striped">
@@ -19,7 +18,6 @@
 					<td th:text="${patient.name}"></td>
 					<td th:text="${patient.surname}"></td>
 					<td> <a class="simplebutton medical_action_button" th:href="@{'/view/medical/action/patient/' + ${patient.id}}">Akcja</a></td>
-					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} +'/detail'}">Szczegoly</a></td>
 				</tr>
 

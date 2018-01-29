@@ -1,0 +1,25 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="visits-view" class="content">
+		<div id="visits-view-container">
+            <h4>Imie pacjenta</h4>
+            <div th:text="${patient.name}"></div>
+            <h4>Nazwisko pacjenta</h4>
+            <div th:text="${patient.surname}"></div>
+ 
+            <h3>Dane</h3>
+            <div> 
+                <div><label>Id wizyty:  </label><span th:text="${visit.id}"></span> </div>
+                <div><label>Data wizyty: </label><span th:text="${visit.startDate}"></span> </div>
+                <div><label>Godzina wizyty: </label><span th:text="${visit.startTime}"></span> </div>
+            </div>    
+		</div>
+        <a class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
+	</div>
+
+	<div th:replace="mainMenu :: footer"> </div>
+</body>
