@@ -16,7 +16,7 @@
 				<td th:text="${teamDoctor.id}"></td>
 				<td th:text="'dr. '+${teamDoctor.leader.surname}"></td>
 
-				<td> <button th:id="'update-doctorTeam-button' + ${teamDoctor.id}" class="simplebutton edit_button">Edytuj</button></td>
+				<td> <button th:id="'update-doctorTeam-button' + ${teamDoctor.id}" class="simplebutton edit_button">Szczegóły</button></td>
 				<td> <button th:id="'delete-doctorTeam-button' + ${teamDoctor.id}" class="simplebutton edit_button">Usuń</button></td>
 				<script th:inline='javascript'>
 					$('#delete-doctorTeam-button'+[[${teamDoctor.id}]]).click(function(){

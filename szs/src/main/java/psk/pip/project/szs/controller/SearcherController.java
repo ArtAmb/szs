@@ -82,7 +82,7 @@ public class SearcherController {
 	@PostMapping("/searcher/nurse/query/filter/inTeam/{isInTeam}")
 	public Collection<SearcherResponse> findNursesFilterInTeamByQueryString(@RequestBody SearcherParams params,
 			@PathVariable Boolean isInTeam) throws InstantiationException, IllegalAccessException {
-		return employeeService.findDoctorsByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
+		return employeeService.findNursesByQueryStrWithFilerOnInTeam(params.getQueryString(), isInTeam);
 	}
 
 }

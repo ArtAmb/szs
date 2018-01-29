@@ -10,7 +10,6 @@ import psk.pip.project.szs.dto.administration.TeamDTO;
 import psk.pip.project.szs.entity.administration.DoctorTeam;
 import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.administration.NurseTeam;
-import psk.pip.project.szs.entity.employee.Nurse;
 import psk.pip.project.szs.repository.administration.DoctorTeamRepository;
 import psk.pip.project.szs.repository.administration.EmployeeRepository;
 import psk.pip.project.szs.repository.administration.NurseTeamRepository;
@@ -80,20 +79,44 @@ public class TeamService {
 
 	public void createTeamNurse(TeamDTO dto) {
 		Collection<Long> memberIds = dto.getMemberIds();
-		LinkedList<Nurse> nurses = new LinkedList<>();
+		int licznik;
 		for (Long id : memberIds) {
-			Nurse nurse = nurseRepo.findOne(id);
+			licznik = 0;
+			for (Long id2 : memberIds) {
+				if (id == id2)
+					licznik++;
+				if (licznik > 1)
+					throw new RuntimeException("Dodano kilukrotnie tą samą pielęgniarke.");
+			}
+		}
+		LinkedList<Employee> nurses = new LinkedList<>();
+		for (Long id : memberIds) {
+			Employee nurse = employeeRepo.findNurseById(id);
 			if (nurse == null)
 				throw new CannotCreateTeamException("Nie znaleziono Pielęgniarki o tym ID = " + id);
+			nurse.setInTeam(true);
 			nurses.add(nurse);
 		}
 
 		NurseTeam nurseTeam = new NurseTeam();
 		nurseTeam.setMembers(nurses);
-		Nurse leader = nurses.getFirst();
+		Employee leader = nurses.getFirst();
 		nurseTeam.setLeader(leader);
 
 		nurseTeamRepo.save(nurseTeam);
+	}
+
+	public void deleteNurseTeam(Long id) {
+		NurseTeam nurseTeam = nurseTeamRepo.findOne(id);
+		if (nurseTeam == null)
+			throw new RuntimeException("Drużyna pielęgniarek o id:" + id + "nie istnieje");
+		for (Employee nurse : nurseTeam.getMembers()) {
+			nurse.setInTeam(false);
+			employeeRepo.save(nurse);
+		}
+		// TODO zrobić kiedyś tranzakcję
+		nurseTeamRepo.delete(id);
+
 	}
 
 	public DoctorTeam getTeamDoctor(Long id) {
@@ -103,6 +126,10 @@ public class TeamService {
 
 	public Collection<DoctorTeam> allTeamDoctors() {
 		return doctorTeamRepo.findAll();
+	}
+
+	public Collection<NurseTeam> allTeamNurses() {
+		return nurseTeamRepo.findAll();
 	}
 
 	public NurseTeam getTeamNurse(Long id) {

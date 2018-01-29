@@ -61,7 +61,7 @@ public class AdministrationFrontController {
 
 	@GetMapping("/view/administration/teamNurses")
 	public String teamNursesView(Model model) {
-		model.addAttribute("teamNurses");
+		model.addAttribute("teamNurses", teamService.allTeamNurses());
 		return getTemplateDir("hospital-teamNurses");
 	}
 
@@ -73,6 +73,11 @@ public class AdministrationFrontController {
 	@GetMapping("/view/administration/new/teamNurses")
 	public String addteamNursesView(Model model) {
 		return getTemplateDir("add-teamNurses");
+	}
+
+	@GetMapping("/view/administration/new/ward")
+	public String addWardView(Model model) {
+		return getTemplateDir("add-ward");
 	}
 
 	@GetMapping("/view/administration/rooms")
