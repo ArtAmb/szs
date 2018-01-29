@@ -105,4 +105,13 @@ public class PatientFrontController {
 
 		return getTemplateDir("long-term-visit-detail");
 	}
+	
+	@GetMapping("/view/patient/{patientId}/visit/{visitId}/detail")
+	public String getVisitDetailView(@PathVariable Long patientId, @PathVariable Long visitId, Model model) {
+		model.addAttribute("visit", longTermVisitRepo.findOne(visitId));
+		PatientCard patientCard = patientRepo.findOne(patientId);
+		model.addAttribute("patient", patientCard.toPatient());
+		model.addAttribute("isCurrVisit", patientCard.getCurrentVisit() != null);
+		return getTemplateDir("visit-detail");
+	}
 }
