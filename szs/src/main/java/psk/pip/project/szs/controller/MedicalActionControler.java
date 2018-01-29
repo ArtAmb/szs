@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import psk.pip.project.szs.dto.medicine.ExaminationDTO;
 import psk.pip.project.szs.dto.medicine.ExaminationTypeDTO;
 import psk.pip.project.szs.dto.medicine.MeasurementTypeDTO;
 import psk.pip.project.szs.entity.medicine.Measurement;
@@ -47,11 +48,11 @@ public class MedicalActionControler {
 		return medicalActionService.getMeasurementType(id);
 	}
 
-	/*
-	 * @PostMapping(value = "/medicalAction/saveMedicalExamination") public void
-	 * saveExamination(@RequestBody ExaminationDTO dto) {
-	 * medicalActionService.saveExamination(dto); }
-	 * 
+	
+	  @PostMapping(value = "/medicalAction/saveExamination") public void
+	  saveExamination(@RequestBody ExaminationDTO dto) {
+	  medicalActionService.saveExamination(dto); }
+	/* 
 	 * @GetMapping(value = "/medicalAction/Examination/{id}") public Examination
 	 * getExamination(@PathVariable Long id) { return
 	 * medicalActionService.getExamination(id); }

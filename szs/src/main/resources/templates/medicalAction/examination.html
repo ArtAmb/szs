@@ -15,12 +15,12 @@
             <br/>
 
             <div id="new-recipt-view-container">
-                Recepta <button id="recipt-button-add" clicked='false'>Nowa recepta</button>
+                Recepta <button id="recipt-button-add" clicked='false' >Dodaj receptę</button>
                 <br/><br/>
             </div>
 
             <div id="new-refferal-view-container">
-                Skierowanie <button id="refferal-button-add" clicked='false'>Nowe skierowanie</button>
+                Skierowanie <button id="refferal-button-add" clicked='false'>Dodaj skierowanie</button>
                 <br/><br/>
             </div>
 
@@ -32,39 +32,35 @@
             <script th:inline='javascript'>
                  $('#examinationType-td').html(jsBuilder.createSelect( 'examinationType-select', consts.URLS.getExaminationTypes));
             
-                 var numberOfRecipt =0;
-                 var recipts= [];
+                 
                  var space='<br/><br/>';
                  var addReciptButton = $('#' + 'recipt-button-add');
                  
                  addReciptButton.click(function () {
-                    
-                    
-                    var reciptsTextarea=[];
-                    recipts.push('recipt-'+numberOfRecipt);
-                    reciptsTextarea.push('recipt-'+numberOfRecipt);
+                                                         
 
                     var text='Tresc recepty:<br/>';
-                    var new_textarea = jsBuilder.createTextarea('100','5',recipts[numberOfRecipt], reciptsTextarea[numberOfRecipt]);                 
+                    var new_textarea = jsBuilder.createTextarea('100','5','reciptDescription', 'reciptDescription-textarea');                 
                     
                     $('#new-recipt-view-container').append(text);
                     $('#new-recipt-view-container').append(new_textarea);
                     $('#new-recipt-view-container').append(space);
 
-                    numberOfRecipt++;
+                    
+                    $('#recipt-button-add').prop('disabled', true);                                       
      
      
                  });
 
                  var addRefferalButton = $('#' + 'refferal-button-add');
-                 var numberOfRefferal =1;
+                
                  addRefferalButton.click(function () {
                     
                     var text='Skierowanie:<br/>';
                     var label1='<label>Typ skierowania</label>';
-                    var new_input = jsBuilder.createInput('text', 'refferalType-input-'+numberOfRefferal);
+                    var new_input = jsBuilder.createInput('text', 'refferalType-input');
                     var label2='<br/><label>Dodatkowy opis</label><br/>';
-                    var new_textarea = jsBuilder.createTextarea('100','5','refferalDescription-'+numberOfRefferal, 'refferalDescription-textarea'+numberOfRefferal);                 
+                    var new_textarea = jsBuilder.createTextarea('100','5','refferalDescription', 'refferalDescription-textarea');                 
 
                     $('#new-refferal-view-container').append(text);
                     $('#new-refferal-view-container').append(label1);
@@ -72,48 +68,75 @@
                     $('#new-refferal-view-container').append(label2);
                     $('#new-refferal-view-container').append(new_textarea);
                     $('#new-refferal-view-container').append(space);
-                    numberOfRefferal++;
-     
+
+                    $('#refferal-button-add').prop('disabled', true);
+                   
      
                  });
 
                  $("#saveExaminationButton").click(function () {
-                if (tools.validation('new-examination-view')) {
+                        if (tools.validation('new-examination-view')) {
+                            //recepta
 
-                    for(i=0; i<recipts.length;i++){
-                        var reciptDTO = {
+                            var reciptDTO = {                                
+                                reciptDescription: tools.textareaToJSON('reciptDescription-textarea')                            
+    
+                            }
                             
-                            recipt: tools.textareaToJSON(recipts[i]+'-input')                       
+
+                            tools.postForObject("/medicalAction/recipt", reciptDTO, function () {
+                                alert("Zapisano recepte");
+                            },
+                                function () {
+                                    alert("Blad. Nie udalo sie zapisac recepty");
+                                });
+
+
+                            //skierowanie 
+
+                            var refferalDTO = { 
+                                refferalType: tools.selectToJSON('refferalType-input'),                               
+                                refferalDescription: tools.textareaToJSON('refferalDescription-textarea')                            
+    
+                            }
                             
+
+                            tools.postForObject("/medicalAction/refferal", reciptDTO, function () {
+                                alert("Zapisano recepte");
+                            },
+                                function () {
+                                    alert("Blad. Nie udalo sie zapisac skierowania");
+                                });
+   
+                            
+                            //badanie
+                            var examinationDTO = {
+                                patient: [[${ patient }]],
+                                doctor: [[${ doctor }]],
+                                examinationType: tools.selectToJSON('examinationType-input'),
+                                examinationDescription: tools.textareaToJSON('examinationDescription-textarea'),
+                                startDate: tools.inputToJSON('start-date-input'),
+                                startTime: tools.inputToJSON('start-time-input'),
+                                recipt: reciptDTO,
+                                refferal: refferalDTO
+    
+                            }
+
+                            tools.postForObject("/medicalAction/examination", examinationDTO, function () {
+                                alert("Zapisano badanie");
+                            },
+                                function () {
+                                    alert("Blad. Nie udalo sie zapisac badania");
+                                });
+
+
+
+                        } else {
+                            alert('Prosze uzupelnic wymagane pola');
                         }
+                    });
 
-                        tools.postForObject("/medicalAction/recipt", examinationDTO, function () {
-                        alert("Dodano recepte");
-                        },
-                            function () {
-                                alert("Blad. Nie udalo sie dodac recepty");
-                            });
-                    }
-                    var examinationDTO = {
-                        examinationType: tools.selectToJSON('examinationType-input'),
-                        examinationDescription: tools.textareaToJSON('examinationDescription-input'),
-                        startDate: tools.inputToJSON('start-date-input'),
-                        startTime: tools.inputToJSON('start-time-input')                       
-                        
-                    }
-                    tools.postForObject("/administration/new/examination", examinationDTO, function () {
-                        alert("Dodano badanie");
-                    },
-                        function () {
-                            alert("Blad. Nie udalo sie dodac badania");
-                        });
-                } else {
-                    alert('Prosze uzupelnic wymagane pola');
-                }
-            });
-
-               
-            
+             
             </script>
 
             
