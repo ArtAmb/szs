@@ -5,7 +5,8 @@
 	<div th:replace="mainMenu :: mainMenu"> </div>
 
 	<div id="patient-view" class="content">
-		<button id="searchPatientButton" class="simplebutton">Szukaj</button>
+		
+		<a th:href='@{/view/patient/search}' class="simplebutton">Szukaj</a>
 		<a th:href='@{/view/patient/add}' class="simplebutton">Dodaj pacjenta</a>
 
 		<div id="patient-view-container">

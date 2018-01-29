@@ -1,0 +1,28 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+	<div th:replace="mainMenu :: mainMenu"> </div>
+
+	<div id="search-patient-view" class="content">
+        <div id="patient-searcher-div"><label>Pacjent </label> </div>
+       
+
+        
+
+       <br/><br/>
+
+        <script th:inline='javascript'>
+                var options = {
+                    isRequired: true,
+                    isDTOValue: true,
+                    name: 'patientId',
+                    buildOptionDataFunc: function (optionTag, dto) { }
+                };
+                searcher.buildSearcher($("#patient-searcher-div"), "patient-searcher", "/searcher/patient/query", options);
+                
+            </script>
+        <a class="simplebutton detail_button" th:href="@{'/view/patients'}">Wroc</a>
+    </div>
+	<div th:replace="mainMenu :: footer"> </div>
+</body>
