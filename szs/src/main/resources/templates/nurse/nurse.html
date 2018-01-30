@@ -3,7 +3,7 @@
 <body>
 
 	<div th:replace="mainMenu :: mainMenu"> </div>
-	<button id="searchNursesButton" class="simplebutton">Szukaj</button>
+	<a th:href='@{/view/nurse/search}' class="simplebutton">Szukaj</a>
 
 	<div id="nurses-form-sign-in" class="content">
 			<table class="table table-bordered table-striped">
@@ -12,8 +12,7 @@
 				</tr>
 				<tr th:each="nurse : ${nurses}">
 					<td th:text="${nurse.name}"></td>
-					<td th:text="${nurse.surname}"></td>
-					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${nurse.id} +'/edit'}">Edytuj</a></td>
+					<td th:text="${nurse.surname}"></td>					
 					<td> <a th:id="'nurse-detail' + ${nurse.id}" th:href="@{'/view/nurse/' + ${nurse.id}}" class="simplebutton detail_button">Szczegóły</a></td>
 				</tr>
 			</table>

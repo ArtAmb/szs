@@ -1,0 +1,45 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="search-doctor-view" class="content">
+        <div id="doctor-searcher-div">
+            <label>Lekarz </label>
+        </div>
+
+        <br/>
+        <br/>
+
+        <button id="showDetails" class="simplebutton detail_button">Szczegoly</button>
+        <a class="simplebutton detail_button" th:href="@{'/view/doctors'}">Wroc</a>
+        
+
+        <script th:inline='javascript'>
+            var options = {
+                isRequired: true,
+                isDTOValue: true,
+                name: 'doctorId',
+                buildOptionDataFunc: function (optionTag, dto) { }
+            };
+            searcher.buildSearcher($("#doctor-searcher-div"), "doctor-searcher", "/searcher/doctor/query", options);
+            
+
+            $("#showDetails").click(function () {
+                if (tools.validation('doctor-searcher-div')) {
+                    var doctorDto = tools.tagInputsToDTO("doctor-searcher-div");                   
+                    window.location.href = "/view/doctor/" + doctorDto.doctorId;                 
+                   
+                } else {
+                    alert('Brak takiego lekarza');
+                }
+            });
+
+
+        </script>
+
+
+    </div>
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

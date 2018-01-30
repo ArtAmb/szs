@@ -36,4 +36,10 @@ public class NurseFrontController {
 		model.addAttribute("employee", nurse);
 		return getTemplateDir("nurse-detail");
 	}
+	
+	@GetMapping("/view/nurse/search")
+	public String searchNurseView(Model model) {
+		model.addAttribute("nurses", employeeService.findAllNurses());
+		return getTemplateDir("search-nurse");
+	}
 }

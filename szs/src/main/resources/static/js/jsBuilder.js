@@ -4,7 +4,7 @@ var jsBuilder = function () {
     jsBuilder.createElement = function (tagName, id, classes) {
         return $("<" + tagName + ">").attr("id", id).addClass(classes);
     }
-
+   
     jsBuilder.createInput = function (type, id, classes) {
         return $("<input>").attr("id", id).attr('type', type).addClass(classes);
     }
