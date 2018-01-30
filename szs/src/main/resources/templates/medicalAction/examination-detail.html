@@ -26,17 +26,17 @@
         </div>
         <div>
             <lable>Recepta: </lable>
-            <span th:text="${examination.reciptId}" />
-            <span th:text="${examination.reciptId.reciptDescription}" /> </div>
+            <span th:text="${examination.recipt.id}" />
+            <span th:text="${examination.recipt.reciptDescription}" /> </div>
         <div>
             <lable>Skierowanie: </lable>
-            <span th:text="${examination.refferalID}" /> </div>
+            <span th:text="${examination.refferal.id}" /> </div>
         <div>
             <lable>Typ skierowanie: </lable>
-            <span th:text="${examination.refferalID.refferalTypeId.name}" /> </div>
+            <span th:text="${examination.refferal.refferalType}" /> </div>
         <div>
             <lable>Opis: </lable>
-            <span th:text="${examination.refferalID.refferalDescription}" /> </div>
+            <span th:text="${examination.refferal.refferalDescription}" /> </div>
 
         <a th:href='@{/view/patient/}' class="simplebutton">Wroc</a>
 

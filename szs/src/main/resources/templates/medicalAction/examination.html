@@ -67,12 +67,7 @@
 
                  $("#saveExaminationButton").click(function () {
                         if (tools.validation('new-examination-view-container')) {
-                            //skierowanie 
-                            var refferalDTO = { 
-                                refferalType: $('refferalType-input').val(),                               
-                                refferalDescription: tools.inputToJSON('refferalDescription-textarea')                           
-                            }
-                                                   
+                                                                            
                             //badanie
                             var examinationDTO = {
                                 patientCardId: [[${ patient.id }]],
@@ -82,7 +77,8 @@
                                 startDate: tools.inputToJSON('start-date-input'),
                                 startTime: tools.inputToJSON('start-time-input'),
                                 reciptDescription: tools.inputToJSON('reciptDescription-textarea'),
-                                refferal: refferalDTO    
+                                refferalType: $('#refferalType-input').val(),                               
+                                refferalDescription: tools.inputToJSON('refferalDescription-textarea')                           
                             }
 
                             tools.postForObject("/medicalAction/saveExamination", examinationDTO, function () {
