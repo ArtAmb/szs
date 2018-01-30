@@ -35,15 +35,15 @@
                 .attr(consts.REQUIRED_ATTR, true)
                 .attr(consts.DTO_VALUE_ATTR, true)
                 .attr('name', 'name')
-                .appendTo('name-select-span');
+                .appendTo($('#name-select-span'));
 
             jsBuilder.createSelect('unit-select', consts.URLS.getDrugUnits)
                 .attr(consts.REQUIRED_ATTR, true)
                 .attr(consts.DTO_VALUE_ATTR, true)
                 .attr('name', 'unit')
-                .appendTo('unit-select-span');
+                .appendTo($('#unit-select-span'));
 
-            $('add-new-drug-button').unbind().click(function () {
+            $('#add-new-drug-button').unbind().click(function () {
                 if (tools.validation('add-new-drug-div')) {
                     var dto = tools.tagInputsToDTO('add-new-drug-div');
                     tools.postForObject("/config/new/drug", dto, function () {
@@ -62,5 +62,5 @@
 
     </div>
 
-    <div th: replace="mainMenu :: footer"> </div>
+    <div th:replace="mainMenu :: footer"> </div>
 </body>

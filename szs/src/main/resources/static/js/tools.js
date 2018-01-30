@@ -84,6 +84,11 @@ var tools = function () {
         return tagName == 'SELECT' || tagName == 'select' || tagName == 'Select';
     }
 
+    tools.isTagSearcherSelect = function (tag) {
+        var attr = tag.attr(consts.SEARCHER_ATTR);
+        return attr == consts.SEARCHER_ATTR || attr == 'true';
+    }
+
     tools.markRequiredTags = function (tagId) {
         var tag = $('#' + (tagId));
         var func = function (self) {
@@ -157,33 +162,39 @@ var tools = function () {
         };
     },
 
-        tools.tagInputsToDTO = function (tagName) {
-            var tag = $('#' + tagName);
-            var dto = {};
+    tools.tagInputsToDTO = function (tagName) {
+        var tag = $('#' + tagName);
+        var dto = {};
 
-            var func = function (el) {
-                var self = $(el);
-                if (self.attr('type') == 'checkbox') {
-                    dto[self.attr('name')] = self.prop('checked');
-                    return;
-                }
-                if (tools.isTagSelect(tag)) {
-                    dto[self.attr('name')] = tools.selectTagToJSON(tag);
-                    return;
-                }
-
-                dto[self.attr('name')] = self.val();
+        var func = function (el) {
+            var self = $(el);
+            if (self.attr('type') == 'checkbox') {
+                dto[self.attr('name')] = self.prop('checked');
+                return;
+            }
+            if (tools.isTagSelect(self)) {
+                var selectVal = tools.selectTagToJSON(self);
+               
+                if (tools.isTagSearcherSelect(self))
+                    dto[self.attr('name')] = selectVal.id;
+                else
+                    dto[self.attr('name')] = selectVal;
+               
+                return;
             }
 
-            tag.find("[" + consts.DTO_VALUE_ATTR + "='true']").each(function () {
-                func(this);
-            });
-            tag.find("[" + consts.DTO_VALUE_ATTR + "='" + consts.DTO_VALUE_ATTR + "']").each(function () {
-                func(this);
-            });
-
-            return dto;
+            dto[self.attr('name')] = self.val();
         }
+
+        tag.find("[" + consts.DTO_VALUE_ATTR + "='true']").each(function () {
+            func(this);
+        });
+        tag.find("[" + consts.DTO_VALUE_ATTR + "='" + consts.DTO_VALUE_ATTR + "']").each(function () {
+            func(this);
+        });
+
+        return dto;
+    }
 
     tools.validateDtoForGivenDrugs = function (dto) {
         return ((!tools.isBlank(dto.amount) && dto.id != null) || (tools.isBlank(dto.amount) == null && dto.id == null));
@@ -312,22 +323,21 @@ var tools = function () {
                 id: 'add-drug-in-storage-confirm-button',
                 text: "Zamow",
                 click: function () {
-                    if(tools.validation('new-drug-content')){
+                    if (tools.validation('new-drug-content')) {
                         var dto = tools.tagInputsToDTO('new-drug-content');
 
-                        tools.postForObject('/storage/add/new/drug', dto, function(){
+                        tools.postForObject('/storage/add/new/drug', dto, function () {
                             alert('Udalo sie zamowic leki.')
                             location.reload();
                         },
-                        function(e){
-                            alert('Blad! '+ e.responseJSON.message);
-                        },
-                    )
+                            function (e) {
+                                alert('Blad! ' + e.responseJSON.message);
+                            },
+                        )
 
-                    } else{
+                    } else {
                         alert('Prosze uzupelnic wymagane pola');
                     }
-                    $(this).dialog("close");
                 },
             },
             {

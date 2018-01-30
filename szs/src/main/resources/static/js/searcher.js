@@ -16,7 +16,8 @@ var searcher = function () {
         var selectResult = jsBuilder.createElement('select', searcherName + "-select-result")
             .attr(consts.REQUIRED_ATTR, options.isRequired)
             .attr(consts.DTO_VALUE_ATTR, options.isDTOValue)
-            .attr('name', options.name);
+            .attr('name', options.name)
+            .attr(consts.SEARCHER_ATTR, true);
         var findButton = jsBuilder.createElement('button', searcherName + "-button-find").text('szukaj');
 
         var emptySelectOption = jsBuilder.createSelectOption(" ").text(' ');

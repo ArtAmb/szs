@@ -86,6 +86,16 @@ public class ConfigService {
 	public void addDrug(Drug dto) {
 		dto.setId(null);
 		dto.setAmount(null);
+		if (dto.getDosage() < 0)
+			throw new RuntimeException("Dawka leku nie moze byc ujemna.");
+		Collection<Drug> col = drugRepo.findByNameAndUnitAndDosageAndAmountIsNull(dto.getName(), dto.getUnit(),
+				dto.getDosage());
+		if (!col.isEmpty())
+			throw new RuntimeException("Lek " + dto.toString() + " zostal juz skonfigurowany.");
 		drugRepo.save(dto);
+	}
+
+	public Collection<Drug> getAllConfigDrugs() {
+		return drugRepo.findByAmount(null);
 	}
 }

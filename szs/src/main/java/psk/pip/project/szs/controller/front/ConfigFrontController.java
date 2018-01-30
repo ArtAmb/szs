@@ -89,4 +89,10 @@ public class ConfigFrontController {
 		return getTemplateDir("config-template");
 	}
 
+	@GetMapping("/view/config/new-drug")
+	public String newDrugConfigView(Model model) {
+		model.addAttribute("drugs", service.getAllConfigDrugs());
+		return getTemplateDir("add-new-drug");
+	}
+
 }
