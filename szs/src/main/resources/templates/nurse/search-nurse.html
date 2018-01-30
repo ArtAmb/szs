@@ -1,0 +1,45 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="search-nurse-view" class="content">
+        <div id="nurse-searcher-div">
+            <label>Pielęgniarka </label>
+        </div>
+
+        <br/>
+        <br/>
+
+        <button id="showDetails" class="simplebutton detail_button">Szczegoly</button>
+        <a class="simplebutton detail_button" th:href="@{'/view/nurses'}">Wroc</a>
+        
+
+        <script th:inline='javascript'>
+            var options = {
+                isRequired: true,
+                isDTOValue: true,
+                name: 'nurseId',
+                buildOptionDataFunc: function (optionTag, dto) { }
+            };
+            searcher.buildSearcher($("#nurse-searcher-div"), "nurse-searcher", "/searcher/nurse/query", options);
+            
+
+            $("#showDetails").click(function () {
+                if (tools.validation('nurse-searcher-div')) {
+                    var nurseDto = tools.tagInputsToDTO("nurse-searcher-div");                   
+                    window.location.href = "/view/nurse/" + nurseDto.nurseId;                 
+                   
+                } else {
+                    alert('Brak takiej pielęgniarki');
+                }
+            });
+
+
+        </script>
+
+
+    </div>
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

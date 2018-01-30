@@ -36,4 +36,9 @@ public class DoctorFrontController {
 		model.addAttribute("employee", doctor);
 		return getTemplateDir("doctor-detail");
 	}
+	@GetMapping("/view/doctor/search")
+	public String searchDoctorView(Model model) {
+		model.addAttribute("doctors", employeeService.findAllDoctors());
+		return getTemplateDir("doctor-search");
+	}
 }
