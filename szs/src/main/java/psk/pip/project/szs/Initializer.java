@@ -123,13 +123,13 @@ public class Initializer {
 		DrugName morfina = drugNameRepo.save(DrugName.builder().name("Morfina").build());
 		DrugName mucosolvan = drugNameRepo.save(DrugName.builder().name("Mucosolvan").build());
 
-		Drug drug1 = drugRepo.save(Drug.builder().dosage(10).name(holinex).unit(mgr).amount(100).build());
-		Drug drug2 = drugRepo.save(Drug.builder().dosage(20).name(morfina).unit(sztuk).amount(85).build());
-		Drug drug3 = drugRepo.save(Drug.builder().dosage(30).name(mucosolvan).unit(ml).amount(75).build());
+		drugRepo.save(Drug.builder().dosage(10).name(holinex).unit(mgr).amount(null).build());
+		drugRepo.save(Drug.builder().dosage(20).name(morfina).unit(sztuk).amount(null).build());
+		drugRepo.save(Drug.builder().dosage(30).name(mucosolvan).unit(ml).amount(null).build());
 
-		storageService.addDrug(drug1);
-		storageService.addDrug(drug2);
-		storageService.addDrug(drug3);
+		storageService.addDrug(Drug.builder().dosage(10).name(holinex).unit(mgr).amount(1000).build());
+		storageService.addDrug(Drug.builder().dosage(20).name(morfina).unit(sztuk).amount(850).build());
+		storageService.addDrug(Drug.builder().dosage(30).name(mucosolvan).unit(ml).amount(750).build());
 	}
 
 	void addDoctors() {

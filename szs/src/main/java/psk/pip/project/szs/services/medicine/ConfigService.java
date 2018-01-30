@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import psk.pip.project.szs.entity.administration.DoctorSpecialization;
+import psk.pip.project.szs.entity.medicine.Drug;
 import psk.pip.project.szs.entity.medicine.DrugName;
 import psk.pip.project.szs.entity.medicine.ExaminationType;
 import psk.pip.project.szs.entity.medicine.MeasurementType;
 import psk.pip.project.szs.entity.medicine.Unit;
 import psk.pip.project.szs.repository.administration.DoctorSpecializationRepository;
 import psk.pip.project.szs.repository.medicine.DrugNameRepository;
+import psk.pip.project.szs.repository.medicine.DrugRepository;
 import psk.pip.project.szs.repository.medicine.DrugUnitRepository;
 import psk.pip.project.szs.repository.medicine.ExaminationTypeRepository;
 import psk.pip.project.szs.repository.medicine.MeasurementTypeRepository;
@@ -25,6 +27,9 @@ public class ConfigService {
 
 	@Autowired
 	private DrugUnitRepository drugUnitRepo;
+
+	@Autowired
+	private DrugRepository drugRepo;
 
 	@Autowired
 	private DoctorSpecializationRepository specRepo;
@@ -76,5 +81,11 @@ public class ConfigService {
 
 	public Collection<MeasurementType> findAllMeasurementType() {
 		return measurementTypeRepo.findAll();
+	}
+
+	public void addDrug(Drug dto) {
+		dto.setId(null);
+		dto.setAmount(null);
+		drugRepo.save(dto);
 	}
 }

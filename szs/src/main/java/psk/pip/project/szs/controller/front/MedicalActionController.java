@@ -15,11 +15,13 @@ import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.repository.medicine.ExaminationRepository;
 import psk.pip.project.szs.repository.medicine.NurseActionRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
+import psk.pip.project.szs.repository.patient.VisitRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.MedicalActionService;
 import psk.pip.project.szs.services.patient.Patient;
 
 @Controller
+@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
 public class MedicalActionController {
 
 	public static String templateDirRoot = "medicalAction/";
@@ -32,6 +34,8 @@ public class MedicalActionController {
 	private MedicalActionService medicalActionService;
 	@Autowired
 	private NurseActionRepository nurseActionRepo;
+	@Autowired
+	private VisitRepository visitRepo;
 	@Autowired
 	private ExaminationRepository examinationRepo;
 	@Autowired
@@ -49,10 +53,13 @@ public class MedicalActionController {
 	}
 
 	@PreAuthorize("hasRole('" + Roles.Consts.ROLE_DOCTOR + "')")
-	@GetMapping("/view/medical/action/patient/{patientId}/examination")
-	public String examinationView(@PathVariable Long patientId, Model model) {
+	@GetMapping("/view/medical/action/patient/{patientId}/examination/visit/{visitId}")
+	public String examinationView(@PathVariable Long patientId, @PathVariable Long visitId, Model model) {
 		PatientCard patient = patientCardRepository.findOne(patientId);
+
 		model.addAttribute("patient", patient.toPatient());
+		model.addAttribute("visit", visitRepo.findOne(visitId));
+
 		return getTemplateDir("examination");
 	}
 
@@ -106,13 +113,13 @@ public class MedicalActionController {
 		model.addAttribute("action", nurseActionRepo.findOne(id));
 		return getTemplateDir("nurse-action-detail");
 	}
-	
+
 	@GetMapping("/view/patient/{patientId}/examination/{examinationId}/detail")
-	public String getExaminationDetailView(@PathVariable Long patientId, @PathVariable Long examinationId, Model model) {
+	public String getExaminationDetailView(@PathVariable Long patientId, @PathVariable Long examinationId,
+			Model model) {
 		model.addAttribute("examination", examinationRepo.findOne(examinationId));
 		PatientCard patientCard = patientRepo.findOne(patientId);
 		model.addAttribute("patient", patientCard.toPatient());
-		
 
 		return getTemplateDir("examination-detail");
 	}
