@@ -13,33 +13,7 @@
         <br/>
         <br/>
 
-        <button id="addUserButton">Zarejestruj</button>
-        <script>
-            $("#addUserButton").click(function () {
-                var login = $("#loginInput").val();
-                var pass = $("#passwordInput").val();
-                if (!(tools.isBlank(login) || tools.isBlank(pass))) {
-
-                    var url = "/user/new";
-
-                    tools.postForObject(
-                        url,
-                        {
-                            login: login,
-                            password: pass
-                        },
-                        function (data) {
-                            alert("Rejestracja zakonczona");
-                        }, function () {
-                            alert("Blad! Mozliwe ze uzytkownik instnieje");
-                        });
-                }
-                else {
-                    $("#errorDiv").html("Pola haslo i login sa wymagane");
-                }
-
-            });
-        </script>
+        
 
 
 

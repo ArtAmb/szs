@@ -1,3 +1,4 @@
+
 .main-menu {
 position: relative;
 margin: auto;
@@ -113,3 +114,8 @@ ul.tree, ul.tree ul {
     pointer-events: none;
     cursor: not-allowed;
    }
+
+.starter-template{
+    text-align: center;
+    padding: 20px;
+}
