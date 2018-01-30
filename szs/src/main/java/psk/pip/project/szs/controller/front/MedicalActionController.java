@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import psk.pip.project.szs.entity.patient.PatientCard;
+import psk.pip.project.szs.entity.patient.Visit;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.repository.medicine.ExaminationRepository;
@@ -114,12 +115,16 @@ public class MedicalActionController {
 		return getTemplateDir("nurse-action-detail");
 	}
 
+	@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
 	@GetMapping("/view/patient/{patientId}/examination/{examinationId}/detail")
 	public String getExaminationDetailView(@PathVariable Long patientId, @PathVariable Long examinationId,
 			Model model) {
 		model.addAttribute("examination", examinationRepo.findOne(examinationId));
 		PatientCard patientCard = patientRepo.findOne(patientId);
 		model.addAttribute("patient", patientCard.toPatient());
+		Visit visit = visitRepo.findByExaminationId(examinationId);
+		if (visit != null)
+			model.addAttribute("visitId", visit.getId());
 
 		return getTemplateDir("examination-detail");
 	}

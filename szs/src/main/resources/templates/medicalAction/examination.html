@@ -84,14 +84,15 @@
                             tools.postForObject("/medicalAction/saveExamination", examinationDTO, function () {
                                 alert("Zapisano badanie");
                                 tools.postForObject("/patient/visit/" + [[${visit.id}]] +"/end", null, function () {
-                                alert("Zakonczono wizyte");
+                                  alert("Zakonczono wizyte");
+                                  window.location.href='/view/patient/'+ [[${ patient.id }]] +'/visit/'+ [[${visit.id}]] +'/detail';
                                 },
                                 function () {
-                                alert("Blad zakonczneia wizyty");
+                                alert("Blad zakonczenia wizyty");
                                 });
                             },
-                            function () {
-                                alert("Blad. Nie udalo sie zapisac badania");
+                            function (e) {
+                                alert("Blad. Nie udalo sie zapisac badania.\n" + e.responseJSON.message);
                             });
 
                         } else {

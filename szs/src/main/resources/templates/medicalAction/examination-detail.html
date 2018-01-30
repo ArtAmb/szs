@@ -38,7 +38,7 @@
             <lable>Opis: </lable>
             <span th:text="${examination.refferal.refferalDescription}" /> </div>
 
-        <a th:href='@{/view/patient/}' class="simplebutton">Wroc</a>
+        <a th:href="@{'/view/patient/' + ${visitId} + '/visit/' + ${patient.id} + '/detail'}" class="simplebutton">Wroc</a>
 
     </div>
 

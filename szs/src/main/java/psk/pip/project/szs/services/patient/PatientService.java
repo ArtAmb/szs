@@ -222,4 +222,9 @@ public class PatientService {
 				.collect(Collectors.toList());
 	}
 
+	// public Collection<Patient> findMyPatients(Long doctorId){
+	// Colletion<Visit> visits = visitRepo.findByDoctorId(doctorId);
+	// patientCardRepo.findBy
+	// }
+
 }

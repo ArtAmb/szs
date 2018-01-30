@@ -21,6 +21,7 @@ import psk.pip.project.szs.entity.medicine.MeasurementType;
 import psk.pip.project.szs.entity.medicine.Recipt;
 import psk.pip.project.szs.entity.medicine.Refferal;
 import psk.pip.project.szs.entity.patient.PatientCard;
+import psk.pip.project.szs.entity.patient.Visit;
 import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.repository.administration.EmployeeRepository;
 import psk.pip.project.szs.repository.medicine.ExaminationRepository;
@@ -31,6 +32,7 @@ import psk.pip.project.szs.repository.medicine.MeasurementTypeRepository;
 import psk.pip.project.szs.repository.medicine.ReciptRepository;
 import psk.pip.project.szs.repository.medicine.RefferalRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
+import psk.pip.project.szs.repository.patient.VisitRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.exception.CannotAddMedicalActionException;
 import psk.pip.project.szs.services.medicine.exception.CannotGetMeasurementType;
@@ -65,6 +67,8 @@ public class MedicalActionService {
 	private RootMeasurementSaver rootMeasurementSaver;
 	@Autowired
 	private GivenDrugSaver givenDrugSaver;
+	@Autowired
+	private VisitRepository visitRepo;
 
 	public void addExaminationType(ExaminationTypeDTO dto) {
 
@@ -154,10 +158,9 @@ public class MedicalActionService {
 		refferal.setRefferalType(dto.getRefferalType());
 		refferal.setRefferalDescription(dto.getRefferalDescription());
 		examination.setRefferal(refferal);
-
-		reciptRepo.save(recipt);
-		refferalRepo.save(refferal);
-		examinationRepo.save(examination);
+		Visit visit = visitRepo.findOne(dto.getVisitId());
+		visit.setExamination(examination);
+		visitRepo.save(visit);
 
 	}
 }

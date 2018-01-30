@@ -19,6 +19,7 @@
             </div>    
         </div>
         <a th:if="${visit.isEnd} == false" class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/medical/action/patient/'+ ${patient.id} + '/examination/visit/'+ ${visit.id}}">Przeprowadz badanie</a>
+        <a th:if="${visit.isEnd} == true" class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/patient/' + ${patient.id} + '/examination/' + ${visit.examination.id} + '/detail'}">Szczegoly badania</a>
         <a class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
 	</div>
 

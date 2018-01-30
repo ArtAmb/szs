@@ -1,5 +1,6 @@
 package psk.pip.project.szs.entity.medicine;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +11,6 @@ import javax.persistence.OneToOne;
 import lombok.Data;
 import psk.pip.project.szs.entity.administration.Employee;
 import psk.pip.project.szs.entity.patient.PatientCard;
-import psk.pip.project.szs.entity.patient.Visit;
 
 @Data
 @Entity
@@ -26,17 +26,14 @@ public class Examination {
 	@OneToOne
 	private ExaminationType examinationType;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Recipt recipt;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Refferal refferal;
 
 	@ManyToOne
 	private Employee employee;
-
-	@ManyToOne
-	private Visit visit;
 
 	@ManyToOne
 	private PatientCard patient;

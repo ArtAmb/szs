@@ -15,5 +15,6 @@ public class ExaminationDTO {
 	private String reciptDescription;
 	private String refferalType;
 	private String refferalDescription;
+	private Long visitId;
 
 }
