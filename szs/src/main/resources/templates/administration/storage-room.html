@@ -26,8 +26,15 @@
             </tr>
         </table>
 
+        <button id='add-new-drug-button'>Zamow leki</button>
         <a th:href='@{/view/administration}' class="simplebutton">Wroc</a>
+        <script>
+           var dialog = tools.openDialogToAddDrugsInStorage();
 
+           $('#add-new-drug-button').unbind().click(function(){
+               dialog.dialog('open');
+           });
+        </script>
     </div>
 
     <div th:replace="mainMenu :: footer"> </div>

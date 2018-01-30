@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import psk.pip.project.szs.entity.administration.DoctorSpecialization;
+import psk.pip.project.szs.entity.medicine.Drug;
 import psk.pip.project.szs.entity.medicine.DrugName;
 import psk.pip.project.szs.entity.medicine.ExaminationType;
 import psk.pip.project.szs.entity.medicine.MeasurementType;
@@ -68,5 +69,10 @@ public class ConfigController {
 	@GetMapping("/config/measurement-type/all")
 	public Collection<MeasurementType> getAllMeasurementType() {
 		return service.findAllMeasurementType();
+	}
+
+	@PostMapping("/config/new/drug")
+	public void addDrug(@RequestBody Drug dto) {
+		service.addDrug(dto);
 	}
 }

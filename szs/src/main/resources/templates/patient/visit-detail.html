@@ -17,7 +17,8 @@
                 <div><label>Data wizyty: </label><span th:text="${visit.startDate}"></span> </div>
                 <div><label>Godzina wizyty: </label><span th:text="${visit.startTime}"></span> </div>
             </div>    
-		</div>
+        </div>
+        <a th:if="${visit.isEnd} == false" class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/medical/action/patient/'+ ${patient.id} + '/examination/visit/'+ ${visit.id}}">Przeprowadz badanie</a>
         <a class="simplebutton detail_button lonewolfbutton" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
 	</div>
 

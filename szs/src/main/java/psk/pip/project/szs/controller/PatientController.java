@@ -69,6 +69,11 @@ public class PatientController {
 			patientService.addVisit(dto);
 	}
 
+	@PostMapping(value = "/patient/visit/{visitId}/end")
+	public void endVisit(@PathVariable Long visitId) {
+		patientService.endVisit(visitId);
+	}
+
 	@DeleteMapping(value = "/patient/visit/{id}")
 	public void deleteVisit(@PathVariable Long id) {
 		patientService.deleteVisit(id);

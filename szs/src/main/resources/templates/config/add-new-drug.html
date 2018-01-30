@@ -1,0 +1,66 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="config-view" class="content">
+
+        <table class="table table-bordered table-striped">
+            <tr th:if="${drugs.empty}">
+                <td>Brak skonfigurowanych lekow</td>
+            </tr>
+            <tr>
+                <td th:text="Lek " />
+                <td th:text="Dawka " />
+                <td th:text="jednostka " />
+            </tr>
+            <tr th:each="drug: ${drugs}">
+                <td th:text="${drug.name.name}" />
+                <td th:text="${drug.dosage}" />
+                <td th:text="${drug.unit.name}" />
+            </tr>
+        </table>
+
+
+
+        <div id='add-new-drug-div'>
+            <span id='name-select-span' />
+            <input id='dosage-input' type='number' required='true' dtovalue='true' name='dosage' />
+            <span id='unit-select-span' />
+        </div>
+        <button id="add-new-drug-button" class="simplebutton medical_action_button">Dodaj nowy lek</button>
+        <script>
+            jsBuilder.createSelect('name-select', consts.URLS.getDrugNames)
+                .attr(consts.REQUIRED_ATTR, true)
+                .attr(consts.DTO_VALUE_ATTR, true)
+                .attr('name', 'name')
+                .appendTo('name-select-span');
+
+            jsBuilder.createSelect('unit-select', consts.URLS.getDrugUnits)
+                .attr(consts.REQUIRED_ATTR, true)
+                .attr(consts.DTO_VALUE_ATTR, true)
+                .attr('name', 'unit')
+                .appendTo('unit-select-span');
+
+            $('add-new-drug-button').unbind().click(function () {
+                if (tools.validation('add-new-drug-div')) {
+                    var dto = tools.tagInputsToDTO('add-new-drug-div');
+                    tools.postForObject("/config/new/drug", dto, function () {
+                        alert('Dodano nowy lek');
+                        location.reload();
+                    },
+                        function (e) {
+                            alert('Blad! ' + e.responseJSON.message);
+                        })
+
+                } else {
+                    alert('Prosze uzupelnic wymagane pola');
+                }
+            });
+        </script>
+
+    </div>
+
+    <div th: replace="mainMenu :: footer"> </div>
+</body>

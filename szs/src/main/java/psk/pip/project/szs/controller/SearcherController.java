@@ -68,6 +68,13 @@ public class SearcherController {
 				.collect(Collectors.toList());
 	}
 
+	@PostMapping("/searcher/config-drug/query")
+	public Collection<SearcherResponse> findConfigDrugsByQueryString(@RequestBody SearcherParams params,
+			@PathVariable Long roomId) throws InstantiationException, IllegalAccessException {
+		return drugRepo.findByName_NameContaining(params.getQueryString()).stream().map(d -> SearcherMapper.map(d))
+				.collect(Collectors.toList());
+	}
+
 	@PostMapping("/searcher/room/query")
 	public Collection<SearcherResponse> findRoomsByQueryString(@RequestBody SearcherParams params)
 			throws InstantiationException, IllegalAccessException {

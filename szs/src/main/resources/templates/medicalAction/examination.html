@@ -24,7 +24,7 @@
                 <br/><br/>
             </div>
     
-            <button id="saveExaminationButton" class="simplebutton">Zapisz badanie</button>
+            <button id="saveExaminationButton" class="simplebutton">Zapisz badanie i zakoncz wizyte</button>
 
             <script th:inline='javascript'>
                  $('#examinationType-td').html(jsBuilder.createSelect( 'examinationType-select', consts.URLS.getExaminationTypes).attr(consts.REQUIRED_ATTR, true));
@@ -76,6 +76,7 @@
                             //badanie
                             var examinationDTO = {
                                 patientCardId: [[${ patient.id }]],
+                                visitId: [[${visit.id}]],
                                 examinationType: tools.selectToJSON('examinationType-select'),
                                 examinationDescription: tools.inputToJSON('examinationDescription-textarea'),
                                 startDate: tools.inputToJSON('start-date-input'),
@@ -86,6 +87,12 @@
 
                             tools.postForObject("/medicalAction/saveExamination", examinationDTO, function () {
                                 alert("Zapisano badanie");
+                                tools.postForObject("/patient/visit/" + [[${visit.id}]] +"/end", null, function () {
+                                alert("Zakonczono wizyte");
+                                },
+                                function () {
+                                alert("Blad zakonczneia wizyty");
+                                });
                             },
                             function () {
                                 alert("Blad. Nie udalo sie zapisac badania");
@@ -98,7 +105,7 @@
             
             </script>
         </div>
-        <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} +  '/detail'}">Wroc</a>
+        <a class="simplebutton detail_button" th:href="@{'/view/patient/'+ ${patient.id} + '/visit/' + ${visit.id}+'/detail'}">Wroc</a>
     </div>
     <div th:replace="mainMenu :: footer"> </div>
 </body>

@@ -42,8 +42,7 @@ public class PatientService {
 
 	@Autowired
 	private PatientCardRepository patientCardRepo;
-	
-	
+
 	@Autowired
 	private VisitRepository visitRepo;
 
@@ -116,6 +115,12 @@ public class PatientService {
 		patientCard.getVisits().add(VisitMapper.map(dto));
 
 		patientCardRepo.save(patientCard);
+	}
+
+	public void endVisit(Long id) {
+		Visit v = visitRepo.findOne(id);
+		v.setIsEnd(true);
+		visitRepo.save(v);
 	}
 
 	public void addLongTermVisit(VisitDTO dto) {
@@ -211,9 +216,9 @@ public class PatientService {
 		card.setRoom(room);
 		patientCardRepo.save(card);
 	}
-	
+
 	public Collection<SearcherResponse> findPatientsByQueryStr(String query) {
-		return  patientCardRepo.findPatientsByQuery(query).stream().map(e -> SearcherMapper.map(e))
+		return patientCardRepo.findPatientsByQuery(query).stream().map(e -> SearcherMapper.map(e))
 				.collect(Collectors.toList());
 	}
 

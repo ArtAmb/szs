@@ -14,11 +14,13 @@ import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
 import psk.pip.project.szs.repository.medicine.NurseActionRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
+import psk.pip.project.szs.repository.patient.VisitRepository;
 import psk.pip.project.szs.repository.systemUser.UserRepository;
 import psk.pip.project.szs.services.medicine.MedicalActionService;
 import psk.pip.project.szs.services.patient.Patient;
 
 @Controller
+@PreAuthorize("hasRole('" + Roles.Consts.ROLE_MEDICAL_EMPLOYEE + "')")
 public class MedicalActionController {
 
 	public static String templateDirRoot = "medicalAction/";
@@ -31,6 +33,8 @@ public class MedicalActionController {
 	private MedicalActionService medicalActionService;
 	@Autowired
 	private NurseActionRepository nurseActionRepo;
+	@Autowired
+	private VisitRepository visitRepo;
 
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
@@ -44,10 +48,13 @@ public class MedicalActionController {
 	}
 
 	@PreAuthorize("hasRole('" + Roles.Consts.ROLE_DOCTOR + "')")
-	@GetMapping("/view/medical/action/patient/{patientId}/examination")
-	public String examinationView(@PathVariable Long patientId, Model model) {
+	@GetMapping("/view/medical/action/patient/{patientId}/examination/visit/{visitId}")
+	public String examinationView(@PathVariable Long patientId, @PathVariable Long visitId, Model model) {
 		PatientCard patient = patientCardRepository.findOne(patientId);
+
 		model.addAttribute("patient", patient.toPatient());
+		model.addAttribute("visit", visitRepo.findOne(visitId));
+
 		return getTemplateDir("examination");
 	}
 

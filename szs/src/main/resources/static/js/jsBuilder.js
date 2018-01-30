@@ -13,7 +13,6 @@ var jsBuilder = function () {
         return $("<textarea>").attr("id", id).attr('cols', cols).attr('rows', rows).addClass(classes);
     }
     
-
     jsBuilder.createSelectOption = function (value, classes) {
         return $("<option>").attr('value', value).addClass(classes);
     }
