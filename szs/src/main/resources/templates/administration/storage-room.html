@@ -26,13 +26,13 @@
             </tr>
         </table>
 
-        <button id='add-new-drug-button'>Zamow leki</button>
+        <button class="simplebutton" id='add-new-drug-button'>Zamow leki</button>
         <a th:href='@{/view/administration}' class="simplebutton">Wroc</a>
         <script>
-           var dialog = tools.openDialogToAddDrugsInStorage();
+           tools.openDialogToAddDrugsInStorage();
 
            $('#add-new-drug-button').unbind().click(function(){
-               dialog.dialog('open');
+               $('#add-drug-in-storage-dialog').dialog('open');
            });
         </script>
     </div>

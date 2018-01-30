@@ -313,8 +313,7 @@ var tools = function () {
                 text: "Zamow",
                 click: function () {
                     if(tools.validation('new-drug-content')){
-                        var div = $('#new-drug-content');
-                        var dto = tools.tagInputsToDTO(div);
+                        var dto = tools.tagInputsToDTO('new-drug-content');
 
                         tools.postForObject('/storage/add/new/drug', dto, function(){
                             alert('Udalo sie zamowic leki.')
@@ -344,7 +343,7 @@ var tools = function () {
                 var content = jsBuilder.createElement('div').attr('id', 'new-drug-content');
                 jsBuilder.createElement('label').text('Lek:').appendTo(content);
                 content.append('  ');
-                searcher.buildSearcher(content, 'room-searcher', '/searcher/config-drug/query', {
+                searcher.buildSearcher(content, 'new-drugs-searcher', '/searcher/config-drug/query', {
                     isRequired: true,
                     isDTOValue: true,
                     name: 'drugId'
