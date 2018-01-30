@@ -33,8 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().anyRequest().permitAll().and().formLogin().loginProcessingUrl("/login")
-				.usernameParameter("login").passwordParameter("password")
+		http.authorizeRequests().antMatchers("/view/login/sign-in", "/login/**", "/jslibs/**", "/js/**", "/css/**")
+				.permitAll().antMatchers("/view/administration/new/**", "/view/config", "/view/config/**")
+				.hasRole("ADMIN").anyRequest().hasAnyRole("MEDICAL_EMPLOYEE").and().formLogin()
+				.loginProcessingUrl("/login").usernameParameter("login").passwordParameter("password")
 				.failureHandler(new SimpleUrlAuthenticationFailureHandler() {
 
 					@Override
@@ -70,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					public void onLogoutSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication arg2)
 							throws IOException, ServletException {
 						System.out.println("Logout success");
+						arg1.sendRedirect("/view/login/sign-in");
 					}
 				}).and().headers().frameOptions().disable().and().csrf().disable();
 	}
