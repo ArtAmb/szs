@@ -1,0 +1,46 @@
+<head th:replace="mainMenu :: head"> </head>
+
+<body>
+
+    <div th:replace="mainMenu :: mainMenu"> </div>
+
+    <div id="examination-detail-view" class="content">
+
+        <div>
+            <lable>Id: </lable>
+            <span th:text="${examination.id}" /> </div>
+        <div>
+            <lable>Opis: </lable>
+            <span th:text="${examination.examinationDescription}" /> </div>
+        <div>
+            <lable>Data: </lable>
+            <span th:text="${examination.startDate}" /> </div>
+        <div>
+            <lable>Godzina: </lable>
+            <span th:text="${examination.startTime}" /> </div>
+        <div>
+            <label> Pracownik: </label>
+            <span th:text="${examination.employee.user.login}" />
+            <span th:text="${examination.employee.name}" />
+            <span th:text="${examination.employee.surname}" />
+        </div>
+        <div>
+            <lable>Recepta: </lable>
+            <span th:text="${examination.reciptId}" />
+            <span th:text="${examination.reciptId.reciptDescription}" /> </div>
+        <div>
+            <lable>Skierowanie: </lable>
+            <span th:text="${examination.refferalID}" /> </div>
+        <div>
+            <lable>Typ skierowanie: </lable>
+            <span th:text="${examination.refferalID.refferalTypeId.name}" /> </div>
+        <div>
+            <lable>Opis: </lable>
+            <span th:text="${examination.refferalID.refferalDescription}" /> </div>
+
+        <a th:href='@{/view/patient/}' class="simplebutton">Wroc</a>
+
+    </div>
+
+    <div th:replace="mainMenu :: footer"> </div>
+</body>

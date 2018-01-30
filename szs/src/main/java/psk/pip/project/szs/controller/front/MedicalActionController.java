@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import psk.pip.project.szs.entity.patient.PatientCard;
 import psk.pip.project.szs.entity.registration.Roles;
 import psk.pip.project.szs.entity.registration.User;
+import psk.pip.project.szs.repository.medicine.ExaminationRepository;
 import psk.pip.project.szs.repository.medicine.NurseActionRepository;
 import psk.pip.project.szs.repository.patient.PatientCardRepository;
 import psk.pip.project.szs.repository.patient.VisitRepository;
@@ -35,6 +36,10 @@ public class MedicalActionController {
 	private NurseActionRepository nurseActionRepo;
 	@Autowired
 	private VisitRepository visitRepo;
+	@Autowired
+	private ExaminationRepository examinationRepo;
+	@Autowired
+	private PatientCardRepository patientRepo;
 
 	private String getTemplateDir(String templateName) {
 		return templateDirRoot + templateName;
@@ -107,6 +112,16 @@ public class MedicalActionController {
 		model.addAttribute("patient", patientCardRepository.findOne(patientId).toPatient());
 		model.addAttribute("action", nurseActionRepo.findOne(id));
 		return getTemplateDir("nurse-action-detail");
+	}
+
+	@GetMapping("/view/patient/{patientId}/examination/{examinationId}/detail")
+	public String getExaminationDetailView(@PathVariable Long patientId, @PathVariable Long examinationId,
+			Model model) {
+		model.addAttribute("examination", examinationRepo.findOne(examinationId));
+		PatientCard patientCard = patientRepo.findOne(patientId);
+		model.addAttribute("patient", patientCard.toPatient());
+
+		return getTemplateDir("examination-detail");
 	}
 
 }
