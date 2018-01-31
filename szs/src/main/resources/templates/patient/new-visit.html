@@ -21,14 +21,15 @@
                 };
                 searcher.buildSearcher($("#doctor-searcher-div"), "doctor-searcher", "/searcher/doctor/query", options);
                 $("#arrangeVisitButton").click(function () {
-                    var dto = tools.tagInputsToDTO("new-visit-view-container");
-                    dto.patientCardId = [[${patient.id}]]
-                    if (tools.validation("new-visit-view-container"))
+                    if (tools.validation("new-visit-view-container")){
+                        var dto = tools.tagInputsToDTO("new-visit-view-container");
+                        dto.patientCardId = [[${patient.id}]]
                         tools.postForObject('/patient/addVisit', dto, function () {
                             alert("Dodano wizyte");
                         }, function () {
                             alert("Blad dodania wizyty");
                         });
+                    }
                     else {
                         alert("Prosze uzupelnic wymagane pola");
                     }
