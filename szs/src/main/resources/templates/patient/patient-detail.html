@@ -13,7 +13,6 @@
                     <td> <label th:if="${patient.currentVisit.endDate != null}" th:text="${patient.currentVisit.endDate}" /> <label th:if="${patient.currentVisit.endTime != null}" th:text="${patient.currentVisit.endTime}" /> </td>
                     <td  th:if="${patient.currentVisit.isEnd != null}" th:text="${patient.currentVisit.isEnd}"></td>
 					<td> <button class="simplebutton medical_action_button" id='sign-out-button'>Zakoncz pobyt</button></td>
-					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} + '/long-term-visit/' + ${patient.currentVisit.id} + '/detail'}">Szczegoly</a></td>
 					<td  th:if="${patient.room == null}" ><button class="simplebutton medical_action_button important_button" id='set-in-room-button'>UWAGA! Pacjent nie jest przypisany do sali! Kliknij tutaj!</button></td>
 					<td  th:if="${patient.room != null}" ><a class="simplebutton medical_action_button" th:text="${patient.room.roomName}" th:href="@{'/view/hospital/room/' + ${patient.room.id}}"/></td>

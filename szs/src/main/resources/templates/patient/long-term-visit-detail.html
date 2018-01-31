@@ -22,7 +22,6 @@
 
             <div>
             <button th:attr='visitId=${visit.id}' class="simplebutton medical_action_button" th:id="'sign-in-button'+${visit.id}">Ustaw jako obecna</button>
-            <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a>
             <script th:inline='javascript'>
                     var signInButton = $('#sign-in-button' +  [[${ visit.id }]]);
                     if ([[${ isCurrVisit }]])

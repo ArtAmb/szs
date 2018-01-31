@@ -19,7 +19,6 @@
                     <td> <label th:if="${visit.endDate != null}" th:text="${visit.endDate}" /> <label th:if="${visit.endTime}" th:text="${visit.endTime}" /> </td>
                     <td  th:if="${visit.isEnd != null}" th:text="${visit.isEnd}"></td>
 					<td> <button th:attr='visitId=${visit.id}' class="simplebutton medical_action_button" th:id="'sign-in-button'+${visit.id}">Ustaw jako obecna</button></td>
-					<td> <a class="simplebutton edit_button" th:href="@{'/view/patient/'+ ${patient.id} +'/edit'}">Edytuj</a></td>
 					<td> <a class="simplebutton detail_button" th:href="@{'/view/patient/' + ${patient.id} + '/long-term-visit/' + ${visit.id} + '/detail'}">Szczegoly</a></td>
 					<script th:inline='javascript'>
 						(function() {
