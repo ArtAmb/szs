@@ -24,18 +24,14 @@ public class GivenDrugSaver extends NurseActionSaverStrategy<GivenDrug> {
 
 	@Autowired
 	private RoomRepository roomRepo;
-	
+
 	@Autowired
 	private DrugRepository drugRepo;
 
 	@Override
 	protected void createNurseAction(GivenDrug obj) {
-		nurseAction = NurseAction.builder()
-				.description(obj.getDescription())
-				.medicalEmployee(medicalEmployee)
-				.drugs(obj.getDrugs())
-				.type(NurseActionType.DRUG_GIVEN)
-				.date(new Timestamp(System.currentTimeMillis()))
+		nurseAction = NurseAction.builder().description(obj.getDescription()).medicalEmployee(medicalEmployee)
+				.drugs(obj.getDrugs()).type(NurseActionType.DRUG_GIVEN).date(new Timestamp(System.currentTimeMillis()))
 				.build();
 	}
 
@@ -51,22 +47,19 @@ public class GivenDrugSaver extends NurseActionSaverStrategy<GivenDrug> {
 		if (drugs.isEmpty())
 			throw new RuntimeException("Brak informacji o ilosci lekow");
 
-		for (Drug drug : drugs)
-			room.deleteDrugs(drug);
-
-		roomRepo.save(room);
-		
-		
 		Collection<Drug> givenDrugsInfoCol = new LinkedList<>();
-		for (Drug drug : drugs){
+		for (Drug drug : drugs) {
 			Drug realDrug = drugRepo.findOne(drug.getId());
 			Drug givenDrugInfo = realDrug.getCopyWithoutIdAndAmount();
 			givenDrugInfo.setAmount(drug.getAmount());
 			givenDrugsInfoCol.add(givenDrugInfo);
 		}
 		object.setDrugs(givenDrugsInfoCol);
-		
-		
+
+		for (Drug drug : object.getDrugs())
+			room.deleteDrugs(drug);
+
+		roomRepo.save(room);
 		return true;
 	}
 
